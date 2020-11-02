@@ -23,7 +23,7 @@ namespace dotNet5781_01__6382_0555
             Random rand = new Random(DateTime.Now.Millisecond);
             this.mileageCounter = rand.Next(0, 20000);
         }
-
+        
         public static int MaxKmBeforeCare { get => 20000; }
         public static int MaxKmAfterRefueling { get => 1200; }
         public bool IsDanger
