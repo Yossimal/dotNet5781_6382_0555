@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNet5781_00_ 6382_0555", "dotNet5781_00_ 6382_0555\dotNet5781_00_ 6382_0555.csproj", "{70EF0663-E52C-49DE-ADCC-846C57669E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNet5781_01_ 6382_0555", "dotNet5781_01_ 6382_0555\dotNet5781_01_ 6382_0555.csproj", "{36039D4A-5A61-46AC-ACE9-E710959ED9E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotNet5781_01_ 6382_0555", "dotNet5781_01_ 6382_0555\dotNet5781_01_ 6382_0555.csproj", "{36039D4A-5A61-46AC-ACE9-E710959ED9E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNet5781_02_ 6382_0555", "dotNet5781_02_ 6382_0555\dotNet5781_02_ 6382_0555.csproj", "{9A827558-6069-4072-A4BC-59C84AFD8C56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{36039D4A-5A61-46AC-ACE9-E710959ED9E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36039D4A-5A61-46AC-ACE9-E710959ED9E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36039D4A-5A61-46AC-ACE9-E710959ED9E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A827558-6069-4072-A4BC-59C84AFD8C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A827558-6069-4072-A4BC-59C84AFD8C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A827558-6069-4072-A4BC-59C84AFD8C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A827558-6069-4072-A4BC-59C84AFD8C56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
