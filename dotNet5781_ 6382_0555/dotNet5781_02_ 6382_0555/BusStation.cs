@@ -12,12 +12,20 @@ namespace dotNet5781_02__6382_0555
 
         public BusStation(int code, Location location, string address)
         {
+            if (code>=Math.Pow(10,6))
+            {
+                throw new ArgumentException("Code has to many digits");
+            }
             this.code = code;
             this.location = location;
             this.address = address;
         }
         public BusStation(int code, string address)
         {
+            if (code >= Math.Pow(10, 6))
+            {
+                throw new ArgumentException("Code has to many digits");
+            }
             this.code = code;
             this.location = Location.GetRandomLocation(31,33.3,34.3,35.5);
             this.address = address;
