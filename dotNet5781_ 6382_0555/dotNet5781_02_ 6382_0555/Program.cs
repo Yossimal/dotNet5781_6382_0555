@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace dotNet5781_02__6382_0555
 {
+    /// <summary>
+    /// The client class
+    /// </summary>
     class Program
     {
         public static Random rand = new Random(DateTime.Now.Millisecond);
@@ -12,6 +15,10 @@ namespace dotNet5781_02__6382_0555
         private const ConsoleColor ChosenTextColor = ConsoleColor.Red;
         private const ConsoleColor ChosenTextBGC = ConsoleColor.Gray;
         private const string StationsDataPath = @".\..\..\..\Stations.dat";
+        /// <summary>
+        /// The main method
+        /// </summary>
+        /// <param name="args">cmd arguments [0] -> optional: path for the stations data file</param>
         static void Main(string[] args)
         {
             string[] stationsData = File.ReadAllLines(args.Length==0?StationsDataPath:args[0]);
@@ -63,7 +70,10 @@ namespace dotNet5781_02__6382_0555
                 }
             }
         }
-
+        /// <summary>
+        /// rading from the end-user bus line and adding it to the given collection
+        /// </summary>
+        /// <param name="lines">The ollection that we want to add the line to</param>
         private static void AddBusLine(BusLineCollection lines)
         {
             int lineNum = ReadLineNumber();
@@ -77,6 +87,11 @@ namespace dotNet5781_02__6382_0555
             lines.Add(new BusLine(lineNum, area));
 
         }
+        /// <summary>
+        /// Get a station number from the user (can choose from the given list) and add it to an existing bus line
+        /// </summary>
+        /// <param name="lines">The collection of the bus lines that he can add the station to</param>
+        /// <param name="stations">The list of the stations that the user can add</param>
         private static void AddStation(BusLineCollection lines, List<BusStation> stations)
         {
             int code;
@@ -103,11 +118,19 @@ namespace dotNet5781_02__6382_0555
                             retStation.Location, retStation.Address, rand.Next(1, 51),
                             new TimeSpan(rand.Next(0, 2), rand.Next(0, 60), rand.Next(1, 60))));
         }
+        /// <summary>
+        /// Get a line number from the end-user and removing it from the collection
+        /// </summary>
+        /// <param name="lines">The bus lines collection</param>
         private static void DelBusLine(BusLineCollection lines)
         {
             int lineNum = ReadLineNumber();
             lines.Remove(lines[lineNum, 0]);
         }
+        /// <summary>
+        /// Get a station number from the end-user and a bus line station and removing the station from the line path
+        /// </summary>
+        /// <param name="lines">The collection of the bus linesd that the user can choose from</param>
         private static void DelLineStation(BusLineCollection lines)
         {
             int code = ReadStationCode();
@@ -132,6 +155,10 @@ namespace dotNet5781_02__6382_0555
             }
             lines[lineNum, 0].Remove(code);
         }
+        /// <summary>
+        /// Get a station code from the user and printing all the numbers of the lines from the given collection that have that station in the path
+        /// </summary>
+        /// <param name="lines">The lines collection</param>
         private static void SearchStationLines(BusLineCollection lines)
         {
             int code = ReadStationCode();
@@ -142,6 +169,11 @@ namespace dotNet5781_02__6382_0555
             }
             Console.WriteLine();
         }
+        /// <summary>
+        /// Gets two station codes from the end-user and printing all the buses that moving from the first station to the second one in their path
+        /// </summary>
+        /// <param name="lines">The collection of the lines for search path</param>
+        /// <exception cref="InvalidOperationException">The user inserted the same code in the first and the second station</exception>
         private static void SearchPath(BusLineCollection lines)
         {
             Console.WriteLine("Input source station:");
@@ -163,6 +195,10 @@ namespace dotNet5781_02__6382_0555
             linesToPrint.Sort();
             linesToPrint.ForEach(line => Console.WriteLine(line));
         }
+        /// <summary>
+        /// Print all the lines and their pathes from a given collection
+        /// </summary>
+        /// <param name="lines">The line collection to print</param>
         private static void PrintLines(BusLineCollection lines)
         {
             foreach (BusLine line in lines)
@@ -171,6 +207,11 @@ namespace dotNet5781_02__6382_0555
                 Console.WriteLine();
             }
         }
+        /// <summary>
+        /// print all the stations from a given list and for each staion print all the line numbers of the lines that have that station in their path
+        /// </summary>
+        /// <param name="lines">The lines collection</param>
+        /// <param name="stations">The stations list to print</param>
         private static void PrintStationsLines(BusLineCollection lines, List<BusStation> stations)
         {
             foreach (BusStation station in stations)
@@ -181,23 +222,33 @@ namespace dotNet5781_02__6382_0555
                 Console.WriteLine();
             }
         }
-        private static bool GetArea(out Area act)
+        /// <summary>
+        /// Read an area from the end-user
+        /// </summary>
+        /// <param name="area">The area that we have readed will be here</param>
+        /// <returns>true if the user inserted legal area and false for illigal area</returns>
+        private static bool GetArea(out Area area)
         {
             char action;
             if (!char.TryParse(Console.ReadLine().ToLower(), out action))
             {
-                act = Area.General;
+                area = Area.General;
                 return false;
             }
 
             if (!Enum.IsDefined(typeof(Area), (int)action))
             {
-                act = Area.General;
+                area = Area.General;
                 return false;
             }
-            act = (Area)action;
+            area = (Area)action;
             return true;
         }
+        /// <summary>
+        /// Read all the bus stations from formatted array
+        /// </summary>
+        /// <param name="arr">stations array that each argument contains a station in the format #address #code</param>
+        /// <returns>A deserialized list from the array</returns>
         private static List<BusStation> ReadData(string[] arr)
         {
             List<BusStation> ret = new List<BusStation>();
@@ -211,6 +262,11 @@ namespace dotNet5781_02__6382_0555
             }
             return ret;
         }
+        /// <summary>
+        /// Gets 10 lines that have all the exercise requirments
+        /// </summary>
+        /// <param name="stations">The stations list</param>
+        /// <returns>BusLineCollection that contains all the generated lines</returns>
         private static BusLineCollection GenerateLines(List<BusStation> stations)
         {
             BusLineCollection ret = new BusLineCollection();
@@ -219,7 +275,7 @@ namespace dotNet5781_02__6382_0555
                 BusLine line = new BusLine(i, Area.General);
                 for (int j = 0; j < stations.Count; j++)
                 {
-                    if (j % i == 0 || j % (i + 1) == 0)
+                    if (j %  10== i || j % 10 == (i + 1))//each station will get the line of his mod with max lines and the next line
                     {
                         Random rand = new Random(DateTime.Now.Millisecond);
                         LineBusStation station = new LineBusStation(stations[j].Code,
@@ -232,6 +288,13 @@ namespace dotNet5781_02__6382_0555
             }
             return ret;
         }
+        /// <summary>
+        /// Handeling the multichoice menue.
+        /// Each user actions clearing the console.
+        /// </summary>
+        /// <param name="items">The oprions that the user can choose</param>
+        /// <param name="index">The current index of the user choice</param>
+        /// <returns>The user choice or "" if the user didn't pressed the Enter key</returns>
         private static string MenuHandler(List<string> items, ref int index)
         {
             for (int i = 0; i < items.Count; i++)
@@ -280,6 +343,11 @@ namespace dotNet5781_02__6382_0555
             Console.Clear();
             return "";
         }
+        /// <summary>
+        /// Reading a bus line number from the user
+        /// </summary>
+        /// <returns>The line number that the user inserted</returns>
+        /// <exception cref="InvalidOperationException">The end-user didn't inserted number OR the number that the user inserted is out of the line range (the range is [0,999])</exception>
         private static int ReadLineNumber()
         {
             int lineNum;
@@ -294,6 +362,11 @@ namespace dotNet5781_02__6382_0555
             }
             return lineNum;
         }
+        /// <summary>
+        /// Read a bus station code from the end-user
+        /// </summary>
+        /// <returns>The code that the user inserted</returns>
+        /// <exception cref="InvalidOperationException">The end-user didn't inserted a number OR the number that the end-user inserted is out of the code range (the range is [0,999999]</exception>
         private static int ReadStationCode()
         {
             int stationCode;
