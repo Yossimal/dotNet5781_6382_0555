@@ -33,7 +33,11 @@ namespace dotNet5781_02__6382_0555
         }
         public List<BusLine> GetStationLines (int code)
         {
-            return new List<BusLine>(lines.Where(line=>line.IsExists(code)));
+            List<BusLine> ret= new List<BusLine>(lines.Where(line => line.IsExists(code)));
+            if (ret.Count == 0) {
+                throw new InvalidOperationException("That station not contains any line.");
+            }
+            return ret;
         }
         public List<BusLine> GetSortedLines() 
         {

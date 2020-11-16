@@ -7,9 +7,14 @@ namespace dotNet5781_02__6382_0555
 {
     class Program
     {
+        public static Random rand = new Random(DateTime.Now.Millisecond);
+
+        private const ConsoleColor ChosenTextColor = ConsoleColor.Red;
+        private const ConsoleColor ChosenTextBGC = ConsoleColor.Gray;
+        private const string StationsDataPath = @".\..\..\..\Stations.dat";
         static void Main(string[] args)
         {
-            string[] stationsData = File.ReadAllLines(@".\..\..\..\Stations.dat");
+            string[] stationsData = File.ReadAllLines(args.Length==0?StationsDataPath:args[0]);
             List<BusStation> stations = ReadData(stationsData);
             BusLineCollection lines = GenerateLines(stations);
             List<string> options = Actions.AllActions;
@@ -18,7 +23,7 @@ namespace dotNet5781_02__6382_0555
             {
                 try
                 {
-                    string str = QuestionScrollFunctionality(options, ref index);
+                    string str = MenuHandler(options, ref index);
                     Console.Clear();
                     switch (str)
                     {
@@ -227,14 +232,14 @@ namespace dotNet5781_02__6382_0555
             }
             return ret;
         }
-        private static string QuestionScrollFunctionality(List<string> items, ref int index)
+        private static string MenuHandler(List<string> items, ref int index)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 if (i == index)
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkGreen;
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.BackgroundColor = ChosenTextBGC;
+                    Console.ForegroundColor = ChosenTextColor;
 
                     Console.WriteLine(items[i]);
                 }

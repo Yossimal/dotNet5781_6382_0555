@@ -5,6 +5,9 @@ using System.Text;
 namespace dotNet5781_02__6382_0555
 {
     public enum Area { General = 'g', North = 'n', South = 's', Center = 'c', Jerusalem = 'j' }
+    /// <summary>
+    /// Enum-Like opbject that have string actions
+    /// </summary>
     public static class Actions
     {
         public const string AddLine = "Add new bus line"; 
