@@ -7,7 +7,6 @@ using System.Text;
 
 namespace dotNet5781_02__6382_0555
 {
-    enum Area { General = 'g', North = 'n', South = 's', Center = 'c', Jerusalum = 'j' }
     class BusLine : IComparable, IEnumerable
     {
         private List<LineBusStation> path;
@@ -28,20 +27,37 @@ namespace dotNet5781_02__6382_0555
             this.Area = area;
         }
 
-        public BusStation First { get => path[0]; }
-        public BusStation Last { get => path[path.Count - 1]; }
+        public BusStation First { get => this.path.Count == 0 ? null : path[0]; }
+        public BusStation Last { get => this.path.Count == 0 ? null : path[path.Count - 1]; }
         public int LineNum { get => lineNum; }
         internal Area Area { get => area; set => area = value; }
 
         public int CompareTo(object obj)
         {
-            if (!(obj is BusLine) && obj == null)
+            if (!(obj is BusLine))
             {
+
                 throw new ArgumentException("Wrong object to compare");
             }
+            if (obj == null)
+            {
+                throw new ArgumentNullException("Can't compare null");
+            }
+
             BusLine rhs = obj as BusLine;
-            TimeSpan delta = this.TimeBetweenStations(this.First.Code, this.Last.Code) - rhs.TimeBetweenStations(rhs.First.Code, rhs.Last.Code);
-            return (int)Math.Round(delta.TotalSeconds);
+            if (rhs.path.Count == 0 && this.path.Count == 0)
+            {
+                return 0;
+            }
+            if (rhs.path.Count == 0)
+            {
+                return 1;
+            }
+            else if (this.path.Count == 0)
+            {
+                return -1;
+            }
+            return (int)(this.TimeBetweenStations(this.First.Code, this.Last.Code).TotalSeconds - rhs.TimeBetweenStations(rhs.First.Code, rhs.Last.Code).TotalSeconds);
         }
 
         public IEnumerator GetEnumerator()
@@ -52,10 +68,10 @@ namespace dotNet5781_02__6382_0555
         public override string ToString()
         {
             string ret;
-            ret = $"{LineNum}\t{Area}\t";
+            ret = $"{LineNum,-4}{Area}\t";
             foreach (LineBusStation station in path)
             {
-                ret += $"{station.Code}=>";
+                ret += $"{station.Code} => ";
             }
             return ret.Remove(ret.Length - 3);
         }
@@ -104,7 +120,7 @@ namespace dotNet5781_02__6382_0555
             return sum;
         }
 
-        public BusLine SubPath (int first, int last)
+        public BusLine SubPath(int first, int last)
         {
             int firstIndex = GetIndex(first);
             int lastIndex = GetIndex(last);
@@ -118,7 +134,7 @@ namespace dotNet5781_02__6382_0555
                 lastIndex = firstIndex - lastIndex;
                 firstIndex -= lastIndex;
             }
-            return new BusLine(path.GetRange(firstIndex, lastIndex - firstIndex + 1), 
+            return new BusLine(path.GetRange(firstIndex, lastIndex - firstIndex + 1),
                 this.LineNum, this.Area);
         }
         public bool Remove(int code)
@@ -163,19 +179,31 @@ namespace dotNet5781_02__6382_0555
         }
         public bool IsExists(int code)
         {
-            int index;
-            for (index = 0; this.path.Count != index && this.path[index].Code != code; index++) ;
-            return this.path.Count != index;
+            return this.path.Exists(p => p.Code == code);
+        }
+        public bool IsBefore(int first, int last)
+        {
+            if (!this.IsExists(first) || !this.IsExists(last))
+            {
+                throw new InvalidOperationException("At least one station is not in line");
+            }
+
+            if (this.GetIndex(first) >= this.GetIndex(last))
+            {
+                return false;
+            }
+            return true;
         }
         private int GetIndex(int code)
         {
             int index;
-            for (index = 0; index != this.path.Count && this.path[index].Code != index; index++) ;
+            for (index = 0; code != this.path.Count && this.path[index].Code != code; index++) ;
             if (index == this.path.Count)
             {
                 return -1;
             }
             return index;
         }
+
     }
 }

@@ -6,11 +6,11 @@ using System.Text;
 
 namespace dotNet5781_02__6382_0555
 {
-    class LineBusCollection:IEnumerable
+    class BusLineCollection:IEnumerable
     {
         private List<BusLine> lines;
 
-        public LineBusCollection()
+        public BusLineCollection()
         {
             this.lines = new List<BusLine>();
         }
@@ -29,11 +29,11 @@ namespace dotNet5781_02__6382_0555
         }
         public bool Remove(BusLine line)
         {
-            return this.Remove(line);
+            return this.lines.Remove(line);
         }
-        public List<BusLine> GetStationLines (BusStation station)
+        public List<BusLine> GetStationLines (int code)
         {
-            return new List<BusLine>(lines.Where(p=>p.IsExists(station.Code)));
+            return new List<BusLine>(lines.Where(line=>line.IsExists(code)));
         }
         public List<BusLine> GetSortedLines() 
         {
@@ -45,7 +45,7 @@ namespace dotNet5781_02__6382_0555
             return lines.GetEnumerator();
         }
 
-        public BusLine this[int lineNum] 
+        public BusLine[] this[int lineNum] 
         {
             get
             {
@@ -54,20 +54,23 @@ namespace dotNet5781_02__6382_0555
                 {
                     throw new IndexOutOfRangeException("Line is not exists");
                 }
-                return lines[0];
+                return lines;
             }
         }
-        public BusLine this[int lineNum, bool isFirst]
+        public BusLine this[int lineNum, int lineNumIndex]
         {
             get
             {
-                BusLine[] lines = this.lines.Where(p => p.LineNum == lineNum).ToArray();
-                if (lines.Length == 0)
+                if (lineNumIndex < 0 || lineNumIndex >= this[lineNum].Length)
                 {
-                    throw new IndexOutOfRangeException ("Line is not exists");
+                    throw new IndexOutOfRangeException("Line is not exists");
                 }
-                return isFirst?lines[0]:lines[1];
+                return this[lineNum][lineNumIndex];
             }
+        }
+        public bool IsExists (int number)
+        {
+            return this.lines.Exists(p => p.LineNum == number);
         }
     }
 }
