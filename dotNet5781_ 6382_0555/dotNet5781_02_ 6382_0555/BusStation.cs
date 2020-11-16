@@ -73,7 +73,9 @@ namespace dotNet5781_02__6382_0555
         /// 
         /// </summary>
         /// <returns>string that present the station data</returns>
-        public override string ToString() { return $"Bus Station Code: {code}, {location}"; }
+        public override string ToString() {
+            return $"Bus Station Code: {code:000000}, {location}"; 
+        }
 
     }
 }

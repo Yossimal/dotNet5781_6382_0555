@@ -28,7 +28,9 @@ namespace dotNet5781_02__6382_0555
         /// 
         /// </summary>
         /// <returns>A string that describbes the location</returns>
-        public override string ToString() { return $"{latitude}°N {longitude}°E"; }
+        public override string ToString() {
+            return $"{latitude:00.00000}°N {longitude:000.00000}°E"; 
+        }
         /// <summary>
         /// Random location in all earth
         /// </summary>

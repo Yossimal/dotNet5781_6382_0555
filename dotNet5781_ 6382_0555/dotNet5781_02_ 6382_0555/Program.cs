@@ -1,7 +1,9 @@
-﻿using System;
+﻿// Aharon Kremer 034706382 & Yosef Malka 208090555
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace dotNet5781_02__6382_0555
 {
@@ -11,17 +13,20 @@ namespace dotNet5781_02__6382_0555
     class Program
     {
         public static Random rand = new Random(DateTime.Now.Millisecond);
-
         private const ConsoleColor ChosenTextColor = ConsoleColor.Red;
         private const ConsoleColor ChosenTextBGC = ConsoleColor.Gray;
-        private const string StationsDataPath = @".\..\..\..\Stations.dat";
+        private static string stationsDataPath = @".\..\..\..\Stations.dat";
         /// <summary>
         /// The main method
         /// </summary>
-        /// <param name="args">cmd arguments [0] -> optional: path for the stations data file</param>
+        /// <param name="args">
+        /// cmd arguments 
+        /// [0] -> optional: path for the stations data file
+        /// </param>
         static void Main(string[] args)
         {
-            string[] stationsData = File.ReadAllLines(args.Length==0?StationsDataPath:args[0]);
+            stationsDataPath = args.Length >= 1 ? args[0] : stationsDataPath;
+            string[] stationsData = File.ReadAllLines(args.Length==0?stationsDataPath:args[0]);
             List<BusStation> stations = ReadData(stationsData);
             BusLineCollection lines = GenerateLines(stations);
             List<string> options = Actions.AllActions;
@@ -216,10 +221,12 @@ namespace dotNet5781_02__6382_0555
         {
             foreach (BusStation station in stations)
             {
-                Console.Write($"- { station.Code }:".PadRight(10));
+                Console.WriteLine($"{ station }:");
                 List<BusLine> lineToPrint = lines.GetStationLines(station.Code);
-                lineToPrint.ForEach(line => Console.Write($"{line.LineNum}, "));
-                Console.WriteLine();
+                Console.Write("lines:\t");
+                lineToPrint.ForEach(line => Console.Write($"{line.LineNum} "));
+                Console.WriteLine("\n");
+                
             }
         }
         /// <summary>
@@ -254,6 +261,7 @@ namespace dotNet5781_02__6382_0555
             List<BusStation> ret = new List<BusStation>();
             foreach (string str in arr)
             {
+                Thread.Sleep(1);
                 if (ret.Where(p => p.Code == int.Parse(str.Split(' ')[1])).Count() != 0)
                 {
                     throw new ArgumentException("The station code must be unique");
@@ -272,10 +280,10 @@ namespace dotNet5781_02__6382_0555
             BusLineCollection ret = new BusLineCollection();
             for (int i = 1; i <= 10; i++)
             {
-                BusLine line = new BusLine(i, Area.General);
+                BusLine line = new BusLine(i, GetRandomArea());
                 for (int j = 0; j < stations.Count; j++)
                 {
-                    if (j %  10== i || j % 10 == (i + 1))//each station will get the line of his mod with max lines and the next line
+                    if ((j %  10)+1== i || (j % 10)+1 == (i + 1))//each station will get the line of his mod with max lines and the next line
                     {
                         Random rand = new Random(DateTime.Now.Millisecond);
                         LineBusStation station = new LineBusStation(stations[j].Code,
@@ -381,6 +389,14 @@ namespace dotNet5781_02__6382_0555
             }
             return stationCode;
         }
+        /// <summary>
+        /// Get a random area
+        /// </summary>
+        /// <returns>The random area</returns>
+        private static Area GetRandomArea() {
+            Array values = typeof(Area).GetEnumValues();
+            return (Area)values.GetValue(rand.Next(values.Length - 1));
+        } 
 
     }
 }

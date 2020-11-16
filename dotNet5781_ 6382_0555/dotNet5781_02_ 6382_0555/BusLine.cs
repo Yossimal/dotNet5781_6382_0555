@@ -94,12 +94,15 @@ namespace dotNet5781_02__6382_0555
         public override string ToString()
         {
             string ret;
-            ret = $"{LineNum,-4}{Area}\t";
+            ret = $"Line Number: {LineNum}\t\tArea: {Area} \n\n";
+            for (int i = 0; i < path.Count; i++) {//we want to use the index so we using for loop instead of foreach loop
+                ret += $"{(i+1):00}. {path[i]} \n";
+            }
             foreach (LineBusStation station in path)
             {
-                ret += $"{station.Code} => ";
+             
             }
-            return ret.Remove(ret.Length - 3);
+            return ret;
         }
         /// <summary>
         /// Get the travel time between two stations in the line path
@@ -215,6 +218,11 @@ namespace dotNet5781_02__6382_0555
             if (GetIndex(station.Code)!=-1) {
                 throw new InvalidOperationException("Can't add the same stations twice");
             }
+            if (this.path.Count == 0)
+            {//If that staion is the first station so reset the time and distanse from the previos station
+                station.DistanceFromPre = 0;
+                station.TimeFromPre = new TimeSpan(0);
+            }
             this.path.Add(station);
 
         }
@@ -234,11 +242,14 @@ namespace dotNet5781_02__6382_0555
             if (GetIndex(station.Code) != -1) {
                 throw new InvalidOperationException("Can't add the same station twice");
             }
-            int index;
-            for (index = 0; this.path.Count != index && this.path[index].Code != code; index++) ;
+            int index=GetIndex(code);
             if (this.path.Count == index)
             {
                 throw new InvalidOperationException("The code must be of a station in path");
+            }
+            if (index == 0) {//If that staion is the first station so reset the time and distanse from the previos station
+                station.DistanceFromPre = 0;
+                station.TimeFromPre = new TimeSpan(0);
             }
             this.path.Insert(index, station);
             this.path[index + 1].DistanceFromPre = (float)Program.rand.Next(1, 300)/(float)Program.rand.Next(1,6);
@@ -279,14 +290,7 @@ namespace dotNet5781_02__6382_0555
         /// <returns>The index of the station in the path</returns>
         private int GetIndex(int code)
         {
-            int index;
-            for (index = 0; code != this.path.Count && this.path[index].Code != code; index++) ;
-            if (index == this.path.Count)
-            {
-                return -1;
-            }
-            return index;
+            return this.path.FindIndex(station => station.Code == code);
         }
-
     }
 }
