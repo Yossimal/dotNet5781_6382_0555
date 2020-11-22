@@ -7,7 +7,7 @@ namespace dotNet5781_02__6382_0555
     /// <summary>
     /// location in earth that described by latitude and longtude
     /// </summary>
-    class Location
+    public class Location
     {
         private double latitude;
         private double longitude;

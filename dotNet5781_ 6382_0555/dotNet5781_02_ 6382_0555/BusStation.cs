@@ -5,7 +5,7 @@ using System.Text;
 namespace dotNet5781_02__6382_0555
 {
 
-    class BusStation
+    public class BusStation
     {
 
         protected int code;
@@ -66,7 +66,7 @@ namespace dotNet5781_02__6382_0555
 
         public int Code { get => code; }
 
-        internal Location Location => location;
+        public Location Location => location;
 
         public string Address { get => address; }
         /// <summary>

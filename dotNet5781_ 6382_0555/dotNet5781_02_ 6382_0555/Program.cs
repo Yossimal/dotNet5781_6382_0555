@@ -10,7 +10,7 @@ namespace dotNet5781_02__6382_0555
     /// <summary>
     /// The client class
     /// </summary>
-    class Program
+    public class Program
     {
         public static Random rand = new Random(DateTime.Now.Millisecond);
         private const ConsoleColor ChosenTextColor = ConsoleColor.Red;
@@ -256,7 +256,7 @@ namespace dotNet5781_02__6382_0555
         /// </summary>
         /// <param name="arr">stations array that each argument contains a station in the format #address #code</param>
         /// <returns>A deserialized list from the array</returns>
-        private static List<BusStation> ReadData(string[] arr)
+        public static List<BusStation> ReadData(string[] arr)
         {
             List<BusStation> ret = new List<BusStation>();
             foreach (string str in arr)
@@ -393,7 +393,7 @@ namespace dotNet5781_02__6382_0555
         /// Get a random area
         /// </summary>
         /// <returns>The random area</returns>
-        private static Area GetRandomArea() {
+        public static Area GetRandomArea() {
             Array values = typeof(Area).GetEnumValues();
             return (Area)values.GetValue(rand.Next(values.Length - 1));
         } 

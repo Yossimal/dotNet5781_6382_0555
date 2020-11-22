@@ -9,7 +9,7 @@ namespace dotNet5781_02__6382_0555
     /// <summary>
     /// A collection of bus lines
     /// </summary>
-    class BusLineCollection:IEnumerable
+    public class BusLineCollection:IEnumerable
     {
         private List<BusLine> lines;
         /// <summary>

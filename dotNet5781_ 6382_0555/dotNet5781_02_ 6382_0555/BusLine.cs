@@ -7,7 +7,7 @@ using System.Text;
 
 namespace dotNet5781_02__6382_0555
 {
-    class BusLine : IComparable, IEnumerable
+    public class BusLine : IComparable, IEnumerable
     {
         private List<LineBusStation> path;
         private int lineNum;

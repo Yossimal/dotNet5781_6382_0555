@@ -4,7 +4,7 @@ using System.Text;
 
 namespace dotNet5781_02__6382_0555
 {
-    class LineBusStation : BusStation
+    public class LineBusStation : BusStation
     {
         private float distanceFromPre;
         private TimeSpan timeFromPre;
