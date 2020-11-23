@@ -45,7 +45,7 @@ namespace dotNet5781_02__6382_0555
         /// </summary>
         public BusStation Last { get => this.path.Count == 0 ? null : path[path.Count - 1]; }
         public int LineNum { get => lineNum; }
-        internal Area Area { get => area; set => area = value; }
+        public Area Area { get => area; set => area = value; }
         /// <summary>
         /// Comparing two lines according to the travel time
         /// </summary>

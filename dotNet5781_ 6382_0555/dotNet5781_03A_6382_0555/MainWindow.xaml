@@ -10,11 +10,11 @@
     <Grid x:Name="mainGreed">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="69*"/>
+            <RowDefinition Height="490*"/>
+            <RowDefinition Height="65*"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
-VerticalAlignment="Stretch" Width="auto">
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -22,12 +22,35 @@ VerticalAlignment="Stretch" Width="auto">
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <Label  Content="Bus line number:" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
-            <Label  Content="Area" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
-            <ComboBox Name="cbBusLines" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120"/>
-            <TextBox Grid.Column="3" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding Path=Area}" VerticalAlignment="Center" Width="120"/>
+            <Label  Content="Area:" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
+            <ComboBox Name="cbBusLines" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cbBusLines_SelectionChanged"/>
+            <TextBox Name="AreaTextBox"  Grid.Column="3" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding Path=Area}" VerticalAlignment="Center" Width="120"/>
 
         </Grid>
-        <ListBox Grid.Row="1" Name="lbBusLineStations" ItemsSource="{Binding}"/>
+        <ListBox Name="lbBusLineStations" Grid.Row="1" ItemsSource="{Binding}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Code: " />
+                        <TextBlock MinWidth="50" Text="{Binding Path=Code}" />
+                        <TextBlock Width="30"/>
+                        <TextBlock Text="Address: " />
+                        <TextBlock MinWidth="20" Text="{Binding Path=Address}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Name="ControlsGrid" Height="auto" Grid.Row="2" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Delete Station" Click="RemoveStation_Click" Name="RemoveStation"/>
+            <Button Grid.Column="1" Content="Add Station" Click="AddStation_Click" Name="AddStation"/>
+            
+        </Grid>
 
     </Grid>
 
