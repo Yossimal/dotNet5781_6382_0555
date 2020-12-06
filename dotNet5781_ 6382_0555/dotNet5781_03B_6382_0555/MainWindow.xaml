@@ -28,10 +28,15 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Path=Key}" Grid.Column="0"/>
                         <Button Content="Refuel" Click="Refuel_Click" Grid.Column="1"/>
                         <Button Content="Drive" Click="Drive_Click" Grid.Column="2"/>
+                        <ProgressBar Grid.Column="3" Name="ProgressBar"  Visibility="Hidden" Width="60" Height="20"  >
+
+
+                        </ProgressBar>
                     </Grid>
 
                 </DataTemplate>

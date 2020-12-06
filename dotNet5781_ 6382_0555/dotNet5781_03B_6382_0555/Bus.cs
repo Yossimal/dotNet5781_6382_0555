@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace dotNet5781_03B_6382_0555
 {
@@ -86,10 +84,15 @@ namespace dotNet5781_03B_6382_0555
         /// The date of the lst care of the bus
         /// </summary>
         public DateTime LastCareDate { get; private set; }
+
         /// <summary>
         /// refuling the bus
         /// </summary>
-        public void Refuel() { KmAfterRefueling = 0; }
+        public void Refuel()
+        {
+            KmAfterRefueling = 0;
+            this.TimeToReady=DateTime.Now+TimeToRefuel;
+        }
         /// <summary>
         /// Taking care of the bus
         /// </summary>
@@ -105,7 +108,7 @@ namespace dotNet5781_03B_6382_0555
         /// <returns>Can he drive that distance</returns>
         public bool CanDrive(int distance)
         {
-            return !IsDanger && distance < (MaxKmAfterRefueling - KmAfterRefueling);
+            return !IsDanger && distance < (MaxKmAfterRefueling - KmAfterRefueling)&&TimeToReady<DateTime.Now;
         }
         /// <summary>
         /// Driving a given distance
@@ -123,6 +126,8 @@ namespace dotNet5781_03B_6382_0555
             MileageAfterCare += distance;
             return true;
         }
+
+        public TimeSpan TimeToRefuel {get=>new TimeSpan(0,0,5); }
 
     }
 }
