@@ -7,18 +7,17 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
-    class RefuelBGWData
+    class DrivingBGWData
     {
-        public Bus Bus { get; set; }
+        public int Distance { get; set; }
         public Button Button { get; set; }
         public ProgressBar ProgressBar { get; set; }
         public TextBlock ProgressTextBlock { get; set; }
+        public Bus Bus { get; set; }
         public TimeSpan? RemainingTime { get; set; }
 
-        public RefuelBGWData()
+        public DrivingBGWData()
         {
         }
-
-       
     }
 }

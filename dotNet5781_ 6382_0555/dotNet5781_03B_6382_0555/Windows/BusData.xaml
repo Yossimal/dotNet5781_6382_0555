@@ -1,0 +1,50 @@
+﻿<Window x:Class="dotNet5781_03B_6382_0555.Windows.BusData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotNet5781_03B_6382_0555.Windows"
+        mc:Ignorable="d"
+        Title="BusData" Height="450" Width="800">
+    <Grid Margin="0,0,2,0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0">License number:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">Last care date:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Next care date:</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0">Fuel state:</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0">Availability state:</TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0">Time to ready</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="0">Start working date:</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="0">KM before the next care:</TextBlock>
+
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Name="LicenseNumberTextBlock"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Name="LastCareDateTextBlock"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" Name="NextCareDateTextBlock"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" Name="FuelStatusTextBlock"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="1" Name="AvailabilityStateTextBlock"></TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="1" Name="TimeToReadyTextBlock"></TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="1" Name="StartWorkingDateTextBlock"></TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="1" Name="KMToCareTextBlock"></TextBlock>
+
+
+
+        <Button Grid.Column="0" Grid.Row="8" Content="Send to refuel" Click="SendToRefuel"/>
+        <Button Grid.Row="8" Grid.Column="1" Content="Send to care" Click="SendToCare"/>
+    </Grid>
+</Window>

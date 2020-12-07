@@ -7,18 +7,15 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
-    class RefuelBGWData
+    public class RefuelEventArgs:EventArgs
     {
         public Bus Bus { get; set; }
-        public Button Button { get; set; }
-        public ProgressBar ProgressBar { get; set; }
-        public TextBlock ProgressTextBlock { get; set; }
-        public TimeSpan? RemainingTime { get; set; }
+        public Control ItemControl { get; set; }
 
-        public RefuelBGWData()
+        public RefuelEventArgs(Bus bus,Control itemControl)
         {
+            this.Bus = bus;
+            this.ItemControl = itemControl;
         }
-
-       
     }
 }

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Maps.MapControl.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Maps.MapControl.WPF.1.0.0.3\lib\net40-Client\Microsoft.Maps.MapControl.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,15 +58,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AddBus.xaml">
+    <Compile Include="EventsObjects\CareBGWData.cs" />
+    <Compile Include="EventsObjects\CareEventArgs.cs" />
+    <Compile Include="EventsObjects\RefuelEventArgs.cs" />
+    <Compile Include="Windows\BusData.xaml.cs">
+      <DependentUpon>BusData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DriveOptions.xaml.cs">
+      <DependentUpon>DriveOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventsObjects\DoDriveEventArgs.cs" />
+    <Compile Include="EventsObjects\DrivingBGWData.cs" />
+    <Compile Include="ObservableDictionary\ObservableDictionary.cs" />
+    <Compile Include="ObservableDictionary\ObservableSortedDictionary.cs" />
+    <Compile Include="Tools.cs" />
+    <Page Include="Windows\AddBus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\BusData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DriveOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddBus.xaml.cs">
+    <Compile Include="Windows\AddBus.xaml.cs">
       <DependentUpon>AddBus.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventsObjects\AddBusEventArgs.cs" />
@@ -74,7 +99,7 @@
     <Compile Include="Bus.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EventsObjects\RefuelBGWData.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +122,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -105,6 +131,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,11 +2,8 @@
 
 namespace dotNet5781_03B_6382_0555
 {
-    enum status { }
     public class Bus
     {
-
-
         /// <summary>
         /// Building bus from license nuber and date
         /// </summary>
@@ -21,6 +18,7 @@ namespace dotNet5781_03B_6382_0555
             LastCareDate = DateTime.Now;
             MileageCounter = mileage;
             TimeToReady = null;
+            this.Status = Status.Ready;
         }
         /// <summary>
         /// Copy constructor
@@ -53,11 +51,11 @@ namespace dotNet5781_03B_6382_0555
             get
             {
                 DateTime zeroTime = new DateTime(1, 1, 1);
+                
+                TimeSpan span = DateTime.Now-LastCareDate;
 
-                TimeSpan span = DateTime.Now-LastCareDate; 
-
-                int yearsAfterCare = (zeroTime + span).Year - 1;
-                return MileageAfterCare > MaxKmBeforeCare && yearsAfterCare >= 1;
+                int careCheckData = (int)(span.TotalDays - 366);
+                return MileageAfterCare > MaxKmBeforeCare || careCheckData > 0;
             }
         }
         /// <summary>
@@ -91,7 +89,8 @@ namespace dotNet5781_03B_6382_0555
         public void Refuel()
         {
             KmAfterRefueling = 0;
-            this.TimeToReady=DateTime.Now+TimeToRefuel;
+            this.Status = Status.Refuel;
+            this.TimeToReady=DateTime.Now+Tools.SimulationTime(TimeToRefuel);
         }
         /// <summary>
         /// Taking care of the bus
@@ -99,6 +98,8 @@ namespace dotNet5781_03B_6382_0555
         public void TakeCare()
         {
             MileageAfterCare = 0;
+            this.Status = Status.InCare;
+            this.TimeToReady = DateTime.Now + Tools.SimulationTime(this.TimeToCare);
             LastCareDate = DateTime.Now;
         }
         /// <summary>
@@ -108,7 +109,7 @@ namespace dotNet5781_03B_6382_0555
         /// <returns>Can he drive that distance</returns>
         public bool CanDrive(int distance)
         {
-            return !IsDanger && distance < (MaxKmAfterRefueling - KmAfterRefueling)&&TimeToReady<DateTime.Now;
+            return !IsDanger&&MileageAfterCare+distance<MaxKmBeforeCare && distance < (MaxKmAfterRefueling - KmAfterRefueling)&&this.Status==Status.Ready;
         }
         /// <summary>
         /// Driving a given distance
@@ -121,13 +122,44 @@ namespace dotNet5781_03B_6382_0555
             {
                 return false;
             }
+
+            this.Status = Status.Drive;
+            int speed = Tools.RandomInt(20, 50);
+            TimeSpan drivingTime=TimeSpan.FromHours((double)distance/(double)speed);
+            TimeToReady=DateTime.Now+Tools.SimulationTime(drivingTime);
             KmAfterRefueling += distance;
             MileageCounter += distance;
             MileageAfterCare += distance;
             return true;
         }
 
-        public TimeSpan TimeToRefuel {get=>new TimeSpan(0,0,5); }
+        public TimeSpan TimeToRefuel {get=>new TimeSpan(2,0,0); }
+        public Status Status { get; set; }
+        public TimeSpan TimeToCare {get=>new TimeSpan(1,0,0,0); }
+        public static string FormatLicense(int license)
+        {
+            string asString = license.ToString();
+            if (asString.Length == 8)
+            {
+                return asString.Substring(0, 3) + '-' + asString.Substring(3, 2) + '-' + asString.Substring(5);
+            }
+            return asString.Substring(0, 2) + '-' + asString.Substring(2, 3) + '-' + asString.Substring(5);
+        }
 
+        public static Bus[] InitializeBuses()
+        {
+            Bus[] ret=new Bus[10];
+            ret[0]=new Bus(Tools.RandomInt(10000000, 10000050),new DateTime(2020,Tools.RandomInt(1,5),Tools.RandomInt(1,15)),MaxKmBeforeCare-1);
+            ret[0].MileageAfterCare = MaxKmBeforeCare - 1;
+            ret[1] = new Bus(Tools.RandomInt(10000051, 10000100), new DateTime(2018, Tools.RandomInt(1, 5), Tools.RandomInt(1, 15)), MaxKmBeforeCare-1000);
+            ret[1].LastCareDate = new DateTime(2018, Tools.RandomInt(6, 8), Tools.RandomInt(15, 25));
+            ret[2] = new Bus(Tools.RandomInt(10000101, 10000150), new DateTime(Tools.RandomInt(2018,2020), Tools.RandomInt(1, 5), Tools.RandomInt(1, 15)), MaxKmBeforeCare - 2000);
+            ret[2].KmAfterRefueling = MaxKmAfterRefueling - 1;
+            for (int i = 3; i < ret.Length; i++)
+            {
+                ret[i] = new Bus(Tools.RandomInt(10000000*(i-1), 10000000*i), new DateTime(Tools.RandomInt(2018, 2020), Tools.RandomInt(1, 5), Tools.RandomInt(1, 15)), MaxKmBeforeCare - Tools.RandomInt(0,MaxKmBeforeCare));
+            }
+            return ret;
+        }
     }
 }
