@@ -32,7 +32,7 @@ namespace dotNet5781_03B_6382_0555.Windows
         public BusData(Control selectedItem)
         {
             InitializeComponent();
-            this.busToPresent = ((KeyValuePair<int, Bus>)selectedItem.DataContext).Value;
+            this.busToPresent = ((KeyValuePair<int, VisualBus>)selectedItem.DataContext).Value;
             this.itemControl = selectedItem;
             InitializeBusData();
         }
@@ -66,7 +66,7 @@ namespace dotNet5781_03B_6382_0555.Windows
             }
 
             this.KMToCareTextBlock.Text = (Bus.MaxKmBeforeCare - busToPresent.MileageAfterCare).ToString();
-
+            this.DrivingTimeTodayTextBlock.Text = Tools.FormatTimeSpan(busToPresent.DrivingTimeToday);
 
         }
 

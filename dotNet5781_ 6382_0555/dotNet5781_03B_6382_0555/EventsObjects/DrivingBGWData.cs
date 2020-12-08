@@ -15,7 +15,8 @@ namespace dotNet5781_03B_6382_0555.EventsObjects
         public TextBlock ProgressTextBlock { get; set; }
         public Bus Bus { get; set; }
         public TimeSpan? RemainingTime { get; set; }
-
+        public Image NoFuelImage { get; set; }
+        public Image NeedToSleepImage { get; set; }
         public DrivingBGWData()
         {
         }

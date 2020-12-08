@@ -33,13 +33,18 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Path=Key}" Grid.Column="0"/>
                         <Button Content="Refuel" Name="RefuelButton"  Click="Refuel_Click" Grid.Column="1"/>
                         <Button Content="Drive"   Click="Drive_Click" Grid.Column="2"/>
                         <ProgressBar Grid.Column="3" Name="ProgressBar"  Visibility="Hidden" Width="100" Height="20"  />
                         <TextBlock Grid.Column="3" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Name="ProgressText">00:00:00</TextBlock>
-
+                        <Image Grid.Column="4" Visibility="{Binding Path=Value.NoFuelIconVisibility}" Name="NoFuelImage"  Width="50" Height="50"  Source="../Images/NoFuel.png"/>
+                        <Image Grid.Column="5" Visibility="{Binding Path=Value.NeedRepairIconVisibility}" Name="NeedCareImage"  MaxWidth="50" MaxHeight="50"  Source="../Images/NeedRepair.jpg"/>
+                        <Image Grid.Column="6" Visibility="{Binding Path=Value.NeedToSleepVisibility}" Name="NeedToSleepImage"  MaxWidth="50" MaxHeight="50"  Source="../Images/NeedToSleep.png"/>
 
 
                     </Grid>

@@ -17,9 +17,9 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -31,6 +31,8 @@
         <TextBlock Grid.Row="5" Grid.Column="0">Time to ready</TextBlock>
         <TextBlock Grid.Row="6" Grid.Column="0">Start working date:</TextBlock>
         <TextBlock Grid.Row="7" Grid.Column="0">KM before the next care:</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="0">Driving time today:</TextBlock>
+
 
 
         <TextBlock Grid.Row="0" Grid.Column="1" Name="LicenseNumberTextBlock"></TextBlock>
@@ -41,10 +43,11 @@
         <TextBlock Grid.Row="5" Grid.Column="1" Name="TimeToReadyTextBlock"></TextBlock>
         <TextBlock Grid.Row="6" Grid.Column="1" Name="StartWorkingDateTextBlock"></TextBlock>
         <TextBlock Grid.Row="7" Grid.Column="1" Name="KMToCareTextBlock"></TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="1" Name="DrivingTimeTodayTextBlock"></TextBlock>
 
 
 
-        <Button Grid.Column="0" Grid.Row="8" Content="Send to refuel" Click="SendToRefuel"/>
-        <Button Grid.Row="8" Grid.Column="1" Content="Send to care" Click="SendToCare"/>
+        <Button Grid.Column="0" Grid.Row="9" Content="Send to refuel" Click="SendToRefuel"/>
+        <Button Grid.Row="9" Grid.Column="1" Content="Send to care" Click="SendToCare"/>
     </Grid>
 </Window>

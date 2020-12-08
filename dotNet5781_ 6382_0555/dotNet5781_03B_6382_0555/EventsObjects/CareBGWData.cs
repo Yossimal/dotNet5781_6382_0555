@@ -13,7 +13,7 @@ namespace dotNet5781_03B_6382_0555.EventsObjects
         public Bus Bus { get; set; }
         public TimeSpan? RemainingTime { get; set; }
         public TextBlock ProgressTextBlock { get; set; }
-
+        public Image NeedCareImage { get; set; }
         public CareBGWData()
         {
         }

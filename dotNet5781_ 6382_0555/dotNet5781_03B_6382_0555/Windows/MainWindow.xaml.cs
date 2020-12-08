@@ -16,7 +16,7 @@ namespace dotNet5781_03B_6382_0555
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableDictionary<int, Bus> buses = new ObservableDictionary<int, Bus>();
+        ObservableDictionary<int, VisualBus> buses = new ObservableDictionary<int, VisualBus>();
         private Brush buttonDefaultColorBrush;
         public MainWindow()
         {
@@ -24,8 +24,8 @@ namespace dotNet5781_03B_6382_0555
             BusesListBox.DataContext = buses;
             foreach (Bus initializedBus in Bus.InitializeBuses())
             {
-                buses[initializedBus.LicenseNumber] = initializedBus;
-                
+                buses[initializedBus.LicenseNumber] = new VisualBus(initializedBus);
+
             }
         }
 
@@ -39,14 +39,14 @@ namespace dotNet5781_03B_6382_0555
         private void AddBus_PressedAdd(object sender, AddBusEventArgs e)
         {
             if (e.Bus == null) { return; }
-            Bus toAdd = new Bus(e.Bus);
+            VisualBus toAdd = new VisualBus(e.Bus);
             if (buses.ContainsKey(toAdd.LicenseNumber))
             {
                 MessageBoxResult result;
                 result = MessageBox.Show("Bus is already exists!\nDo you want to replace it?", "Caution", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    buses[toAdd.LicenseNumber] = toAdd;
+                    buses[toAdd.LicenseNumber] = new VisualBus(toAdd);
                 }
             }
             else
@@ -65,7 +65,7 @@ namespace dotNet5781_03B_6382_0555
 
         private void SetRefuel(Button busButton)
         {
-            KeyValuePair<int, Bus> buttonBusPair = (KeyValuePair<int, Bus>)busButton.DataContext;
+            KeyValuePair<int, VisualBus> buttonBusPair = (KeyValuePair<int, VisualBus>)busButton.DataContext;
             Bus currentBus = buttonBusPair.Value;
             if (currentBus.TimeToReady != null)
             {
@@ -84,6 +84,8 @@ namespace dotNet5781_03B_6382_0555
             DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
             ProgressBar busProgressBar = (ProgressBar)myDataTemplate.FindName("ProgressBar", myContentPresenter);
             TextBlock busProgressBarTextBlock = (TextBlock)myDataTemplate.FindName("ProgressText", myContentPresenter);
+            Image needToRefuelImage = (Image)myDataTemplate.FindName("NoFuelImage", myContentPresenter);
+            bgwData.NoFuelImage = needToRefuelImage;
             busProgressBar.Visibility = Visibility.Visible;
             busProgressBarTextBlock.Visibility = Visibility.Visible;
             if (buttonDefaultColorBrush == null)
@@ -117,6 +119,7 @@ namespace dotNet5781_03B_6382_0555
                 return;
             }
 
+            data.NoFuelImage.Visibility = (data.Bus as VisualBus).NoFuelIconVisibility;
             data.Bus.Status = Status.Ready;
             data.Bus.TimeToReady = null;
             data.Button.Background = buttonDefaultColorBrush;
@@ -158,14 +161,14 @@ namespace dotNet5781_03B_6382_0555
         {
             Button driveButton = sender as Button;
             DriveOptions driveOptions = new DriveOptions(driveButton);
-            driveOptions.PressedEnter += new EventHandler<DoDriveEventArgs>(HandleDriveEvent);
+            driveOptions.PressedEnter += HandleDriveEvent;
             driveOptions.Show();
         }
 
         private void HandleDriveEvent(object sender, DoDriveEventArgs e)
         {
             Button busButton = e.ClickedButton;
-            Bus busToDrive = ((KeyValuePair<int, Bus>)busButton.DataContext).Value;
+            Bus busToDrive = ((KeyValuePair<int, VisualBus>)busButton.DataContext).Value;
             BackgroundWorker driveBGW = new BackgroundWorker();
             if (busToDrive.TimeToReady != null)
             {
@@ -184,6 +187,10 @@ namespace dotNet5781_03B_6382_0555
             DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
             ProgressBar busProgressBar = (ProgressBar)myDataTemplate.FindName("ProgressBar", myContentPresenter);
             TextBlock busProgressBarTextBlock = (TextBlock)myDataTemplate.FindName("ProgressText", myContentPresenter);
+            Image needToRefuelImage = (Image)myDataTemplate.FindName("NoFuelImage", myContentPresenter);
+            Image needToSleepImage = (Image) myDataTemplate.FindName("NeedToSleepImage", myContentPresenter);
+            bgwData.NeedToSleepImage = needToSleepImage;
+            bgwData.NoFuelImage = needToRefuelImage;
             busProgressBar.Visibility = Visibility.Visible;
             busProgressBarTextBlock.Visibility = Visibility.Visible;
             if (buttonDefaultColorBrush == null)
@@ -202,11 +209,11 @@ namespace dotNet5781_03B_6382_0555
             bgwData.Distance = distanceToDrive;
             bgwData.Bus = busToDrive;
             BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.RunWorkerAsync(argument: bgwData);
             backgroundWorker.ProgressChanged += OnDriving;
             backgroundWorker.RunWorkerCompleted += FinishDriving;
             backgroundWorker.DoWork += TrackDriving;
             backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.RunWorkerAsync(argument: bgwData);
         }
 
         private void OnDriving(object sender, ProgressChangedEventArgs e)
@@ -225,38 +232,58 @@ namespace dotNet5781_03B_6382_0555
         private void TrackDriving(object sender, DoWorkEventArgs e)
         {
 
-            DrivingBGWData dataToTrack = (DrivingBGWData)e.Argument;
-            if (!dataToTrack.Bus.CanDrive(dataToTrack.Distance))
-            {
-                MessageBox.Show("The bus is not ready to drive.\n check if the bus need a care or need to be refueled.",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                DrivingBGWData dataToTrack = (DrivingBGWData) e.Argument;
+                if (!dataToTrack.Bus.CanDriveToday)
+                {
+                    MessageBox.Show("The driver need to rest today.", "Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
+                if (!dataToTrack.Bus.CanDrive(dataToTrack.Distance))
+                {
+                    MessageBox.Show(
+                        "Can't drive!\nThis error can be due to one of those situations:\n-The bus need to refuel.\n-The bus need a care.\n-The bus driver cant drive that amount of time today. ",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    e.Result = dataToTrack;
+                    return;
+                }
+
+                dataToTrack.Bus.Drive(dataToTrack.Distance);
+
+                BackgroundWorker worker = (BackgroundWorker) sender;
+                DateTime startTime = DateTime.Now;
+                TimeSpan? allTime = dataToTrack.Bus.TimeToReady - startTime;
+                while (DateTime.Now < dataToTrack.Bus.TimeToReady && dataToTrack.Bus.TimeToReady != null)
+                {
+                    Thread.Sleep(1000);
+                    dataToTrack.RemainingTime = dataToTrack.Bus.TimeToReady - DateTime.Now;
+                    int percent = (int) ((dataToTrack.RemainingTime.Value.TotalSeconds / allTime.Value.TotalSeconds) *
+                                         100);
+                    worker.ReportProgress(100 - percent, dataToTrack);
+                    e.Result = dataToTrack;
+                   
+                }
                 e.Result = dataToTrack;
-                return;
-            }
-            dataToTrack.Bus.Drive(dataToTrack.Distance);
 
-            BackgroundWorker worker = (BackgroundWorker)sender;
-            DateTime startTime = DateTime.Now;
-            TimeSpan? allTime = dataToTrack.Bus.TimeToReady - startTime;
-            while (DateTime.Now < dataToTrack.Bus.TimeToReady && dataToTrack.Bus.TimeToReady != null)
-            {
-                Thread.Sleep(1000);
-                dataToTrack.RemainingTime = dataToTrack.Bus.TimeToReady - DateTime.Now;
-                int percent = (int)((dataToTrack.RemainingTime.Value.TotalSeconds / allTime.Value.TotalSeconds) * 100);
-                worker.ReportProgress(100 - percent, dataToTrack);
-            }
 
-            e.Result = dataToTrack;
         }
 
         private void FinishDriving(object sender, RunWorkerCompletedEventArgs e)
         {
-            DrivingBGWData data = (DrivingBGWData)e.Result;
-            if (data == null)
+            if (e.Error != null)
             {
+                MessageBox.Show(e.Error.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            if (e.Cancelled)
+            {
+                MessageBox.Show("Canceled");
+                return;
+            }
+            DrivingBGWData data = (DrivingBGWData)e.Result;
+            data.NeedToSleepImage.Visibility = (data.Bus as VisualBus).NeedToSleepVisibility;
+            data.NoFuelImage.Visibility = (data.Bus as VisualBus).NoFuelIconVisibility;
             data.Bus.Status = Status.Ready;
             data.Bus.TimeToReady = null;
             data.Button.Background = buttonDefaultColorBrush;
@@ -291,7 +318,7 @@ namespace dotNet5781_03B_6382_0555
                 MessageBox.Show("The bus is not available yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
+
             HandleGraphicCaring(e.ItemControl, bgwData);
             HandleLogicCaring(currentBus, bgwData);
         }
@@ -303,6 +330,8 @@ namespace dotNet5781_03B_6382_0555
             DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
             ProgressBar busProgressBar = (ProgressBar)myDataTemplate.FindName("ProgressBar", myContentPresenter);
             TextBlock busProgressBarTextBlock = (TextBlock)myDataTemplate.FindName("ProgressText", myContentPresenter);
+            Image needCareImage = (Image)myDataTemplate.FindName("NeedCareImage", myContentPresenter);
+            bgwData.NeedCareImage = needCareImage;
             busProgressBar.Visibility = Visibility.Visible;
             busProgressBarTextBlock.Visibility = Visibility.Visible;
             bgwData.ProgressBar = busProgressBar;
@@ -329,6 +358,7 @@ namespace dotNet5781_03B_6382_0555
                 return;
             }
 
+            data.NeedCareImage.Visibility = (data.Bus as VisualBus).NeedRepairIconVisibility;
             data.Bus.Status = Status.Ready;
             data.Bus.TimeToReady = null;
             data.ProgressBar.Visibility = Visibility.Hidden;

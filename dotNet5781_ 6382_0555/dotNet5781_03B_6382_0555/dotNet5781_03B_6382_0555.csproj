@@ -61,6 +61,7 @@
     <Compile Include="EventsObjects\CareBGWData.cs" />
     <Compile Include="EventsObjects\CareEventArgs.cs" />
     <Compile Include="EventsObjects\RefuelEventArgs.cs" />
+    <Compile Include="VisualBus.cs" />
     <Compile Include="Windows\BusData.xaml.cs">
       <DependentUpon>BusData.xaml</DependentUpon>
     </Compile>
@@ -133,6 +134,15 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NoFuel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NeedRepair.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NeedToSleep.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

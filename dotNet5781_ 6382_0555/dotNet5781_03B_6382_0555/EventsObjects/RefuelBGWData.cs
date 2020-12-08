@@ -14,6 +14,7 @@ namespace dotNet5781_03B_6382_0555.EventsObjects
         public ProgressBar ProgressBar { get; set; }
         public TextBlock ProgressTextBlock { get; set; }
         public TimeSpan? RemainingTime { get; set; }
+        public  Image NoFuelImage { get; set; }
 
         public RefuelBGWData()
         {
