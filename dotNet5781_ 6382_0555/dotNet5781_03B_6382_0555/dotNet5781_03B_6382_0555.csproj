@@ -62,6 +62,7 @@
     <Compile Include="EventsObjects\CareEventArgs.cs" />
     <Compile Include="EventsObjects\RefuelEventArgs.cs" />
     <Compile Include="VisualBus.cs" />
+    <Compile Include="VisualTools.cs" />
     <Compile Include="Windows\BusData.xaml.cs">
       <DependentUpon>BusData.xaml</DependentUpon>
     </Compile>
