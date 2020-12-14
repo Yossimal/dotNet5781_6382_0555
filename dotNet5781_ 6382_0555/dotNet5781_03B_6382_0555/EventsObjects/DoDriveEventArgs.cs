@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
+    /// <summary>
+    /// Object for handling the Drive event
+    /// </summary>
     public class DoDriveEventArgs:EventArgs
     {
         public int Distance { get; set; }

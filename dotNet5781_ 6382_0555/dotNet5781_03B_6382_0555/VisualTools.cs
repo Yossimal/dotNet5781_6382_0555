@@ -6,9 +6,7 @@ namespace ToolsWPF
 {
     /// <summary>
     /// Class for working with listboxes.
-    ///
-    /// Written buy Yosef Malka
-    /// yosef.malka@gmail.com
+
     /// </summary>
     public static class VisualTools
     {

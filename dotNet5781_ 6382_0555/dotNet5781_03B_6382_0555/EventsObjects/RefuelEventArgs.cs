@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
+    /// <summary>
+    /// Object for handling an Refuel event 
+    /// </summary>
     public class RefuelEventArgs:EventArgs
     {
         public Bus Bus { get; set; }

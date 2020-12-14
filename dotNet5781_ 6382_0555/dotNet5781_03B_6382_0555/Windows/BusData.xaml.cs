@@ -1,21 +1,10 @@
-﻿using System;
+﻿using dotNet5781_03B_6382_0555.EventsObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using dotNet5781_03B_6382_0555.EventsObjects;
 
 namespace dotNet5781_03B_6382_0555.Windows
 {
@@ -24,9 +13,21 @@ namespace dotNet5781_03B_6382_0555.Windows
     /// </summary>
     public partial class BusData : Window
     {
+        /// <summary>
+        /// the bus that we need to present
+        /// </summary>
         private Bus busToPresent;
+        /// <summary>
+        /// A control that holds that bus in the main-window
+        /// </summary>
         private Control itemControl;
+        /// <summary>
+        /// Occur when the user pressing the refuel button
+        /// </summary>
         public event EventHandler<RefuelEventArgs> PressRefuel;
+        /// <summary>
+        /// Occur when the user pressing the care button
+        /// </summary>
         public event EventHandler<CareEventArgs> PressCare;
 
         public BusData(Control selectedItem)
@@ -36,7 +37,9 @@ namespace dotNet5781_03B_6382_0555.Windows
             this.itemControl = selectedItem;
             InitializeBusData();
         }
-
+        /// <summary>
+        /// Set all the data textboxes
+        /// </summary>
         private void InitializeBusData()
         {
             AvailabilityStateTextBlock.Text = busToPresent.Status.ToString();
@@ -69,7 +72,9 @@ namespace dotNet5781_03B_6382_0555.Windows
             this.DrivingTimeTodayTextBlock.Text = Tools.FormatTimeSpan(busToPresent.DrivingTimeToday);
 
         }
-
+        /// <summary>
+        /// Set the time-left timer BGW (count the time and call ReportProcess
+        /// </summary>
         private void RunningTimer(object sender, DoWorkEventArgs e)
         {
             Bus bus = (Bus)e.Argument;
@@ -91,22 +96,32 @@ namespace dotNet5781_03B_6382_0555.Windows
 
             e.Result = bus;
         }
-
+        /// <summary>
+        /// Set the timeToReady textbox 
+        /// </summary>
         private void TimerTick(object sender, ProgressChangedEventArgs e)
         {
             this.TimeToReadyTextBlock.Text = Tools.FormatTimeSpan(Tools.RealFromSimulationTime((TimeSpan)e.UserState));
         }
-
+        /// <summary>
+        /// Occur when the timeToReady timer has finished
+        /// </summary>
         private void TimerFinished(object sender, RunWorkerCompletedEventArgs e)
         {
             this.TimeToReadyTextBlock.Text = "The bus is ready to drive";
         }
-
+        /// <summary>
+        /// Send the bus to refuel (launch event)
+        /// </summary>
         private void SendToRefuel(object sender, RoutedEventArgs e)
         {
             PressRefuel(this, new RefuelEventArgs(busToPresent, itemControl));
         }
-
+        /// <summary>
+        /// Send the bus to a care (launch event)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SendToCare(object sender, RoutedEventArgs e)
         {
             PressCare(this, new CareEventArgs(busToPresent, itemControl));

@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using dotNet5781_03B_6382_0555.EventsObjects;
+using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using dotNet5781_03B_6382_0555.EventsObjects;
-using Microsoft.Maps.MapControl.WPF;
 
 namespace dotNet5781_03B_6382_0555
 {
@@ -22,7 +12,13 @@ namespace dotNet5781_03B_6382_0555
     /// </summary>
     public partial class DriveOptions : Window
     {
+        /// <summary>
+        /// Occur when the user presses the Enter key
+        /// </summary>
         public event EventHandler<DoDriveEventArgs> PressedEnter;
+        /// <summary>
+        /// The button that open that window (the drive button)
+        /// </summary>
         private Button senderButton;
         public DriveOptions(Button sender)
         {
@@ -32,7 +28,9 @@ namespace dotNet5781_03B_6382_0555
 
 
         }
-
+        /// <summary>
+        /// When the user presses Enter
+        /// </summary>
         private void CallPressedEnter(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -49,7 +47,9 @@ namespace dotNet5781_03B_6382_0555
                 }
             }
         }
-
+        /// <summary>
+        /// Prevent the user to insert an non-digits characters
+        /// </summary>
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");

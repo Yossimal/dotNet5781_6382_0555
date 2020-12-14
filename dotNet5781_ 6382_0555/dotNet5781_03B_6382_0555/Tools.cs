@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Maps.MapControl.WPF;
 
 namespace dotNet5781_03B_6382_0555
 {
     class Tools
     {
+        /// <summary>
+        /// random for the random methods
+        /// </summary>
         private static readonly Random Rand = new Random(DateTime.Now.Millisecond);
+        #region old
         public static ListBoxItem GetItemInList(Control control, ListBox list)
         {
             object context = control.DataContext;
@@ -44,44 +43,46 @@ namespace dotNet5781_03B_6382_0555
             }
             return null;
         }
-
+#endregion
+        /// <summary>
+        /// Working as random.Next in [min,max]
+        /// </summary>
+        /// <param name="min">The minimum number</param>
+        /// <param name="max">The maximum number</param>
+        /// <returns></returns>
         public static int RandomInt(int min, int max)
         {
             return Rand.Next(min, max + 1);
         }
-
+        /// <summary>
+        /// Get formatted string for time span
+        /// </summary>
+        /// <param name="ts">The time span to format</param>
+        /// <returns>0:0:0 format string</returns>
         public static string FormatTimeSpan(TimeSpan ts)
         {
             return $"{ts.Hours}:{ts.Minutes}:{ts.Seconds}";
         }
-
+        /// <summary>
+        /// Get simulation time from real time
+        /// </summary>
+        /// <param name="ts">The real time</param>
+        /// <returns>The simulated time</returns>
         public static TimeSpan SimulationTime(TimeSpan ts)
         {
             double simulationSeconds = ts.TotalSeconds * (0.1/60f);
             return TimeSpan.FromSeconds(simulationSeconds);
         }
-
+        /// <summary>
+        /// Get real time from simulated time
+        /// </summary>
+        /// <param name="ts">the simulated time</param>
+        /// <returns></returns>
         public static TimeSpan RealFromSimulationTime(TimeSpan ts)
         {
             double realSeconds = ts.TotalSeconds / (0.1/60f);
             return TimeSpan.FromSeconds(realSeconds);
         }
-
-        //public static Location GetRandomLocation(double minLat, double maxLat, double minLong, double maxLong)
-        //{
-        //    Random rand = new Random(DateTime.Now.Millisecond);
-        //    if (minLat < -90 || minLong < -180 || maxLat > 90 || maxLong > 180)
-        //    {
-        //        throw new InvalidOperationException("One of the parameters is out of range");
-        //    }
-        //    double latitude = rand.NextDouble() * (maxLat - minLat) + minLat;
-        //    double longitude = rand.NextDouble() * (maxLong - minLong) + minLong;
-        //    return new Location(latitude, longitude);
-        //}
-        //public static Location GetRandomLocation()
-        //{
-        //    return GetRandomLocation(31, 33.3, 34.3, 35.5);
-        //}
     }
 
 }

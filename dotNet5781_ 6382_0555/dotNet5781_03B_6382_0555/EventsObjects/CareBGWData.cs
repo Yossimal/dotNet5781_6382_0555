@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
+    /// <summary>
+    /// The data to sent to the BackgrounWorker for care
+    /// </summary>
     class CareBGWData
     {
         public ProgressBar ProgressBar { get; set; }

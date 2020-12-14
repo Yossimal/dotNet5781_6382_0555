@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace dotNet5781_03B_6382_0555.EventsObjects
 {
+    /// <summary>
+    /// Object for handling the Care event in the BusData window
+    /// </summary>
     public class CareEventArgs:EventArgs
     {
         public Bus Bus { get; set; }

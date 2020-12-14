@@ -4,6 +4,9 @@ namespace dotNet5781_03B_6382_0555
 {
     public class Bus
     {
+        /// <summary>
+        /// The last day that the bus has drived
+        /// </summary>
         private DateTime lastDrive;
 
         /// <summary>
@@ -40,7 +43,9 @@ namespace dotNet5781_03B_6382_0555
             DrivingTimeToday = toCopy.DrivingTimeToday;
             lastDrive = toCopy.lastDrive;
         }
-
+        /// <summary>
+        /// the time for the bus to be ready from the last process
+        /// </summary>
         public DateTime? TimeToReady { get; set; }
         /// <summary>
         /// The Maximum km that the bus can drive before another care
@@ -89,10 +94,21 @@ namespace dotNet5781_03B_6382_0555
         /// The date of the lst care of the bus
         /// </summary>
         public DateTime LastCareDate { get; private set; }
+        /// <summary>
+        /// The max time that driver can drive in a day
+        /// </summary>
         public static TimeSpan MaxDriveTimeInDay { get => new TimeSpan(0, 12, 0, 0); }
+        /// <summary>
+        /// The amount of time that the driver has drives today
+        /// </summary>
         public TimeSpan DrivingTimeToday { get; set; }
+        /// <summary>
+        /// The average bus speed
+        /// </summary>
         public static double AverageBusSpeed => 35;
-
+        /// <summary>
+        /// Can the bus drive today?
+        /// </summary>
         public bool CanDriveToday
         {
             get
@@ -161,10 +177,23 @@ namespace dotNet5781_03B_6382_0555
             MileageAfterCare += distance;
             return true;
         }
-
+        /// <summary>
+        /// The time that need for a bus to refuel
+        /// </summary>
         public TimeSpan TimeToRefuel { get => new TimeSpan(2, 0, 0); }
+        /// <summary>
+        /// The bus status
+        /// </summary>
         public Status Status { get; set; }
+        /// <summary>
+        /// The time that need for a bus to care
+        /// </summary>
         public TimeSpan TimeToCare { get => new TimeSpan(1, 0, 0, 0); }
+        /// <summary>
+        /// get formatted license
+        /// </summary>
+        /// <param name="license">non-formatted license number</param>
+        /// <returns>formatted license number</returns>
         public static string FormatLicense(int license)
         {
             string asString = license.ToString();
@@ -174,12 +203,19 @@ namespace dotNet5781_03B_6382_0555
             }
             return asString.Substring(0, 2) + '-' + asString.Substring(2, 3) + '-' + asString.Substring(5);
         }
-
+        /// <summary>
+        /// The average time that needed to travel that distance
+        /// </summary>
+        /// <param name="distance">the distance to drive</param>
+        /// <returns>the average time</returns>
         public static TimeSpan AverageTime(double distance)
         {
             return TimeSpan.FromHours(distance / AverageBusSpeed);
         }
-
+        /// <summary>
+        /// Initialize  a random bus array that have all the question conditions
+        /// </summary>
+        /// <returns>The buses array</returns>
         public static Bus[] InitializeBuses()
         {
             Bus[] ret = new Bus[10];
