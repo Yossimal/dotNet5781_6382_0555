@@ -6,6 +6,8 @@ namespace DALAPI.DAO
 {
     public class DAOStation:DAOBasic
     {
+        public override bool IsRunningId => false;
+
         public int Code
         {
             get => this.Id;

@@ -10,7 +10,7 @@ using DS;
 
 namespace DAL
 {
-    class DALObject : IDAL
+    public class DALObject : IDAL
     {
         #region singelton
 
@@ -27,7 +27,7 @@ namespace DAL
             {
                 throw new InvalidOperationException($"There is already instance with id {toAdd.Id} in the list with Type {toAdd.GetType().Name}");
             }
-            lst.Add(toAdd);
+            lst.Add(toAdd.Clone());
         }
 
         public void AddCollection(IEnumerable<DAOBasic> toAdd)
@@ -36,13 +36,12 @@ namespace DAL
             {
                 return;//There is no exception in adding an empty list
             }
-
             List<DAOBasic> lst = GetTypeList(toAdd.First());
-            if (lst.Any(x => toAdd.Any(d => d.Id == x.Id)))
+            if (lst.Any(x => toAdd.Clone().Any(d => d.Id == x.Id)))
             {
                 throw new InvalidOperationException($"Can't add one or more of the objects in the given list because they have the same Id as other object in the list with Type {toAdd.First().GetType().Name}");
             }
-
+            lst.AddRange(toAdd.Clone());
         }
 
         public bool Remove(DAOBasic toRemove)
@@ -74,7 +73,7 @@ namespace DAL
         }
 
 
-        public IEnumerable<DAOBasic> Where<DAOType>(Func<DAOBasic, bool> condition) where DAOType:DAOBasic
+        public IEnumerable<DAOBasic> Where<DAOType>(Func<DAOBasic, bool> condition) where DAOType : DAOBasic
         {
             return Data.data[typeof(DAOType)].Where(condition);
         }
@@ -83,7 +82,6 @@ namespace DAL
         {
             return Data.data[typeof(DAOType)];
         }
-
         #endregion
 
         #region privateMethods

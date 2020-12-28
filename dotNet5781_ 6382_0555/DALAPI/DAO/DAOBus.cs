@@ -6,6 +6,8 @@ namespace DALAPI.DAO
 {
     public class DAOBus:DAOBasic
     {
+        public override bool IsRunningId => true;
+
         public int LicenseNumber
         {
             get => this.Id;
