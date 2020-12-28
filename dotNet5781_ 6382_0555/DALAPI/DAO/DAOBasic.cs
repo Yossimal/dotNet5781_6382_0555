@@ -1,0 +1,7 @@
+﻿namespace DALAPI.DAO
+{
+    public class DAOBasic
+    {
+        public int Id { get; set; }
+    }
+}
