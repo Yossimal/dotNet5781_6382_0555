@@ -4,10 +4,11 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
-    public class DAOBus:DAOBasic
+    public class DAOBus
     {
-        public override bool IsRunningId => true;
-
+        public bool IsRunningId => true;
+        public bool IsDeleted { get; set; }
+        public int Id;
         public int LicenseNumber
         {
             get => this.Id;

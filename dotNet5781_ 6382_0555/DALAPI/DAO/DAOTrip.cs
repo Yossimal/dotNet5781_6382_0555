@@ -5,8 +5,11 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
-    public class DAOTrip:DAOBasic
+    public class DAOTrip
     {
+        const bool IsRunningId = true;
+        public bool IsDeleted { get; set; }
+        public int Id;
         public int UserId { get; set; }
         public int LineId { get; set; }
         public int InStationId { get; set; }

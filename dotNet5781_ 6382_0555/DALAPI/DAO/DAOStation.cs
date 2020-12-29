@@ -4,10 +4,11 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
-    public class DAOStation:DAOBasic
+    public class DAOStation
     {
-        public override bool IsRunningId => false;
-
+        const bool IsRunningId = false;
+        public bool IsDeleted { get; set; }
+        public int Id { get; set; }
         public int Code
         {
             get => this.Id;

@@ -11,7 +11,7 @@ namespace DAL
 {
     static class Cloning
     {
-        internal static DAOType Clone<DAOType>(this DAOType original) where DAOType : DAOBasic, new()
+        internal static DAOType Clone<DAOType>(this DAOType original) where DAOType:new()
         {
             DAOType copyToObject = new DAOType();
 
@@ -21,7 +21,7 @@ namespace DAL
             return copyToObject;
         }
 
-        internal static IEnumerable<DAOType> Clone<DAOType>(this IEnumerable<DAOType> original) where DAOType : DAOBasic,new()
+        internal static IEnumerable<DAOType> Clone<DAOType>(this IEnumerable<DAOType> original) where DAOType : new()
         {
             List<DAOType> ret=new List<DAOType>();
             foreach (DAOType dao in original)

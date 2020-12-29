@@ -5,8 +5,11 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
-    public class DAOBusOnTrip:DAOBasic
+    public class DAOBusOnTrip
     {
+        public bool IsRunningId => true;
+        public bool IsDeleted { get; set; }
+        public int Id { get; set; }
         public int BusId { get; set; }
         public int LineId { get; set; }
         public TimeSpan PlannedTakeOf { get; set; }

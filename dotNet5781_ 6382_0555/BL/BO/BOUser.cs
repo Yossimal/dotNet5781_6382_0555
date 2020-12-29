@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace BL.BO
 {
-    public class Class1
+    class BOUser
     {
+
     }
 }

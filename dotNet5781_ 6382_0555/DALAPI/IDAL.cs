@@ -7,13 +7,13 @@ namespace DALAPI
 {
     public interface IDAL
     {
-        void Add(DAOBasic toAdd);
-        void AddCollection(IEnumerable<DAOBasic> toAdd);
-        bool Remove(DAOBasic toRemove);
-        void Update(DAOBasic toUpdate);
-        DAOBasic GetById<DAOType>(int id) where DAOType:DAOBasic;
-        IEnumerable<DAOBasic> Where<DAOType>(Func<DAOBasic, bool> condition) where DAOType:DAOBasic;
-        IEnumerable<DAOBasic> All<DAOType>() where DAOType:DAOBasic;
+        int Add(object toAdd);
+        void AddCollection(IEnumerable<object> toAdd);
+        bool Remove(object toRemove);
+        void Update(object toUpdate);
+        DAOType GetById<DAOType>(int id) where DAOType:class,new();
+        IEnumerable<DAOType> Where<DAOType>(Func<DAOType, bool> condition) where DAOType:class,new();
+        IEnumerable<DAOType> All<DAOType>() where DAOType:class,new();
 
     }
 }
