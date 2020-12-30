@@ -28,5 +28,7 @@
         <!-- Row 1-->
         <Button x:Name="ClearText" Grid.Column="0" Grid.Row="1">Clear Text</Button>
         <Button x:Name="Login" Grid.Column="1" Grid.Row="1">Login</Button>
+        <!-- Row 2-->
+        <Button x:Name="Register" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">Register Now!</Button>
     </Grid>
 </UserControl>

@@ -119,7 +119,7 @@ namespace DAL
     {
         #region singelton
 
-        private static readonly DALObject _instance=new DALObject();
+        private static readonly DALObject _instance = new DALObject();
         public static DALObject Instance => _instance;
         private DALObject() { }
         #endregion
@@ -226,7 +226,7 @@ namespace DAL
 
         }
 
-        public IEnumerable<DAOType> All<DAOType>() where DAOType:class,new()
+        public IEnumerable<DAOType> All<DAOType>() where DAOType : class, new()
         {
             Type retType = typeof(DAOType);
             if (!Data.Database.ContainsKey(retType))

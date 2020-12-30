@@ -7,20 +7,23 @@ using System.Threading.Tasks;
 
 namespace PL.ViewModels
 {
-    class MainViewModel:Conductor<object>
+    class MainViewModel : Conductor<object>
     {
-        Dictionary<string, Type> pages = new Dictionary<string, Type>();
+        public static Dictionary<string, Type> pages = new Dictionary<string, Type>();
 
-        public MainViewModel() {
+        public MainViewModel()
+        {
             InitializePages();
             LoadPage("Login");
         }
         private void InitializePages()
         {
             pages.Add("Login", typeof(LoginViewModel));
+            pages.Add("Register", typeof(RegisterViewModel));
         }
-        public void LoadPage(string toLoad) {
-            object pageToLoad = Activator.CreateInstance(pages[toLoad]);
+        public void LoadPage(string toLoad)
+        {
+            object pageToLoad = Activator.CreateInstance(pages[toLoad], new object[1] { this });
             ActivateItem(pageToLoad);
         }
     }

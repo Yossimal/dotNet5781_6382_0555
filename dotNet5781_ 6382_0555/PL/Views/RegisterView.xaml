@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="PL.Views.RegisterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PL.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <!-- Row 0-->
+        <TextBlock Grid.Row="0" Grid.Column="0">User Name</TextBlock>
+        <TextBox x:Name="UserName" MinWidth="100" Grid.Row="0" Grid.Column="1" />
+        <!-- Row 1-->
+        <TextBlock Grid.Row="1" Grid.Column="0">Password</TextBlock>
+        <TextBox x:Name="Password" MinWidth="100" Grid.Row="1" Grid.Column="1" />
+        <!-- Row 2-->
+        <CheckBox x:Name="IsManager" Grid.Row="2">register as a manager?</CheckBox>
+        <!-- Row 3 For Manager Register-->
+        <TextBlock Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=ManagerCodeVisibility,Mode=OneWay}">Manager Register Code:</TextBlock>
+        <TextBox x:Name="ManagerCode" Grid.Row="3" Grid.Column="1" MinWidth="100" Visibility="{Binding Path=ManagerCodeVisibility,Mode=OneWay}"></TextBox> 
+        <!-- Row 4 -->
+        <Button x:Name="Register" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Register Now!</Button>
+    </Grid>
+</UserControl>

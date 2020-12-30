@@ -11,14 +11,15 @@ using System.Windows;
 
 namespace PL.ViewModels
 {
-    public class LoginViewModel : Screen
+    class LoginViewModel : Screen
     {
         IBL logic = BLFactory.API;
         private UserModel _user = new UserModel();
+        private MainViewModel mainViewModel;
 
-        public LoginViewModel()
+        public LoginViewModel(MainViewModel mainViewModel)
         {
-
+            this.mainViewModel = mainViewModel;
         }
 
         public UserModel User
@@ -83,6 +84,10 @@ namespace PL.ViewModels
         {
             return !(String.IsNullOrWhiteSpace(userName)
                 || String.IsNullOrWhiteSpace(password));
+        }
+
+        public void Register() {
+            mainViewModel.LoadPage("Register");
         }
 
     }

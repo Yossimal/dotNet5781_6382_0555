@@ -18,7 +18,7 @@ namespace DALObject
             {
                 throw new InvalidOperationException($"The type {type.Name} not contains an Id property");
             }
-            return Convert.ToInt32(idProp.GetValue(null));
+            return Convert.ToInt32(idProp.GetValue(obj));
         }
 
         internal static bool IsRunningId(this object obj)
@@ -29,7 +29,7 @@ namespace DALObject
             {
                 throw new InvalidOperationException($"The type {type.Name} not contain IsRunningId property");
             }
-            return Convert.ToBoolean(isRunningIdProp.GetValue(null));
+            return Convert.ToBoolean(isRunningIdProp.GetValue(obj));
         }
         internal static bool IsDeleted(this object obj)
         {
@@ -39,7 +39,7 @@ namespace DALObject
             {
                 throw new InvalidOperationException($"The type {type.Name} not contain IsDeleted property");
             }
-            return Convert.ToBoolean(isDeletedProp.GetValue(null));
+            return Convert.ToBoolean(isDeletedProp.GetValue(obj));
         }
 
         internal static void Delete(this object obj)
@@ -51,19 +51,19 @@ namespace DALObject
             {
                 throw new InvalidOperationException($"The type {type.Name} not contains an IsDeleted property");
             }
-            isDeletedProp.SetValue(null, true);
+            isDeletedProp.SetValue(obj, true);
         }
 
-        internal static void SetId(this object obj,int setTo)
+        internal static void SetId(this object obj, int setTo)
         {
             Type type = obj.GetType();
-
-            PropertyInfo idProp=type.GetProperty("Id");
+            PropertyInfo idProp = type.GetProperty("Id");
             if (idProp == null)
             {
                 throw new InvalidOperationException($"The type {type.Name} not contains an Id property");
             }
-            idProp.SetValue(null,setTo);
+            idProp.SetValue(obj, setTo);
         }
     }
+
 }

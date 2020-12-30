@@ -13,7 +13,8 @@ namespace DAL
     {
         internal static DAOType Clone<DAOType>(this DAOType original) where DAOType:new()
         {
-            DAOType copyToObject = new DAOType();
+            DAOType copyToObject = (DAOType)Activator.CreateInstance(original.GetType());
+
 
             foreach (PropertyInfo propertyInfo in typeof(DAOType).GetProperties())
             {
