@@ -41,9 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BL.cs" />
+    <Compile Include="BLFactory.cs" />
     <Compile Include="BO\BOUser.cs" />
+    <Compile Include="IBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DALAPI\DALAPI.csproj">
+      <Project>{a836c80b-af5b-482e-a33f-c376ed899b3d}</Project>
+      <Name>DALAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

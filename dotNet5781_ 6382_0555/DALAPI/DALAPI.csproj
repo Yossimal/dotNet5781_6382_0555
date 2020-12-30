@@ -47,7 +47,6 @@
     <Compile Include="ConfigurationManager.cs" />
     <Compile Include="DALFactory.cs" />
     <Compile Include="DAO\DAOAdjacentStations.cs" />
-    <Compile Include="DAO\DAOBasic.cs" />
     <Compile Include="DAO\DAOBus.cs" />
     <Compile Include="DAO\DAOBusOnTrip.cs" />
     <Compile Include="DAO\DAOLine.cs" />

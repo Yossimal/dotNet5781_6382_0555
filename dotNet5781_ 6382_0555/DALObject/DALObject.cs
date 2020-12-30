@@ -119,8 +119,8 @@ namespace DAL
     {
         #region singelton
 
-        private static readonly DALObject instance;
-        public static DALObject Instance => instance;
+        private static readonly DALObject _instance=new DALObject();
+        public static DALObject Instance => _instance;
         private DALObject() { }
         #endregion
 

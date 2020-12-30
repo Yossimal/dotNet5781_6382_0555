@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
-    public class DAOAdjacentStations : DAOBasic
+    public class DAOAdjacentStations
     {
 
         /// <summary>

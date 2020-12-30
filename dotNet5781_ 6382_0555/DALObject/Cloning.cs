@@ -16,7 +16,12 @@ namespace DAL
             DAOType copyToObject = new DAOType();
 
             foreach (PropertyInfo propertyInfo in typeof(DAOType).GetProperties())
-                propertyInfo.SetValue(copyToObject, propertyInfo.GetValue(original, null), null);
+            {
+                if (propertyInfo.CanWrite)
+                {
+                    propertyInfo.SetValue(copyToObject, propertyInfo.GetValue(original, null), null);
+                }
+            }
 
             return copyToObject;
         }
