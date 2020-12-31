@@ -9,7 +9,7 @@ namespace BL
 {
     public interface IBL
     {
-        int CheckUserName(BOUser user);
+        BOUser CheckUserName(BOUser user);
         int Register(BORegister register);
     }
 }

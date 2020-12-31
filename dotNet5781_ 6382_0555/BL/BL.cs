@@ -22,25 +22,37 @@ namespace BL
         const string MANAGER_CODE = "123!!!";
         #endregion Attributes
         #region Implementation
-        public int CheckUserName(BOUser user)
+        public BOUser CheckUserName(BOUser user)
         {
             IEnumerable<DAOUser> response = dataAPI.Where<DAOUser>(usr => user.UserName == usr.UserName && user.Password == usr.Password);
             if (response.Count() == 0)
             {
-                return -1;
+                return null;
             }
-            return response.First().Id;
+            BOUser ret = new BOUser
+            {
+                UserName = response.First().UserName,
+                id = response.First().Id,
+                IsManager = response.First().IsAdmin,
+                Password = response.First().Password
+            };
+            return ret;
         }
 
         public int Register(BORegister register)
         {
             try
             {
-                if (register.User.UserName.Length<=3|| register.User.UserName.Length>=16)
+                if (register.User == null
+                    || register.User.UserName == null
+                    || register.User.UserName.Length <= 3
+                    || register.User.UserName.Length >= 16)
                 {
                     throw new InvalidOperationException("User name length must be between 3 and 16 characters");
                 }
-                if (register.User.Password.Length <= 3 || register.User.Password.Length >= 16)
+                if (register.User.Password == null
+                    || register.User.Password.Length <= 3
+                    || register.User.Password.Length >= 16)
                 {
                     throw new InvalidOperationException("Password length must be between 3 and 16 characters");
                 }
@@ -63,7 +75,7 @@ namespace BL
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("There was problem to write the data",ex);
+                throw new InvalidOperationException("There was problem to write the data", ex);
             }
         }
         #endregion Implementation

@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BO\BL.cs" />
+    <Compile Include="BL.cs" />
     <Compile Include="BLFactory.cs" />
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOUser.cs" />

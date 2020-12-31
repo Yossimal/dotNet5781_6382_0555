@@ -15,11 +15,11 @@ namespace PL.ViewModels
     {
         IBL logic = BLFactory.API;
         private UserModel _user = new UserModel();
-        private MainViewModel mainViewModel;
+        private MainViewModel _mainViewModel;
 
         public LoginViewModel(MainViewModel mainViewModel)
         {
-            this.mainViewModel = mainViewModel;
+            this._mainViewModel = mainViewModel;
         }
 
         public UserModel User
@@ -71,14 +71,13 @@ namespace PL.ViewModels
                 UserName = userName,
                 Password = password
             };
-            int userId = logic.CheckUserName(logicUser);
-            if (userId == -1)
+            logicUser = logic.CheckUserName(logicUser);
+            if (logicUser==null)
             {
                 MessageBox.Show("User name or password worng", "can't login", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else {
-                MessageBox.Show($"The user Id is {userId}","Success",MessageBoxButton.OK,MessageBoxImage.Information);
-            }
+            NavigationHandler(new UserModel(logicUser));
+            
         }
         public bool CanLogin(string userName, string password)
         {
@@ -87,7 +86,19 @@ namespace PL.ViewModels
         }
 
         public void Register() {
-            mainViewModel.LoadPage("Register");
+            _mainViewModel.LoadPage("Register");
+        }
+
+        private void NavigationHandler(UserModel user)
+        {
+            if (user.IsManager)
+            {
+                _mainViewModel.LoadPage("ManagerHome");
+            }
+            else
+            {
+                MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
     }

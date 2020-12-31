@@ -9,6 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -17,7 +18,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-
-        <ContentControl Grid.Row="1" Grid.Column="1" x:Name="ActiveItem" />
+        <!-- Row 1 -->
+        <Button x:Name="Back" Grid.Column="1" Grid.Row="1">Back</Button>
+        <!-- Row 2 Thge Pages View -->
+        <ContentControl Grid.Row="2" Grid.Column="1" x:Name="ActiveItem" />
     </Grid>
 </Window>

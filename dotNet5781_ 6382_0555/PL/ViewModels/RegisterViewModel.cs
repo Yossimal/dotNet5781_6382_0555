@@ -14,14 +14,14 @@ namespace PL.ViewModels
     class RegisterViewModel : Screen
     {
         private IBL logic = BLFactory.API;
-        private MainViewModel mainViewModel;
+        private MainViewModel _mainViewModel;
         private UserModel _user = new UserModel();
         private Visibility _managerCodeVisibility = Visibility.Hidden;
         private string _managerCode;
 
         public RegisterViewModel(MainViewModel mainViewModel)
         {
-            this.mainViewModel = mainViewModel;
+            this._mainViewModel = mainViewModel;
         }
 
 
@@ -99,14 +99,24 @@ namespace PL.ViewModels
                 int id = logic.Register(register);
                 if (id != -1)
                 {
-                    MessageBox.Show($"Success register\n id is {id}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    NavigationHandler(User);
                 }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+        }
+        private void NavigationHandler(UserModel user) {
+            if (user.IsManager) {
+                _mainViewModel.LoadPage("ManagerHome");
+            }
+            else
+            {
+                MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }
