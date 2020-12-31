@@ -11,5 +11,7 @@ namespace BL
     {
         BOUser CheckUserName(BOUser user);
         int Register(BORegister register);
+        IEnumerable<BOBus> AllAvelibleBuses();
+        IEnumerable<BOBus> AllBuses();
     }
 }

@@ -12,7 +12,15 @@ namespace PL.ViewModels
         private static Dictionary<string, Type> pages = new Dictionary<string, Type>();
         private string _currentPage;
         private readonly Stack<string> _navigation=new Stack<string>();
-
+        private string _title="";
+        public string Title
+        {
+            get => _title;
+            set {
+                _title = value;
+                NotifyOfPropertyChange(() => Title);
+            }
+        }
         public bool CanBack
         {
             get => _navigation.Count != 0;
@@ -22,12 +30,14 @@ namespace PL.ViewModels
             InitializePages();
             LoadPage("Login");
         }
-        
         private void InitializePages()
         {
             pages.Add("Login", typeof(LoginViewModel));
             pages.Add("Register", typeof(RegisterViewModel));
             pages.Add("ManagerHome", typeof(ManagerHomeViewModel));
+            pages.Add("ShowBuses", typeof(ShowBusesViewModel));
+            pages.Add("ShowStations", typeof(ShowStationsViewModel));
+            pages.Add("ShowLines", typeof(ShowLinesViewModel));
         }
         public void LoadPage(string toLoad)
         {
@@ -38,8 +48,8 @@ namespace PL.ViewModels
             _currentPage = toLoad;
             object pageToLoad = Activator.CreateInstance(pages[toLoad], new object[1] { this });
             ActivateItem(pageToLoad);
+            Title = _currentPage;
         }
-
         public void Back() {
             _currentPage = null;//set the current page to null so the LoadPage wont set the last page to the current page
             LoadPage(_navigation.Pop());

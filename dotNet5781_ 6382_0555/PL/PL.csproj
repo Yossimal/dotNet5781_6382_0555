@@ -71,12 +71,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\BusModel.cs" />
+    <Compile Include="Models\LineModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\StationModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\LineStationModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManagerHomeViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ShowBusesViewModel.cs" />
+    <Compile Include="ViewModels\ShowLinesViewModel.cs" />
+    <Compile Include="ViewModels\ShowStationsViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +95,15 @@
     </Compile>
     <Compile Include="Views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowBusesView.xaml.cs">
+      <DependentUpon>ShowBusesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowLinesView.xaml.cs">
+      <DependentUpon>ShowLinesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowStationsView.xaml.cs">
+      <DependentUpon>ShowStationsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +154,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegisterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowBusesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowLinesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowStationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

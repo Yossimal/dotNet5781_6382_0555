@@ -6,9 +6,12 @@ namespace DALAPI.DAO
 {
     public class DAOStation
     {
+        #region BackgroundData
         const bool IsRunningId = false;
         public bool IsDeleted { get; set; }
         public int Id { get; set; }
+        #endregion
+        #region RealData
         public int Code
         {
             get => this.Id;
@@ -17,5 +20,6 @@ namespace DALAPI.DAO
         public string Name { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
+        #endregion
     }
 }

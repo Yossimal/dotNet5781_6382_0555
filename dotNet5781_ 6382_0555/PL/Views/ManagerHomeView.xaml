@@ -7,6 +7,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Row 0 -->
+        <Button x:Name="ShowBuses" Grid.Column="0" Grid.Row="0">Buses View</Button>
+        <!-- Row 1 -->
+        <Button x:Name="ShowLines" Grid.Column="0" Grid.Row="1">Lines View</Button>
+        <!-- Row 2 -->
+        <Button x:Name="ShowStations" Grid.Column="0" Grid.Row="2">Stations View</Button>
     </Grid>
 </UserControl>
