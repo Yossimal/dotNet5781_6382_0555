@@ -14,6 +14,9 @@ namespace BL
         int AddBus(BOBus toAdd);
         bool DeleteBus(int licenseNumber);
         BOBus GetBus(int licenseNumber);
+        IEnumerable<BOStation> AllStations();
+        BOStation GetStation(int code);
+
 
 
     }

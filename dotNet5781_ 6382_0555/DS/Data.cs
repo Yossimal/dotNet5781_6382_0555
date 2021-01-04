@@ -61,7 +61,6 @@ namespace DS
             });
 
         }
-
         private static void InitializeUsers()
         {
             Type userType = typeof(DAOUser);
@@ -86,7 +85,11 @@ namespace DS
                 IsAdmin=true
             });
         }
+        private static void InitializeStations() {
+            Type stationType = typeof(DAOStation);
+            Database.Add(stationType, new List<object>());
 
+        }
         private static void AddWithRunningId(Type type, object toAdd)
         {
             if (!Database.ContainsKey(type))

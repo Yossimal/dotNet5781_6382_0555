@@ -27,7 +27,7 @@ namespace BL
             IEnumerable<DAOUser> response = dataAPI.Where<DAOUser>(usr => user.UserName == usr.UserName && user.Password == usr.Password);
             if (response.Count() == 0)
             {
-                return null;
+                throw new BadLoginDataException("Username or password is wrong");
             }
             BOUser ret = new BOUser
             {
@@ -47,13 +47,13 @@ namespace BL
                     || register.User.UserName.Length <= 3
                     || register.User.UserName.Length >= 16)
                 {
-                    throw new InvalidOperationException("User name length must be between 3 and 16 characters");
+                    throw new BadUsernameException("User name length must be between 3 and 16 characters");
                 }
                 if (register.User.Password == null
                     || register.User.Password.Length <= 3
                     || register.User.Password.Length >= 16)
                 {
-                    throw new InvalidOperationException("Password length must be between 3 and 16 characters");
+                    throw new BadPasswordException("Password length must be between 3 and 16 characters");
                 }
                 DAOUser toAdd = new DAOUser
                 {
@@ -64,11 +64,11 @@ namespace BL
 
                 if (register.User.IsManager && register.ManagerCode != MANAGER_CODE)
                 {
-                    throw new InvalidOperationException("Bad manager code! Can't register");
+                    throw new BadManagerCodeException("Bad manager code! Can't register");
                 }
                 if (dataAPI.Where<DAOUser>(user => user.UserName == toAdd.UserName).Count() > 0)
                 {
-                    throw new InvalidOperationException("User name already exists!");
+                    throw new ItemAlreadyExistsException("User name already exists!");
                 }
                 return dataAPI.Add(toAdd);
             }
@@ -98,7 +98,7 @@ namespace BL
                 DAOBus toRefuel = dataAPI.GetById<DAOBus>(licenseNumber);
                 if (toRefuel.Status != BusStatus.Ready)
                 {
-                    throw new InvalidOperationException("The bus is not ready yet.");
+                    throw new BusNotAvailableException("The bus is not ready yet.");
                 }
                 toRefuel.Status = BusStatus.Refuel;
                 toRefuel.TimeToReady = DateTime.Now + REFUEL_TIME;
@@ -107,6 +107,10 @@ namespace BL
             }
             catch (Exception ex)
             {
+                if(ex is DALAPI.ItemNotFoundException)
+                {
+                    throw new ItemNotFoundException("Can't find the bus with that license number", ex);
+                }
                 throw ex;
             }
         }
@@ -117,7 +121,7 @@ namespace BL
                 DAOBus toCare = dataAPI.GetById<DAOBus>(licenseNumber);
                 if (toCare.Status != BusStatus.Ready)
                 {
-                    throw new InvalidOperationException("The bus is not ready yet.");
+                    throw new BusNotAvailableException("The bus is not ready yet.");
                 }
                 toCare.Status = BusStatus.InCare;
                 toCare.TimeToReady = DateTime.Now + CARE_TIME;
@@ -126,6 +130,9 @@ namespace BL
             }
             catch (Exception ex)
             {
+                if (ex is DALAPI.ItemNotFoundException) {
+                    throw new ItemNotFoundException("Can't find the bus with that license number", ex);
+                }
                 throw ex;
             }
         }
@@ -138,6 +145,9 @@ namespace BL
             }
             catch (Exception ex)
             {
+                if (ex is DALAPI.ItemNotFoundException) {
+                    throw new ItemNotFoundException("Can't find the bus with that license number", ex);
+                }
                 throw ex;
             }
             return busToTrack.TimeToReady - DateTime.Now;
@@ -167,6 +177,9 @@ namespace BL
             }
             catch (Exception ex)
             {
+                if (ex is DALAPI.ItemAlreadyExistsException) {
+                    throw new ItemAlreadyExistsException("Can't find the bus with that license number", ex);
+                }
                 throw ex;
             }
         }
@@ -181,6 +194,9 @@ namespace BL
         public BOBus GetBus(int licenseNumber)
         {
             DAOBus toReturn = dataAPI.GetById<DAOBus>(licenseNumber);
+            if (toReturn == null) {
+                throw new ItemNotFoundException("Can't find the bus with the given license number");
+            }
             return new BOBus
             {
                 LicenseDate = toReturn.LicenseDate,

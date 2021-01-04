@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BL.BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,13 @@ namespace PL.Models
 {
     class StationModel
     {
-        public int Code { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
 
+        public StationModel() { }
+        public StationModel(BOStation station) {
+            this.Name = station.Name;
+            this.Code = station.Code.ToString();
+        }
     }
 }

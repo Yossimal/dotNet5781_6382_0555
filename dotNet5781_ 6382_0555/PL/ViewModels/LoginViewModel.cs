@@ -54,12 +54,12 @@ namespace PL.ViewModels
         }
 
 
-        public bool CanClearText(string userName,string password)
+        public bool CanClearText(string userName, string password)
         {
-            return !(String.IsNullOrWhiteSpace(userName)&&String.IsNullOrWhiteSpace(password));
+            return !(String.IsNullOrWhiteSpace(userName) && String.IsNullOrWhiteSpace(password));
         }
 
-        public void ClearText(string userName,string password)
+        public void ClearText(string userName, string password)
         {
             UserName = "";
             Password = "";
@@ -71,14 +71,18 @@ namespace PL.ViewModels
                 UserName = userName,
                 Password = password
             };
-            logicUser = logic.CheckUserName(logicUser);
-            if (logicUser==null)
+            try
             {
-                MessageBox.Show("User name or password worng", "can't login", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                logicUser = logic.CheckUserName(logicUser);
+                NavigationHandler(new UserModel(logicUser));
             }
-            NavigationHandler(new UserModel(logicUser));
-            
+            catch (Exception ex)
+            {
+                if (ex is BadLoginDataException)
+                {
+                    MessageBox.Show("User name or password worng", "Can't login", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
         public bool CanLogin(string userName, string password)
         {
@@ -86,7 +90,8 @@ namespace PL.ViewModels
                 || String.IsNullOrWhiteSpace(password));
         }
 
-        public void Register() {
+        public void Register()
+        {
             _mainViewModel.LoadPage("Register");
         }
 

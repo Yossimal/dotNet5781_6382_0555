@@ -108,8 +108,16 @@ namespace PL.ViewModels
         }
         public void AddBus(string licenseNumber, string milageCounter)
         {
-            logic.AddBus(BusToAdd.ToBO());
-            _mainViewModel.LoadPage("ShowBuses");
+            try
+            {
+                logic.AddBus(BusToAdd.ToBO());
+                _mainViewModel.LoadPage("ShowBuses");
+            }
+            catch (Exception ex) {
+                if (ex is ItemAlreadyExistsException) {
+                    MessageBox.Show("There is already a bus with that license number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
         public bool CanAddBus(string licenseNumber, string milageCounter)
         {

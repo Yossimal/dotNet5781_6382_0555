@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\ShowBusDataViewModel.cs" />
     <Compile Include="ViewModels\ShowBusesViewModel.cs" />
     <Compile Include="ViewModels\ShowLinesViewModel.cs" />
+    <Compile Include="ViewModels\ShowStationDataViewModel.cs" />
     <Compile Include="ViewModels\ShowStationsViewModel.cs" />
     <Compile Include="Views\AddBusView.xaml.cs">
       <DependentUpon>AddBusView.xaml</DependentUpon>
@@ -109,6 +110,9 @@
     </Compile>
     <Compile Include="Views\ShowLinesView.xaml.cs">
       <DependentUpon>ShowLinesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowStationDataView.xaml.cs">
+      <DependentUpon>ShowStationDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowStationsView.xaml.cs">
       <DependentUpon>ShowStationsView.xaml</DependentUpon>
@@ -178,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowLinesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowStationDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

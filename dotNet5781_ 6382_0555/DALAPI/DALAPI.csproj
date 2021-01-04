@@ -57,6 +57,8 @@
     <Compile Include="DAO\DAOUser.cs" />
     <Compile Include="DAO\Enums.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

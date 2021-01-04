@@ -45,7 +45,15 @@
     <Compile Include="BLFactory.cs" />
     <Compile Include="BO\BOBus.cs" />
     <Compile Include="BO\BORegister.cs" />
+    <Compile Include="BO\BOStation.cs" />
     <Compile Include="BO\BOUser.cs" />
+    <Compile Include="Exceptions\BadLoginDataException.cs" />
+    <Compile Include="Exceptions\BadManagerCodeException.cs" />
+    <Compile Include="Exceptions\BadPasswordException.cs" />
+    <Compile Include="Exceptions\BadUsernameException.cs" />
+    <Compile Include="Exceptions\BusNotAvailableException.cs" />
+    <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="IBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,5 +63,6 @@
       <Name>DALAPI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

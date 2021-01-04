@@ -41,6 +41,7 @@ namespace PL.ViewModels
             pages.Add("ShowLines", typeof(ShowLinesViewModel));
             pages.Add("AddBus", typeof(AddBusViewModel));
             pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
+            pages.Add("ShowStationData", typeof(ShowStationDataViewModel));
         }
         public void LoadPage(string toLoad,params object[] parameters)
         {

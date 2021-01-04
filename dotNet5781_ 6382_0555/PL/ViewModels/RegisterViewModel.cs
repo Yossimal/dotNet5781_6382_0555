@@ -105,12 +105,34 @@ namespace PL.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (ex is BadUsernameException)
+                {
+                    MessageBox.Show("User name length must be between 3 and 16 characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (ex is ItemAlreadyExistsException)
+                {
+                    MessageBox.Show("User name already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (ex is BadPasswordException)
+                {
+                    MessageBox.Show("Password length must be between 3 and 16 characters", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (ex is BadManagerCodeException)
+                {
+                    MessageBox.Show("Bad manager code! Can't register", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    throw ex;
+                }
+
             }
 
         }
-        private void NavigationHandler(UserModel user) {
-            if (user.IsManager) {
+        private void NavigationHandler(UserModel user)
+        {
+            if (user.IsManager)
+            {
                 _mainViewModel.LoadPage("ManagerHome");
             }
             else

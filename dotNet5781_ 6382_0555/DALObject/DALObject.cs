@@ -144,7 +144,7 @@ namespace DAL
             //else check if the id is unique
             else if (lst.Exists(d => d.GetId() == toAdd.GetId() && !d.IsDeleted()))
             {
-                throw new InvalidOperationException($"There is already instance with id {toAdd.GetId()} in the list with Type {toAdd.GetType().Name}");
+                throw new ItemAlreadyExistsException($"There is already instance with id {toAdd.GetId()} in the list with Type {toAdd.GetType().Name}");
             }
             else if (lst.Exists(d => d.GetId() == toAdd.GetId() && d.IsDeleted()))
             {
@@ -191,13 +191,13 @@ namespace DAL
             //If there is no object with the same type throw an exception
             if (!Data.Database.ContainsKey(toUpdateType))
             {
-                throw new InvalidOperationException($"The list with the type {toUpdateType.Name} do not exists");
+                throw new ItemNotFoundException($"The list with the type {toUpdateType.Name} do not exists");
             }
             List<object> updateList = GetTypeList(toUpdate);
             //If we cant find the object id in the database
             if (!updateList.Exists(d => d.GetId() == toUpdate.GetId()))
             {
-                throw new InvalidOperationException("Can't find an object with the same id as the given object id");
+                throw new ItemNotFoundException("Can't find an object with the same id as the given object id");
             }
             int index = updateList.FindIndex(d => (d.GetId() == toUpdate.GetId() && !d.IsDeleted()));
             updateList[index] = toUpdate.Clone();
