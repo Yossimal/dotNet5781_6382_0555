@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="PL.Views.AddBusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PL.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Row 0 -->
+        <Label Grid.Row="0" Grid.Column="0" FontSize="20"  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">Insert Bus Data</Label>
+        <!-- Row 1 -->
+        <Label Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Content="Bus License Number"></Label>
+        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" x:Name="LicenseNumber" MinWidth="100"></TextBox>
+        <!-- Row 2 -->
+        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Content="The Bus License Date"></Label>
+        <DatePicker x:Name="LicenseDate" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" MinWidth="100"></DatePicker>
+        <!-- Row 3 -->
+        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Bus Current Milage"></Label>
+        <TextBox x:Name="MilageCounter" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Height="20" MinWidth="100"></TextBox>
+        <!-- Row 4-->
+        <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Path=LastCareDateVisibility,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="The Bus License Date"></Label>
+        <DatePicker x:Name="LastCareDate" Grid.Row="4"  Visibility="{Binding Path=LastCareDateVisibility,Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" MinWidth="100"></DatePicker>
+        <!-- Row 5-->
+        <Button Grid.Column="0" Grid.Row="5" x:Name="AddBus" Content="Add The Bus"/>
+        <Button Grid.Column="1" Grid.Row="5" x:Name="ClearText" Content="Clear The Form" />
+    </Grid>
+</UserControl>

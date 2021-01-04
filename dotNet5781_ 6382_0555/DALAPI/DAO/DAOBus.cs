@@ -7,9 +7,9 @@ namespace DALAPI.DAO
     public class DAOBus
     {
         #region BackgroundData
-        public bool IsRunningId => true;
+        public bool IsRunningId => false;
         public bool IsDeleted { get; set; }
-        public int Id;
+        public int Id { get; set; }
         #endregion
         #region realData
         public int LicenseNumber
@@ -21,6 +21,8 @@ namespace DALAPI.DAO
         public double MileageCounter { get; set; }
         public double FuelRemain { get; set; }
         public BusStatus Status { get; set; }
+        public DateTime LastCareDate { get; set; }
+        public DateTime? TimeToReady { get; set; }
         #endregion
     }
 }

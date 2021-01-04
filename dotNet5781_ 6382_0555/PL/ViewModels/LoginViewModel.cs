@@ -75,6 +75,7 @@ namespace PL.ViewModels
             if (logicUser==null)
             {
                 MessageBox.Show("User name or password worng", "can't login", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
             NavigationHandler(new UserModel(logicUser));
             

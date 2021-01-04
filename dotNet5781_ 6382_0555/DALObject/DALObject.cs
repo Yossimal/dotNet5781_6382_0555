@@ -146,6 +146,11 @@ namespace DAL
             {
                 throw new InvalidOperationException($"There is already instance with id {toAdd.GetId()} in the list with Type {toAdd.GetType().Name}");
             }
+            else if (lst.Exists(d => d.GetId() == toAdd.GetId() && d.IsDeleted()))
+            {
+                this.Update(toAdd);
+                return toAdd.GetId();
+            }
             lst.Add(toAdd.Clone());
             //return the id of the object that we've added
             return toAdd.GetId();
@@ -195,18 +200,18 @@ namespace DAL
                 throw new InvalidOperationException("Can't find an object with the same id as the given object id");
             }
             int index = updateList.FindIndex(d => (d.GetId() == toUpdate.GetId() && !d.IsDeleted()));
-            updateList[index] = toUpdate;
+            updateList[index] = toUpdate.Clone();
         }
 
         public DAOType GetById<DAOType>(int id) where DAOType : class, new()
         {
             Type retrieveType = typeof(DAOType);
-            if (Data.Database.ContainsKey(retrieveType))
+            if (!Data.Database.ContainsKey(retrieveType))
             {
                 return null;
             }
 
-            object ret = Data.Database[retrieveType].FirstOrDefault(d => d.GetId() == id);
+            object ret = Data.Database[retrieveType].FirstOrDefault(d => (d.GetId() == id&&!d.IsDeleted()));
             return (ret as DAOType).Clone();
         }
 
@@ -221,7 +226,7 @@ namespace DAL
             return Data.Database[retType].Where(o =>
             {
                 DAOType dat = o as DAOType;
-                return condition(dat);
+                return condition(dat)&&!o.IsDeleted();
             }).Select(o => (o as DAOType).Clone());
 
         }

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="PL.Views.ShowBusDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PL.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Row 0-->
+        <TextBlock Text="License Number" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_LicenseNumber" Grid.Row="0" Grid.Column="1"/>
+        <!-- Row 1-->
+        <TextBlock Text="Aveilability" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_AvailabilityMessage" Grid.Row="1" Grid.Column="1"/>
+        <!-- Row 2-->
+        <TextBlock Text="Fuel Remain" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_FuelRemain" Grid.Row="2" Grid.Column="1"/>
+        <!-- Row 3-->
+        <TextBlock Text="Milage" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_MilageCounter" Grid.Row="3" Grid.Column="1"/>
+        <!-- Row 4-->
+        <TextBlock Text="License Date" Grid.Row="4" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_LicenseDate" Grid.Row="4" Grid.Column="1"/>
+        <!-- Row 5-->
+        <TextBlock Text="Next Care Date" Grid.Row="5" Grid.Column="0"/>
+        <TextBlock x:Name="BusToShow_NextCareDate" Grid.Row="5" Grid.Column="1"/>
+        <!-- Row 6-->
+        <Button x:Name="Refuel" Content="Refuel Bus" Grid.Row="6" Grid.Column="0"/>
+        <Button x:Name="Care" Content="Send Bus to Care" Grid.Row="6" Grid.Column="1"/>
+        <!-- Row 7-->
+        <Button x:Name="DeleteBus" Content="Delete The Bus" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</UserControl>

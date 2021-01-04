@@ -77,13 +77,18 @@
     <Compile Include="Models\StationModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\LineStationModel.cs" />
+    <Compile Include="ViewModels\AddBusViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManagerHomeViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ShowBusDataViewModel.cs" />
     <Compile Include="ViewModels\ShowBusesViewModel.cs" />
     <Compile Include="ViewModels\ShowLinesViewModel.cs" />
     <Compile Include="ViewModels\ShowStationsViewModel.cs" />
+    <Compile Include="Views\AddBusView.xaml.cs">
+      <DependentUpon>AddBusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -95,6 +100,9 @@
     </Compile>
     <Compile Include="Views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowBusDataView.xaml.cs">
+      <DependentUpon>ShowBusDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowBusesView.xaml.cs">
       <DependentUpon>ShowBusesView.xaml</DependentUpon>
@@ -141,6 +149,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddBusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,6 +169,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ShowBusDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShowBusesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +185,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NeedRepair.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NeedToSleep.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NoFuel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

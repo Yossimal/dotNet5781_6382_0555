@@ -12,7 +12,56 @@ namespace DS
         static Data()
         {
             InitializeUsers();
+            InitializeBuses();
         }
+
+        private static void InitializeBuses()
+        {
+            Type busType = typeof(DAOBus);
+            Database.Add(busType,new List<object>());
+            Add(busType, new DAOBus
+            {
+                Id = 12345678,
+                FuelRemain = 32.4,
+                LicenseDate = new DateTime(2018, 10, 3),
+                IsDeleted = false,
+                MileageCounter = 158,
+                Status = DALAPI.BusStatus.Ready,
+                LastCareDate=new DateTime(2019,10,3)
+            });
+            Add(busType, new DAOBus
+            {
+                Id = 74584125,
+                FuelRemain = 25,
+                LicenseDate = new DateTime(2019, 1, 25),
+                IsDeleted = false,
+                MileageCounter = 853,
+                Status = DALAPI.BusStatus.Ready,
+                LastCareDate = new DateTime(2020, 10, 3)
+            });
+            Add(busType, new DAOBus
+            {
+                Id = 7451258,
+                FuelRemain = 32.4,
+                LicenseDate = new DateTime(2010, 10, 3),
+                IsDeleted = false,
+                MileageCounter = 25,
+                Status = DALAPI.BusStatus.Ready,
+                LastCareDate = new DateTime(2018, 10, 3)
+            });
+            Add(busType, new DAOBus
+            {
+                Id = 95845621,
+                FuelRemain = 32.4,
+                LicenseDate = new DateTime(2020, 10, 3),
+                IsDeleted = false,
+                MileageCounter = 158,
+                Status = DALAPI.BusStatus.Ready,
+                LastCareDate = new DateTime(2020, 10, 5)
+            });
+
+        }
+
         private static void InitializeUsers()
         {
             Type userType = typeof(DAOUser);
@@ -30,6 +79,12 @@ namespace DS
                 Password = "1",
                 IsAdmin = true
             });
+            AddWithRunningId(userType, new DAOUser
+            {
+                UserName="b",
+                Password="b",
+                IsAdmin=true
+            });
         }
 
         private static void AddWithRunningId(Type type, object toAdd)
@@ -44,6 +99,13 @@ namespace DS
             }
             toAdd.SetId(RunningId[type]);
             RunningId[type]++;
+            Database[type].Add(toAdd);
+        }
+        private static void Add(Type type, object toAdd) {
+            if (!Database.ContainsKey(type))
+            {
+                Database.Add(type, new List<object>());
+            }
             Database[type].Add(toAdd);
         }
 

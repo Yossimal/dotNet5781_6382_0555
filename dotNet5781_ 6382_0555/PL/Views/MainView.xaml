@@ -20,8 +20,14 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <!-- Row 1 -->
-        <Button x:Name="Back" Grid.Column="1" Grid.Row="1">Back</Button>
+        <Grid  Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+               
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Back" Grid.Column="0">Back</Button>
+        </Grid>
         <!-- Row 2 Thge Pages View -->
-        <ContentControl Grid.Row="2"  Grid.Column="1" x:Name="ActiveItem" />
+        <ContentControl Grid.Row="2"  Grid.Column="1" x:Name="ActiveItem" Margin="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
     </Grid>
 </Window>

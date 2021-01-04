@@ -16,7 +16,7 @@ namespace DAL
             DAOType copyToObject = (DAOType)Activator.CreateInstance(original.GetType());
 
 
-            foreach (PropertyInfo propertyInfo in typeof(DAOType).GetProperties())
+            foreach (PropertyInfo propertyInfo in original.GetType().GetProperties())
             {
                 if (propertyInfo.CanWrite)
                 {

@@ -1,9 +1,5 @@
 ﻿using BL.BO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BL
 {
@@ -13,5 +9,12 @@ namespace BL
         int Register(BORegister register);
         IEnumerable<BOBus> AllAvelibleBuses();
         IEnumerable<BOBus> AllBuses();
+        BOBus RefuelBus(int licenseNumber);
+        BOBus CareBus(int licenseNumber);
+        int AddBus(BOBus toAdd);
+        bool DeleteBus(int licenseNumber);
+        BOBus GetBus(int licenseNumber);
+
+
     }
 }

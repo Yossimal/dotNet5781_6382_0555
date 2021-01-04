@@ -1,11 +1,9 @@
 ﻿using BL.BO;
+using DALAPI;
+using DALAPI.DAO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DALAPI;
-using DALAPI.DAO;
 
 namespace BL
 {
@@ -20,6 +18,8 @@ namespace BL
         #region Attributes
         IDAL dataAPI = DALFactory.API;
         const string MANAGER_CODE = "123!!!";
+        static readonly TimeSpan REFUEL_TIME = new TimeSpan(0, 2, 0, 0);
+        static readonly TimeSpan CARE_TIME = new TimeSpan(1, 0, 0, 0);
         #endregion Attributes
         #region Implementation
         public BOUser CheckUserName(BOUser user)
@@ -38,7 +38,6 @@ namespace BL
             };
             return ret;
         }
-
         public int Register(BORegister register)
         {
             try
@@ -78,23 +77,121 @@ namespace BL
                 throw new InvalidOperationException("There was problem to write the data", ex);
             }
         }
-
         public IEnumerable<BOBus> AllAvelibleBuses()
         {
             //Can be written in two lines with chaining methods LINQ but the course require the SQL style LINQ
             IEnumerable<BOBus> ret = from dataBus in dataAPI.All<DAOBus>()
-                                     let bus =new BOBus(dataBus)
+                                     let bus = new BOBus(dataBus)
                                      where bus.Status == BusStatus.Ready
                                      select bus;
             return ret;
         }
-
         public IEnumerable<BOBus> AllBuses()
         {
             return dataAPI.All<DAOBus>()
                 .Select(bus => new BOBus(bus));
         }
-        #endregion Implementation
+        public BOBus RefuelBus(int licenseNumber)
+        {
+            try
+            {
+                DAOBus toRefuel = dataAPI.GetById<DAOBus>(licenseNumber);
+                if (toRefuel.Status != BusStatus.Ready)
+                {
+                    throw new InvalidOperationException("The bus is not ready yet.");
+                }
+                toRefuel.Status = BusStatus.Refuel;
+                toRefuel.TimeToReady = DateTime.Now + REFUEL_TIME;
+                dataAPI.Update(toRefuel);
+                return new BOBus(toRefuel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public BOBus CareBus(int licenseNumber)
+        {
+            try
+            {
+                DAOBus toCare = dataAPI.GetById<DAOBus>(licenseNumber);
+                if (toCare.Status != BusStatus.Ready)
+                {
+                    throw new InvalidOperationException("The bus is not ready yet.");
+                }
+                toCare.Status = BusStatus.InCare;
+                toCare.TimeToReady = DateTime.Now + CARE_TIME;
+                dataAPI.Update(toCare);
+                return new BOBus(toCare);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public TimeSpan? TimeToReady(int licenseNumber)
+        {
+            DAOBus busToTrack;
+            try
+            {
+                busToTrack = dataAPI.GetById<DAOBus>(licenseNumber);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return busToTrack.TimeToReady - DateTime.Now;
 
+        }
+        public int AddBus(BOBus toAdd)
+        {
+            DateTime lastCareDate = toAdd.LastCareDate;
+            if (toAdd.LicenseDate == DateTime.Today)
+            {
+                lastCareDate = DateTime.Today;
+            }
+            DAOBus daoToAdd = new DAOBus
+            {
+                Id = toAdd.LicenseNumber,
+                LicenseDate = toAdd.LicenseDate,
+                FuelRemain = BOBus.MAX_FUEL,
+                IsDeleted = false,
+                MileageCounter = toAdd.MileageCounter,
+                Status = BusStatus.Ready,
+                TimeToReady = null,
+                LastCareDate = lastCareDate
+            };
+            try
+            {
+                return dataAPI.Add(daoToAdd);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool DeleteBus(int licenseNumber)
+        {
+            DAOBus toRemove = new DAOBus
+            {
+                Id = licenseNumber
+            };
+            return dataAPI.Remove(toRemove);
+        }
+        public BOBus GetBus(int licenseNumber)
+        {
+            DAOBus toReturn = dataAPI.GetById<DAOBus>(licenseNumber);
+            return new BOBus
+            {
+                LicenseDate = toReturn.LicenseDate,
+                FuelRemain = toReturn.FuelRemain,
+                LastCareDate = toReturn.LastCareDate,
+                LicenseNumber = toReturn.LicenseNumber,
+                MileageCounter = toReturn.MileageCounter,
+                Status = toReturn.Status,
+                TimeToReady = toReturn.TimeToReady
+            };
+        }
+        #endregion Implementation
     }
 }

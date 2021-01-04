@@ -13,6 +13,7 @@ namespace PL.ViewModels
         private string _currentPage;
         private readonly Stack<string> _navigation=new Stack<string>();
         private string _title="";
+        private object _lastScreen;
         public string Title
         {
             get => _title;
@@ -38,15 +39,24 @@ namespace PL.ViewModels
             pages.Add("ShowBuses", typeof(ShowBusesViewModel));
             pages.Add("ShowStations", typeof(ShowStationsViewModel));
             pages.Add("ShowLines", typeof(ShowLinesViewModel));
+            pages.Add("AddBus", typeof(AddBusViewModel));
+            pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
         }
-        public void LoadPage(string toLoad)
+        public void LoadPage(string toLoad,params object[] parameters)
         {
             if (_currentPage != null) {
                 _navigation.Push(_currentPage);
                 NotifyOfPropertyChange(() => CanBack);
             }
             _currentPage = toLoad;
-            object pageToLoad = Activator.CreateInstance(pages[toLoad], new object[1] { this });
+            List<object> constructorParams = new List<object>();
+            constructorParams.Add(this);
+            constructorParams.AddRange(parameters);
+            object pageToLoad = Activator.CreateInstance(pages[toLoad], constructorParams.ToArray());
+            if (_lastScreen != null) {
+                DeactivateItem(_lastScreen, true);
+            }
+            _lastScreen = pageToLoad;
             ActivateItem(pageToLoad);
             Title = _currentPage;
         }
