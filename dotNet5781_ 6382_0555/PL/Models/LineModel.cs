@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace PL.Models
 {
@@ -10,9 +11,8 @@ namespace PL.Models
     {
         public int Id { get; set; }
         public int Code { get; set; }
-        public LineStationModel FirstStation { get; set; }
-        public LineStationModel LastStation { get; set; }
-        //In PL the status is string because we need to show it without using logic
+        BindableCollection<StationModel> Stations { get; set; }
+        //In PL the area is string because we need to show it without using logic
         public string Area { get; set; }
     }
 }

@@ -18,6 +18,13 @@ namespace BL
         BOStation GetStation(int code);
         bool DeleteStation(int code);
         int AddStation(BOAddStation toAdd);
+        BOLine GetLine(int id);
+        IEnumerable<BOLine> GetAllLines(int lineNumber);
+        IEnumerable<BOLine> GetAllLines();
+        bool RemoveLine(int id);
+        int AddLine(BOLine toAdd);
+        BOLine AddStationToLine(BOStation station,int index=-1);
+        BOLine RemoveStationFromLine(int index);
 
 
 

@@ -15,8 +15,8 @@ namespace DALAPI.DAO
         #endregion
         #region RealData
         public int Code { get; set; }
-        public int FirstStation { get; set; }
-        public int LastStation { get; set; }
+        public int FirstStationId { get; set; }
+        public int LastStationId { get; set; }
         public Area Area { get;set; }
 
         #endregion

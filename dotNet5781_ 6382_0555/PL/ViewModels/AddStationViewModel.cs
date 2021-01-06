@@ -13,16 +13,19 @@ namespace PL.ViewModels
 {
     class AddStationViewModel : Screen
     {
+        #region private fuilds
         private MainViewModel _mainViewModel;
         private AddStationModel _stationToAdd;
         private IBL logic = BLFactory.API;
-
+        #endregion
+        #region constructors
         public AddStationViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _stationToAdd = new AddStationModel();
         }
-
+        #endregion
+        #region properties
         public AddStationModel StationToAdd
         {
             get => _stationToAdd;
@@ -76,6 +79,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => Code);
             }
         }
+        #endregion
+        #region events
         public void AddStation(string code, string name, string longitude, string latitude)
         {
             BOAddStation stationToAdd = new BOAddStation
@@ -124,11 +129,12 @@ namespace PL.ViewModels
                 || !IsNullEmptyOrWhiteSpace(longitude)
                 || !IsNullEmptyOrWhiteSpace(latitude);
         }
-
+        #endregion
+        #region private methods
         static bool IsNullEmptyOrWhiteSpace(string str)
         {
             return String.IsNullOrEmpty(str) || String.IsNullOrWhiteSpace(str);
         }
-
+        #endregion
     }
 }

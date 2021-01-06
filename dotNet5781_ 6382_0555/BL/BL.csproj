@@ -45,6 +45,8 @@
     <Compile Include="BLFactory.cs" />
     <Compile Include="BO\BOAddStation.cs" />
     <Compile Include="BO\BOBus.cs" />
+    <Compile Include="BO\BOLine.cs" />
+    <Compile Include="BO\BOLineStation.cs" />
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOStation.cs" />
     <Compile Include="BO\BOUser.cs" />

@@ -258,6 +258,83 @@ namespace BL
                 throw ex;
             }
         }
+        public BOLine GetLine(int id)
+        {
+            DAOLine daoLine = dataAPI.GetById<DAOLine>(id);
+            if (daoLine == null) {
+                throw new ItemNotFoundException("Can't find a line with that id.");
+            }
+            BOLine ret = new BOLine(daoLine);
+            ret.Path = AllLineStation(ret);
+            return ret;
+        }
+
+        public IEnumerable<BOLine> GetAllLines(int lineNumber)
+        {
+            return dataAPI.All<DAOLine>()
+                 .Select(line =>
+                 {
+                     BOLine ret = new BOLine(line);
+                     ret.Path = AllLineStation(ret);
+                     return ret;
+                 });
+        }
+
+        public IEnumerable<BOLine> GetAllLines()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveLine(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddLine(BOLine toAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BOLine AddStationToLine(BOStation station, int index = -1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BOLine RemoveStationFromLine(int index)
+        {
+            throw new NotImplementedException();
+        }
         #endregion Implementation
+        #region private methods
+        private List<BOStation> AllLineStation(BOLine line) {
+            return dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)
+                   .Join(dataAPI.All<DAOStation>(),
+                   s => s.StationId,
+                   s => s.Id,
+                   (lineStation, station) => new { station = new BOStation(station), nextStationId = lineStation.NextStationId, index = lineStation.Index })
+                   .Join(dataAPI.All<DAOAdjacentStations>(),
+                   s => s.station.Code,
+                   s => s.FromStationId,
+                   (stationData, adjacentStation) => new { stationData = stationData, adjacentStationData = adjacentStation })
+                   .Where(data => data.stationData.nextStationId == data.adjacentStationData.ToStationId)
+                   .Select(data => new
+                   {
+                       station = new BOLineStation
+                       {
+                           Code = data.stationData.station.Code,
+                           Name = data.stationData.station.Name,
+                           Line = line,
+                           DistanceFromNext = data.adjacentStationData.Distance,
+                           TimeFromNext = data.adjacentStationData.Time
+                       },
+                       data.stationData.index
+                   })
+                   .OrderBy(station => station.index)
+                   .Select(station => (station.station as BOStation))
+                   .ToList();
+        }
+
+       
+        #endregion
     }
 }
