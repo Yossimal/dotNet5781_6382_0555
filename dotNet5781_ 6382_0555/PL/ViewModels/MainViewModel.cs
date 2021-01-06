@@ -9,15 +9,16 @@ namespace PL.ViewModels
 {
     class MainViewModel : Conductor<object>
     {
-        private static Dictionary<string, Type> pages = new Dictionary<string, Type>();
+        private static Dictionary<string, Type> _pages = new Dictionary<string, Type>();
         private string _currentPage;
-        private readonly Stack<string> _navigation=new Stack<string>();
-        private string _title="";
+        private readonly Stack<string> _navigation = new Stack<string>();
+        private string _title = "";
         private object _lastScreen;
         public string Title
         {
             get => _title;
-            set {
+            set
+            {
                 _title = value;
                 NotifyOfPropertyChange(() => Title);
             }
@@ -33,19 +34,21 @@ namespace PL.ViewModels
         }
         private void InitializePages()
         {
-            pages.Add("Login", typeof(LoginViewModel));
-            pages.Add("Register", typeof(RegisterViewModel));
-            pages.Add("ManagerHome", typeof(ManagerHomeViewModel));
-            pages.Add("ShowBuses", typeof(ShowBusesViewModel));
-            pages.Add("ShowStations", typeof(ShowStationsViewModel));
-            pages.Add("ShowLines", typeof(ShowLinesViewModel));
-            pages.Add("AddBus", typeof(AddBusViewModel));
-            pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
-            pages.Add("ShowStationData", typeof(ShowStationDataViewModel));
+            _pages.Add("AddBus", typeof(AddBusViewModel));
+            _pages.Add("AddStation", typeof(AddStationViewModel));
+            _pages.Add("Login", typeof(LoginViewModel));
+            _pages.Add("ManagerHome", typeof(ManagerHomeViewModel));
+            _pages.Add("Register", typeof(RegisterViewModel));
+            _pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
+            _pages.Add("ShowBuses", typeof(ShowBusesViewModel));
+            _pages.Add("ShowLines", typeof(ShowLinesViewModel));
+            _pages.Add("ShowStations", typeof(ShowStationsViewModel));
+            _pages.Add("ShowStationData", typeof(ShowStationDataViewModel));
         }
-        public void LoadPage(string toLoad,params object[] parameters)
+        public void LoadPage(string toLoad, params object[] parameters)
         {
-            if (_currentPage != null) {
+            if (_currentPage != null)
+            {
                 _navigation.Push(_currentPage);
                 NotifyOfPropertyChange(() => CanBack);
             }
@@ -53,15 +56,32 @@ namespace PL.ViewModels
             List<object> constructorParams = new List<object>();
             constructorParams.Add(this);
             constructorParams.AddRange(parameters);
-            object pageToLoad = Activator.CreateInstance(pages[toLoad], constructorParams.ToArray());
-            if (_lastScreen != null) {
+            object pageToLoad = Activator.CreateInstance(_pages[toLoad], constructorParams.ToArray());
+            if (_lastScreen != null)
+            {
                 DeactivateItem(_lastScreen, true);
             }
             _lastScreen = pageToLoad;
             ActivateItem(pageToLoad);
             Title = _currentPage;
         }
-        public void Back() {
+        public void LoadPageNoBack(string toLoad, params object[] parameters)
+        {
+            _currentPage = toLoad;
+            List<object> constructorParams = new List<object>();
+            constructorParams.Add(this);
+            constructorParams.AddRange(parameters);
+            object pageToLoad = Activator.CreateInstance(_pages[toLoad], constructorParams.ToArray());
+            if (_lastScreen != null)
+            {
+                DeactivateItem(_lastScreen, true);
+            }
+            _lastScreen = pageToLoad;
+            ActivateItem(pageToLoad);
+            Title = _currentPage;
+        }
+        public void Back()
+        {
             _currentPage = null;//set the current page to null so the LoadPage wont set the last page to the current page
             LoadPage(_navigation.Pop());
             NotifyOfPropertyChange(() => CanBack);

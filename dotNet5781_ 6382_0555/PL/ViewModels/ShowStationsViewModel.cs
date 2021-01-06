@@ -41,5 +41,8 @@ namespace PL.ViewModels
                 _mainViewModel.LoadPage("ShowStationData", SelectedStation);
             }
         }
+        public void AddStation() {
+            _mainViewModel.LoadPage("AddStation");
+        }
     }
 }

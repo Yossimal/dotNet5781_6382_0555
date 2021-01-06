@@ -6,7 +6,7 @@ namespace DALAPI.DAO
 {
     public class DAOLineStation
     {
-        const bool IsRunningId = true;
+        public bool IsRunningId => true;
         public bool IsDeleted { get; set; }
         public int Id;
         public int LineId { get; set; }

@@ -7,7 +7,7 @@ namespace DALAPI.DAO
     public class DAOStation
     {
         #region BackgroundData
-        const bool IsRunningId = false;
+        public bool IsRunningId => false;
         public bool IsDeleted { get; set; }
         public int Id { get; set; }
         #endregion

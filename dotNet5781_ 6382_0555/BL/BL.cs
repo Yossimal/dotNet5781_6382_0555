@@ -107,7 +107,7 @@ namespace BL
             }
             catch (Exception ex)
             {
-                if(ex is DALAPI.ItemNotFoundException)
+                if (ex is DALAPI.ItemNotFoundException)
                 {
                     throw new ItemNotFoundException("Can't find the bus with that license number", ex);
                 }
@@ -130,7 +130,8 @@ namespace BL
             }
             catch (Exception ex)
             {
-                if (ex is DALAPI.ItemNotFoundException) {
+                if (ex is DALAPI.ItemNotFoundException)
+                {
                     throw new ItemNotFoundException("Can't find the bus with that license number", ex);
                 }
                 throw ex;
@@ -145,7 +146,8 @@ namespace BL
             }
             catch (Exception ex)
             {
-                if (ex is DALAPI.ItemNotFoundException) {
+                if (ex is DALAPI.ItemNotFoundException)
+                {
                     throw new ItemNotFoundException("Can't find the bus with that license number", ex);
                 }
                 throw ex;
@@ -177,8 +179,9 @@ namespace BL
             }
             catch (Exception ex)
             {
-                if (ex is DALAPI.ItemAlreadyExistsException) {
-                    throw new ItemAlreadyExistsException("Can't find the bus with that license number", ex);
+                if (ex is DALAPI.ItemAlreadyExistsException)
+                {
+                    throw new ItemAlreadyExistsException("There is already a bus with that license number.", ex);
                 }
                 throw ex;
             }
@@ -194,7 +197,8 @@ namespace BL
         public BOBus GetBus(int licenseNumber)
         {
             DAOBus toReturn = dataAPI.GetById<DAOBus>(licenseNumber);
-            if (toReturn == null) {
+            if (toReturn == null)
+            {
                 throw new ItemNotFoundException("Can't find the bus with the given license number");
             }
             return new BOBus
@@ -207,6 +211,52 @@ namespace BL
                 Status = toReturn.Status,
                 TimeToReady = toReturn.TimeToReady
             };
+        }
+        public IEnumerable<BOStation> AllStations()
+        {
+            return dataAPI.All<DAOStation>().Select(station =>
+            {
+                return new BOStation
+                {
+                    Code = station.Code,
+                    Name = station.Name
+                };
+            });
+        }
+        public BOStation GetStation(int code)
+        {
+            return new BOStation(dataAPI.GetById<DAOStation>(code));
+        }
+        public bool DeleteStation(int code)
+        {
+            DAOStation toRemove = new DAOStation
+            {
+                Id = code
+            };
+            return dataAPI.Remove(toRemove);
+        }
+        public int AddStation(BOAddStation toAdd)
+        {
+
+            DAOStation daoToAdd = new DAOStation
+            {
+                Id = toAdd.Station.Code,
+                Name = toAdd.Station.Name,
+                Longitude=toAdd.Longitude,
+                Latitude=toAdd.Latitude
+            };
+            try
+            {
+                return dataAPI.Add(daoToAdd);
+            }
+            catch (Exception ex)
+            {
+                if (ex is DALAPI.ItemAlreadyExistsException)
+                {
+                    throw new ItemAlreadyExistsException("There is already a station with that code", ex);
+                }
+                throw ex;
+            }
         }
         #endregion Implementation
     }

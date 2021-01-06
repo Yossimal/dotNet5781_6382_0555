@@ -32,7 +32,7 @@ namespace PL.ViewModels
                 _busToAdd.LastCareDate = value;
                 NotifyOfPropertyChange(() => LastCareDate);
                 NotifyOfPropertyChange(() => BusToAdd);
-                
+
             }
         }
         public BusModel BusToAdd
@@ -113,9 +113,15 @@ namespace PL.ViewModels
                 logic.AddBus(BusToAdd.ToBO());
                 _mainViewModel.LoadPage("ShowBuses");
             }
-            catch (Exception ex) {
-                if (ex is ItemAlreadyExistsException) {
+            catch (Exception ex)
+            {
+                if (ex is ItemAlreadyExistsException)
+                {
                     MessageBox.Show("There is already a bus with that license number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("An unexpected error was occured while trying to add the bus.\nIf that problem shows again contact us.");
                 }
             }
         }

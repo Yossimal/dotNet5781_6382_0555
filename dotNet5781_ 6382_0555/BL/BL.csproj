@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BL.cs" />
     <Compile Include="BLFactory.cs" />
+    <Compile Include="BO\BOAddStation.cs" />
     <Compile Include="BO\BOBus.cs" />
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOStation.cs" />

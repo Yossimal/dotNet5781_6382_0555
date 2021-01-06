@@ -36,11 +36,11 @@ namespace PL.ViewModels
                 if (logic.DeleteBus(LicenseNumber))
                 {
                     MessageBox.Show("The bus has been removed successfuly", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _mainViewModel.LoadPage("ShowBuses");
+                    _mainViewModel.LoadPageNoBack("ShowBuses");
                 }
                 else
                 {
-                    MessageBox.Show("Something went wrong with the proccess.\n If that problec comes more times contact us", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Something went wrong with the proccess.\n If that problem comes more times contact us", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     _mainViewModel.LoadPage("ShowBuses");
                 }
             }

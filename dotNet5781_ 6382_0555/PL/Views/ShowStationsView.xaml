@@ -40,10 +40,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock x:Name="Name" Grid.Column="0" cal:Bind.Model="{Binding}"/>
-                        <TextBlock x:Name="Code" Grid.Column="1" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text="   " Grid.Column="1"/>
+                        <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

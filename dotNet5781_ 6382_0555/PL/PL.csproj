@@ -71,6 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\AddStationModel.cs" />
     <Compile Include="Models\BusModel.cs" />
     <Compile Include="Models\LineModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\LineStationModel.cs" />
     <Compile Include="ViewModels\AddBusViewModel.cs" />
+    <Compile Include="ViewModels\AddStationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManagerHomeViewModel.cs" />
@@ -89,6 +91,9 @@
     <Compile Include="ViewModels\ShowStationsViewModel.cs" />
     <Compile Include="Views\AddBusView.xaml.cs">
       <DependentUpon>AddBusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddStationView.xaml.cs">
+      <DependentUpon>AddStationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -154,6 +159,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AddBusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddStationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

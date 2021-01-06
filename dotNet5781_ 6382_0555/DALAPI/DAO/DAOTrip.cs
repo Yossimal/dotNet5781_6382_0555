@@ -7,7 +7,7 @@ namespace DALAPI.DAO
 {
     public class DAOTrip
     {
-        const bool IsRunningId = true;
+        public bool IsRunningId => true;
         public bool IsDeleted { get; set; }
         public int Id;
         public int UserId { get; set; }

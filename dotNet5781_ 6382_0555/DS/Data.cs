@@ -13,8 +13,8 @@ namespace DS
         {
             InitializeUsers();
             InitializeBuses();
+            InitializeStations();
         }
-
         private static void InitializeBuses()
         {
             Type busType = typeof(DAOBus);
@@ -88,7 +88,33 @@ namespace DS
         private static void InitializeStations() {
             Type stationType = typeof(DAOStation);
             Database.Add(stationType, new List<object>());
-
+            Add(stationType, new DAOStation { 
+                Id=111111,
+                Longitude=33.52,
+                Latitude=42.758,
+                Name="Station 1"
+            });
+            Add(stationType, new DAOStation
+            {
+                Id = 444444,
+                Longitude = 31.52,
+                Latitude = 42.758,
+                Name = "Station 4"
+            });
+            Add(stationType, new DAOStation
+            {
+                Id = 222222,
+                Longitude = 33.52547,
+                Latitude = 42.7584125,
+                Name = "Station 2"
+            });
+            Add(stationType, new DAOStation
+            {
+                Id = 333333,
+                Longitude = 38.5454672,
+                Latitude = 37.7582534,
+                Name = "Station 3"
+            });
         }
         private static void AddWithRunningId(Type type, object toAdd)
         {
