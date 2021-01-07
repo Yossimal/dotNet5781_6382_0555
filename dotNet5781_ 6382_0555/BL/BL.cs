@@ -1,9 +1,13 @@
 ﻿using BL.BO;
+using BL.Internal_Objects;
+using BL.RestfulAPIModels;
 using DALAPI;
 using DALAPI.DAO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace BL
 {
@@ -242,8 +246,8 @@ namespace BL
             {
                 Id = toAdd.Station.Code,
                 Name = toAdd.Station.Name,
-                Longitude=toAdd.Longitude,
-                Latitude=toAdd.Latitude
+                Longitude = toAdd.Longitude,
+                Latitude = toAdd.Latitude
             };
             try
             {
@@ -261,7 +265,8 @@ namespace BL
         public BOLine GetLine(int id)
         {
             DAOLine daoLine = dataAPI.GetById<DAOLine>(id);
-            if (daoLine == null) {
+            if (daoLine == null)
+            {
                 throw new ItemNotFoundException("Can't find a line with that id.");
             }
             BOLine ret = new BOLine(daoLine);
@@ -306,7 +311,8 @@ namespace BL
         }
         #endregion Implementation
         #region private methods
-        private List<BOStation> AllLineStation(BOLine line) {
+        private List<BOStation> AllLineStation(BOLine line)
+        {
             return dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)
                    .Join(dataAPI.All<DAOStation>(),
                    s => s.StationId,
@@ -333,8 +339,20 @@ namespace BL
                    .Select(station => (station.station as BOStation))
                    .ToList();
         }
+        private async Task<double> GetDistanceBetweenStations(Station from, Station to)
+        {
+            Distance dist = new Distance();
+            dist.FromLat = from.Location.Latitude;
+            dist.FromLon = from.Location.Longitude;
+            dist.ToLon = to.Location.Longitude;
+            dist.ToLat = to.Location.Latitude;
+            using (HttpResponseMessage response = await APIHelper.ApiClient.GetAsync(dist.RequestURL))
+            {
+                string JSONText = await response.Content.ReadAsStringAsync();
+                return dist.GetDistance(JSONText);
+            }
+        }
 
-       
         #endregion
     }
 }
