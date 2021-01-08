@@ -1,5 +1,6 @@
 ﻿using BL.BO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BL
 {
@@ -22,9 +23,11 @@ namespace BL
         IEnumerable<BOLine> GetAllLines(int lineNumber);
         IEnumerable<BOLine> GetAllLines();
         bool RemoveLine(int id);
-        int AddLine(BOLine toAdd);
-        BOLine AddStationToLine(BOStation station,int index=-1);
+        Task<int> AddLine(BOLine toAdd);
+        void AddLineConnectionless(BOLine toAdd);
+        BOLine AddStationToLine(int stationCode,int lineId,int index=-1);
         BOLine RemoveStationFromLine(int index);
+        bool IsInternetAvailable();
 
 
 

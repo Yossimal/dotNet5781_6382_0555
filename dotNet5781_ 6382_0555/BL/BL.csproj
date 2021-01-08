@@ -61,6 +61,7 @@
     <Compile Include="Exceptions\BadPasswordException.cs" />
     <Compile Include="Exceptions\BadUsernameException.cs" />
     <Compile Include="Exceptions\BusNotAvailableException.cs" />
+    <Compile Include="Exceptions\InnerItemNotFoundException.cs" />
     <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="IBL.cs" />

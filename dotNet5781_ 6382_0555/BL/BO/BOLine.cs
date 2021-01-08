@@ -17,8 +17,21 @@ namespace BL.BO
         #region properties
         public int Id { get; set; }
         public int LineNumber { get; set; }
-        public List<BOStation> Path { get; set; }
-        public string Area => _area.ToString();
+        public IEnumerable<BOStation> Path { get; set; }
+        public string Area { 
+            get=> _area.ToString();
+            set {
+                if (Enum.TryParse<Area>(value, out _))
+                {
+                    _area = (Area)Enum.Parse(typeof(Area), value);
+                }
+            }
+        }
+        internal Area EnumArea {
+            get => _area;
+            set => _area = value;
+        }
+        
         #endregion
         #region constructors
         public BOLine() { }

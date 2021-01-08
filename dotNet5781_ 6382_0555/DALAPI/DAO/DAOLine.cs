@@ -9,8 +9,8 @@ namespace DALAPI.DAO
     {
         #region BackgroundData
         //The Code cant be the id because there us many lines with the same number
-        public bool IsRunningId => true;
-        public bool IsDeleted { get; set; }
+        internal bool IsRunningId => true;
+        internal bool IsDeleted { get; set; }
         public int Id { get; set; }
         #endregion
         #region RealData
