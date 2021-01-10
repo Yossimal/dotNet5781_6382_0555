@@ -17,8 +17,11 @@ namespace DS
             InitializeAdjucentStations();
             InitializeLineStations();
             InitializeLines();
-
         }
+        /// <summary>
+        /// Data were written automaically (usind ts) and added 
+        /// </summary>
+        #region initializers
         private static void InitializeBuses()
         {
             Type busType = typeof(DAOBus);
@@ -802,8 +805,8 @@ namespace DS
                 Distance = 35.299999490375214,
                 Time = TimeSpan.FromHours(0.6708095283822244)
             });
-
         }
+        #endregion
         private static void AddWithRunningId(Type type, object toAdd)
         {
             if (!Database.ContainsKey(type))

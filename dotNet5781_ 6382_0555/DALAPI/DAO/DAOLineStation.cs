@@ -4,6 +4,10 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Line's Station - represents a station in line
+    /// any line has an ID
+    /// </summary>
     public class DAOLineStation
     {
         #region Backgroun Data

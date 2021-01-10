@@ -5,6 +5,10 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Line entity - represents basic data of line
+    /// line represents by code number, first and last stations, and area
+    /// </summary>
     public class DAOLine
     {
         #region BackgroundData

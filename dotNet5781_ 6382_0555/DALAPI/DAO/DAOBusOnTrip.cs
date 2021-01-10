@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Bus on Trip entity - represents bus on trip
+    /// </summary>
     public class DAOBusOnTrip
     {
         public bool IsRunningId => true;

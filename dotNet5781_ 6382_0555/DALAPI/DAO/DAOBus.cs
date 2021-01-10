@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Bus entity - represents basic data of a bus
+    /// </summary>
     public class DAOBus
     {
         #region BackgroundData
