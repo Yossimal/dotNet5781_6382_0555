@@ -7,8 +7,8 @@ namespace DALAPI.DAO
     public class DAOLineStation
     {
         #region Backgroun Data
-        internal bool IsRunningId => true;
-        internal bool IsDeleted { get; set; }
+        public bool IsRunningId => true;
+        public bool IsDeleted { get; set; }
         public int Id { get; set; }
         #endregion
         #region real data

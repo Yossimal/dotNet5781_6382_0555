@@ -11,7 +11,11 @@ namespace BL.BO
     {
         public int Code { get; set; }
         public string Name { get; set; }
-        public BOStation(DAOStation station) { }
+        public BOStation(DAOStation station)
+        {
+            this.Code = station.Code;
+            this.Name = station.Name;
+        }
         public BOStation() { }
     }
 }

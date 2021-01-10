@@ -8,8 +8,8 @@ namespace DALAPI.DAO
     public class DAOTrip
     {
         #region background data
-        internal bool IsRunningId => true;
-        internal bool IsDeleted { get; set; }
+        public bool IsRunningId => true;
+        public bool IsDeleted { get; set; }
         public int Id;
         #endregion
         #region real data

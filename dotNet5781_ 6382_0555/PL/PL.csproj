@@ -79,6 +79,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\LineStationModel.cs" />
     <Compile Include="ViewModels\AddBusViewModel.cs" />
+    <Compile Include="ViewModels\AddLineViewModel.cs" />
     <Compile Include="ViewModels\AddStationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -86,11 +87,15 @@
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\ShowBusDataViewModel.cs" />
     <Compile Include="ViewModels\ShowBusesViewModel.cs" />
+    <Compile Include="ViewModels\ShowLineDataViewModel.cs" />
     <Compile Include="ViewModels\ShowLinesViewModel.cs" />
     <Compile Include="ViewModels\ShowStationDataViewModel.cs" />
     <Compile Include="ViewModels\ShowStationsViewModel.cs" />
     <Compile Include="Views\AddBusView.xaml.cs">
       <DependentUpon>AddBusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddLineView.xaml.cs">
+      <DependentUpon>AddLineView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddStationView.xaml.cs">
       <DependentUpon>AddStationView.xaml</DependentUpon>
@@ -112,6 +117,9 @@
     </Compile>
     <Compile Include="Views\ShowBusesView.xaml.cs">
       <DependentUpon>ShowBusesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowLineDataView.xaml.cs">
+      <DependentUpon>ShowLineDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowLinesView.xaml.cs">
       <DependentUpon>ShowLinesView.xaml</DependentUpon>
@@ -162,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddLineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddStationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowBusesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowLineDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

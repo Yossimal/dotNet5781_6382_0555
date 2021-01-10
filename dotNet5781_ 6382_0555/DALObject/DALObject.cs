@@ -218,16 +218,18 @@ namespace DAL
         public IEnumerable<DAOType> Where<DAOType>(Func<DAOType, bool> condition) where DAOType : class, new()
         {
             Type retType = typeof(DAOType);
-            if (!Data.Database.ContainsKey(retType))
+            bool test = Data.Database.ContainsKey(retType);
+            if (!test)
             {
                 return new List<DAOType>();
             }
 
-            return Data.Database[retType].Where(o =>
+            var temp = Data.Database[retType].Where(o =>
             {
                 DAOType dat = o as DAOType;
-                return condition(dat)&&!o.IsDeleted();
-            }).Select(o => (o as DAOType).Clone());
+                return condition(dat) && !o.IsDeleted();
+            });
+            return temp.Select(o => (o as DAOType).Clone());
 
         }
 

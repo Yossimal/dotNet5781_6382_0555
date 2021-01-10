@@ -11,7 +11,7 @@ namespace PL.Models
     {
         public int Id { get; set; }
         public int Code { get; set; }
-        BindableCollection<StationModel> Stations { get; set; }
+        public BindableCollection<StationModel> Stations { get; set; }
         //In PL the area is string because we need to show it without using logic
         public string Area { get; set; }
     }

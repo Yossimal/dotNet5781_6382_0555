@@ -24,10 +24,10 @@ namespace BL
         IEnumerable<BOLine> GetAllLines();
         bool RemoveLine(int id);
         Task<int> AddLine(BOLine toAdd);
-        void AddLineConnectionless(BOLine toAdd);
-        BOLine AddStationToLine(int stationCode,int lineId,int index=-1);
-        BOLine RemoveStationFromLine(int index);
+        Task<BOLine> AddStationToLine(int stationCode,int lineId,int index=-1);
+        Task<BOLine> RemoveStationFromLine(int index);
         bool IsInternetAvailable();
+        IEnumerable<string> GetAllAreas();
 
 
 
