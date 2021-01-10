@@ -35,6 +35,7 @@ namespace PL.ViewModels
         private void InitializePages()
         {
             _pages.Add("AddBus", typeof(AddBusViewModel));
+            _pages.Add("AddLine", typeof(AddLineViewModel));
             _pages.Add("AddStation", typeof(AddStationViewModel));
             _pages.Add("Login", typeof(LoginViewModel));
             _pages.Add("ManagerHome", typeof(ManagerHomeViewModel));
@@ -45,7 +46,6 @@ namespace PL.ViewModels
             _pages.Add("ShowLines", typeof(ShowLinesViewModel));
             _pages.Add("ShowStations", typeof(ShowStationsViewModel));
             _pages.Add("ShowStationData", typeof(ShowStationDataViewModel));
-            
         }
         public void LoadPage(string toLoad, params object[] parameters)
         {

@@ -13,6 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -24,12 +25,15 @@
         <Label Grid.Row="0" Grid.Column="0" FontSize="20"  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">Insert Line Data</Label>
         <!-- Row 1 -->
         <Label Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Content="Line Number"></Label>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" x:Name="LineNumber" MinWidth="100"></TextBox>
-        <!--Row 2 -->
-        <ComboBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" x:Name="StationsList" SelectedValue="{Binding Path=SelectedStation,Mode=TwoWay}" DisplayMemberPath="Name"/>
-        <Button Grid.Column="1" Grid.Row="2" x:Name="AddStation" Content="Add this station" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <!-- Row 3 -->
-        <ListBox x:Name="Lines" Grid.Row="2" Grid.Column="0" SelectedItem="{Binding Path=SelectedLine , Mode=OneWayToSource}" >
+        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" x:Name="LineNumber" MinWidth="100"></TextBox>
+        <!-- Row 2-->
+        <Label Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Content="Line Area"></Label>
+        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Areas" SelectedValue="{Binding Path=SelectedArea,Mode=TwoWay}"/>
+        <!--Row 3 -->
+        <ComboBox Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" x:Name="Stations" SelectedValue="{Binding Path=SelectedStation,Mode=TwoWay}" DisplayMemberPath="Name"/>
+        <Button Grid.Column="1" Grid.Row="3" x:Name="AddStation" Content="Add this station" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!-- Row 4 -->
+        <ListBox x:Name="Path" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -44,7 +48,7 @@
                         <TextBlock Grid.Column="1" Text="      "/>
                         <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
                         <TextBlock Grid.Column="3" Text="      "/>
-                        <Button Content="Remove" Grid.Column="4" Visibility="{Binding Path=ControlsVisibility,Mode=OneWay}">
+                        <Button Content="Remove" Grid.Column="4">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <cal:ActionMessage MethodName="RemoveStation">
@@ -57,8 +61,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <!-- Row 4-->
-        <Button Content="Add The Line" x:Name="AddLine" Grid.Row="4" Grid.Column="0"/>
-        <Button Content="Clear Text" x:Name="ClearText" Grid.Row="4" Grid.Column="1"/>
+        <!-- Row 5-->
+        <Button Content="Add The Line" x:Name="AddLine" Grid.Row="5" Grid.Column="0"/>
+        <Button Content="Clear Text" x:Name="ClearText" Grid.Row="5" Grid.Column="1"/>
     </Grid>
 </UserControl>

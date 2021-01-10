@@ -306,6 +306,7 @@ namespace BL
         {
             List<BOStation> stations = toAdd.Path.ToList();
             await AddAllStationsToDatabase(stations);
+
             DAOLine daoToAdd = new DAOLine
             {
                 Area = toAdd.EnumArea,
@@ -313,15 +314,36 @@ namespace BL
                 FirstStationId = toAdd.Path.First().Code,
                 LastStationId = toAdd.Path.Last().Code,
             };
+            int toAddId = 0;
             try
             {
-                return dataAPI.Add(daoToAdd);
+                toAddId = dataAPI.Add(daoToAdd);
             }
             catch (Exception ex)
             {
                 //currently there is no suspect exceptions from the data API.
                 throw ex;
             }
+            for (int i = 0; i < stations.Count; i++)
+            {
+                DAOLineStation lineStation = new DAOLineStation
+                {
+                    Index = i,
+                    LineId = toAddId,
+                    StationId = stations[i].Code,
+                    NextStationId = (i == stations.Count - 1 ? -1 : stations[i + 1].Code),
+                    PrevStationId = (i == 0 ? -1 : stations[i - 1].Code)
+                };
+                try
+                {
+                    dataAPI.Add(lineStation);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return toAddId;
         }
         public async Task<BOLine> AddStationToLine(int stationCode, int lineId, int index = -1)
         {
@@ -423,14 +445,14 @@ namespace BL
         }
         public IEnumerable<string> GetAllAreas()
         {
-            return new string[5]{"General","North","South","Center","Jerusalem"};
+            return new string[5] { "General", "North", "South", "Center", "Jerusalem" };
         }
         #endregion Implementation
         #region private methods
         private List<BOStation> AllLineStation(BOLine line)
         {
 
-            return dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)
+            List<BOStation> ret = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)
                           .Join(dataAPI.All<DAOStation>(),
                            s => s.StationId,
                            s => s.Id,
@@ -454,6 +476,17 @@ namespace BL
                           }).OrderBy(station => station.index)
                            .Select(station => (station.station as BOStation))
                            .ToList();
+            ////We need to add the last station
+            //DAOLineStation lastLineStation = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id && !ret.Any(x => x.Code == s.Id)).First();
+            //DAOStation lastStation = dataAPI.Where<DAOStation>(s => s.Code == lastLineStation.StationId).First();
+            //BOStation lastStationBO = new BOStation
+            //{
+            //    Code=lastLineStation.Id,
+            //    Name=lastStation.Name
+            //};
+            //ret.Add(lastStationBO);
+            //TODO : fix the last station problem
+            return ret;
         }
         private async Task<double> GetDistanceBetweenStations(DAOStation from, DAOStation to)
         {
@@ -561,7 +594,7 @@ namespace BL
             return lst.First(t => comperer(t) == minVal);
         }
 
-        
+
         #endregion
     }
 }

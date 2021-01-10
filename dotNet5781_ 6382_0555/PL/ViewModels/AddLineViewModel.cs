@@ -1,11 +1,14 @@
 ﻿using BL;
+using BL.BO;
 using Caliburn.Micro;
 using PL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels
 {
@@ -16,19 +19,34 @@ namespace PL.ViewModels
         private BindableCollection<string> _areas;
         private IBL logic = BLFactory.API;
         private BindableCollection<StationModel> _path;
+        private StationModel _selectedStation;
+        private BindableCollection<StationModel> _stations;
 
         public AddLineViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
+
             Areas = new BindableCollection<string>(logic.GetAllAreas());
-            _lineToAdd = new LineModel {
+            _lineToAdd = new LineModel
+            {
                 Area = Areas[0],
                 Code = 0,
                 Stations = new BindableCollection<StationModel>()
             };
             Path = new BindableCollection<StationModel>();
-        }
+            IEnumerable<StationModel> allStations = logic.AllStations().Select(station => new StationModel { Code = station.Code.ToString(), Name = station.Name });
+            Stations = new BindableCollection<StationModel>(allStations);
+            SelectedStation = Stations[0];
 
+
+        }
+        public bool CanAddLine
+        {
+            get
+            {
+                return int.Parse(LineNumber) > 0 && Path.Count > 1;
+            }
+        }
         public LineModel LineToAdd
         {
             get => _lineToAdd;
@@ -50,6 +68,8 @@ namespace PL.ViewModels
                     NotifyOfPropertyChange(() => LineNumber);
                     NotifyOfPropertyChange(() => LineToAdd);
                     NotifyOfPropertyChange(() => SelectedArea);
+                    NotifyOfPropertyChange(() => CanAddLine);
+                    NotifyOfPropertyChange(() => CanClearText);
                 }
             }
         }
@@ -63,7 +83,18 @@ namespace PL.ViewModels
                     _lineToAdd.Area = value;
                     NotifyOfPropertyChange(() => SelectedArea);
                     NotifyOfPropertyChange(() => LineToAdd);
+                    NotifyOfPropertyChange(() => CanAddLine);
+                    NotifyOfPropertyChange(() => CanClearText);
                 }
+            }
+        }
+        public BindableCollection<StationModel> Stations
+        {
+            get => _stations;
+            set
+            {
+                _stations = value;
+                NotifyOfPropertyChange(() => Stations);
             }
         }
         public BindableCollection<string> Areas
@@ -82,16 +113,77 @@ namespace PL.ViewModels
             {
                 _path = value;
                 NotifyOfPropertyChange(() => Path);
+                NotifyOfPropertyChange(() => CanAddLine);
             }
         }
-       
-        public bool CanClearText(string lineNumber) {
-            return  int.Parse(lineNumber)<=0;    
+        public StationModel SelectedStation
+        {
+            get => _selectedStation;
+            set
+            {
+                _selectedStation = value;
+                NotifyOfPropertyChange(() => SelectedStation);
+                NotifyOfPropertyChange(() => CanAddStation);
+            }
         }
-        public void ClearText(string lineNumber) {
+        public bool CanAddStation
+        {
+            get => !Path.Contains(SelectedStation);
+        }
+        public bool CanClearText
+        {
+            get
+            {
+                return int.Parse(LineNumber) > 0
+                    || Path.Count > 0
+                    || SelectedArea != Areas[0];
+            }
+        }
+
+        public void ClearText(string lineNumber)
+        {
             SelectedArea = Areas[0];
             lineNumber = "0";
             Path = new BindableCollection<StationModel>();
+            SelectedStation = Stations[0];
+        }
+
+        public void AddStation()
+        {
+            Path.Add(SelectedStation);
+            NotifyOfPropertyChange(() => Path);
+            NotifyOfPropertyChange(() => CanAddStation);
+            NotifyOfPropertyChange(() => CanAddLine);
+            NotifyOfPropertyChange(() => CanClearText);
+        }
+        public void RemoveStation(string stationToRemoveCode)
+        {
+            StationModel toRemove = Path.Where(station => station.Code == stationToRemoveCode).First();
+            Path.Remove(toRemove);
+        }
+        public async void AddLine()
+        {
+            if (!logic.IsInternetAvailable())
+            {
+                MessageBox.Show("You mus have an internet connection for that action.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            BOLine lineToAdd = new BOLine
+            {
+                Area = SelectedArea,
+                LineNumber = int.Parse(LineNumber),
+                Path = Path.Select(station => new BOStation { Code = int.Parse(station.Code), Name = station.Name })
+            };
+            try
+            {
+                int lineId = await logic.AddLine(lineToAdd);
+                MessageBox.Show("The line has been added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                _mainViewModel.LoadPage("ShowLines");
+            }
+            catch
+            {
+                MessageBox.Show("Unexpected error was occured while trying to add the line.\n Try to check your internet connection.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #region private methods
         static bool IsNullEmptyOrWhiteSpace(string str)

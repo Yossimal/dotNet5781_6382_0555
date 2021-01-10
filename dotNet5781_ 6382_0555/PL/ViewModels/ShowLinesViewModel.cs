@@ -53,7 +53,7 @@ namespace PL.ViewModels
         }
         public void AddLine()
         {
-
+            _mainViewModel.LoadPage("AddLine");
         }
         public void ShowLineData()
         {
