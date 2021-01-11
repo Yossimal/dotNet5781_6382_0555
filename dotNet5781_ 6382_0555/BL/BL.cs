@@ -447,6 +447,66 @@ namespace BL
         {
             return new string[5] { "General", "North", "South", "Center", "Jerusalem" };
         }
+
+        public BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId,out BOStation next,out BOStation prev, bool getFullLine = false)
+        {
+            DAOStation station = dataAPI.GetById<DAOStation>(stationId);
+            DAOLineStation lineStation = dataAPI.Where<DAOLineStation>(s => s.StationId == stationId && s.LineId == lineId).First();
+            DAOLine line = dataAPI.GetById<DAOLine>(lineId);
+            BOLine lineToRet = null;
+            next = null;
+            prev = null;
+            if (getFullLine)
+            {
+                lineToRet = GetLine(lineId);
+            }
+            else
+            {
+                lineToRet = new BOLine
+                {
+                    EnumArea = line.Area,
+                    Id = line.Id,
+                    LineNumber = line.Code,
+                    Path = null
+                };
+            }
+            //For the last station we need another impemitation
+            if (lineStation.NextStationId == -1)
+            {
+                if (lineStation == null || station == null || line == null)
+                {
+                    throw new ItemNotFoundException("Cant find the line staation in the database.");
+                }
+                prev = GetStation(lineStation.PrevStationId);
+                
+                return new BOLineStation
+                {
+                    Code = station.Code,
+                    Line = lineToRet,
+                    Name = station.Name,
+                    DistanceFromNext = 0,
+                    TimeFromNext = new TimeSpan(0)
+                };
+            }
+            //if it not the last station -> we need to get also the distance from the next station
+            DAOAdjacentStations nextStationData = dataAPI.Where<DAOAdjacentStations>(adjacentStations => (adjacentStations.FromStationId == station.Id) && (adjacentStations.ToStationId == lineStation.NextStationId)).First();
+            //if this is the first station we dont want to update the prev station
+            if (lineStation.Index != 0) {
+                prev = GetStation(lineStation.PrevStationId);
+            }
+            if (lineStation == null || station == null || line == null || nextStationData == null)
+            {
+                throw new ItemNotFoundException("Cant find the line staation in the database.");
+            }
+            return new BOLineStation
+            {
+                Code = station.Code,
+                Name = station.Name,
+                DistanceFromNext = nextStationData.Distance,
+                TimeFromNext = nextStationData.Time,
+                Line=lineToRet
+            };
+        }
         #endregion Implementation
         #region private methods
         private List<BOStation> AllLineStation(BOLine line)
@@ -477,15 +537,15 @@ namespace BL
                            .Select(station => (station.station as BOStation))
                            .ToList();
             ////We need to add the last station
-            //DAOLineStation lastLineStation = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id && !ret.Any(x => x.Code == s.Id)).First();
-            //DAOStation lastStation = dataAPI.Where<DAOStation>(s => s.Code == lastLineStation.StationId).First();
-            //BOStation lastStationBO = new BOStation
-            //{
-            //    Code=lastLineStation.Id,
-            //    Name=lastStation.Name
-            //};
-            //ret.Add(lastStationBO);
-            //TODO : fix the last station problem
+            int lastStationIndex = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id).Max(x => x.Index);
+            DAOLineStation lastLineStation = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id && s.Index == lastStationIndex).First();
+            DAOStation lastStation = dataAPI.Where<DAOStation>(s => s.Code == lastLineStation.StationId).First();
+            BOStation lastStationBO = new BOStation
+            {
+                Code = lastStation.Id,
+                Name = lastStation.Name
+            };
+            ret.Add(lastStationBO);
             return ret;
         }
         private async Task<double> GetDistanceBetweenStations(DAOStation from, DAOStation to)
@@ -593,6 +653,8 @@ namespace BL
             int minVal = lst.Min(t => comperer(t));
             return lst.First(t => comperer(t) == minVal);
         }
+
+
 
 
         #endregion

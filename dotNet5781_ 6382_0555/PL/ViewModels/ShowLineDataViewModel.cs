@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PL.Models;
+using BL.BO;
+using BL;
 
 namespace PL.ViewModels
 {
@@ -13,12 +15,15 @@ namespace PL.ViewModels
         private LineModel _line;
         private BindableCollection<StationModel> _linePath;
         private MainViewModel _mainViewModel;
+        private StationModel _selectedStation;
+        private IBL logic = BLFactory.API;
 
         public ShowLineDataViewModel(MainViewModel mainViewModel, LineModel line)
         {
             _mainViewModel = mainViewModel;
             Line = line;
             LinePath = _line.Stations;
+            
         }
 
         public LineModel Line
@@ -56,8 +61,28 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => LinePath);
             }
         }
+        public StationModel SelectedStation
+        {
+            get => _selectedStation;
+            set {
+                _selectedStation = value;
+                NotifyOfPropertyChange(() => SelectedStation);
+            }
+        }
         public void ShowLineStationData() {
-            LineStationModel toSend;
+            if (SelectedStation == null) {
+                return;
+            }
+            BOStation next, prev;
+            BOLineStation boLineStaiton = logic.GetLineStationFromStationAndLine(Line.Id, int.Parse(SelectedStation.Code),out next,out prev);
+            LineStationModel toSend = new LineStationModel {
+                Next = new StationModel(next),
+                Prev=new StationModel(prev),
+                Station=new StationModel(boLineStaiton),
+                DistanceFromNext=boLineStaiton.DistanceFromNext,
+                TimeFromNext=boLineStaiton.TimeFromNext
+            };
+            
         }
 
 

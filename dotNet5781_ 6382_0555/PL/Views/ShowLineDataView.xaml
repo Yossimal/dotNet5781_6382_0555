@@ -25,7 +25,7 @@
         <!-- Row 1-->
         <Label FontSize="20" Grid.Row="1" Grid.Column="0">Line Path</Label>
         <!-- Row 2-->
-        <ListBox x:Name="LinePath" Grid.Row="2" Grid.Column="0" SelectedItem="{Binding Path=SelectedLine , Mode=OneWayToSource}" >
+        <ListBox x:Name="LinePath" Grid.Row="2" Grid.Column="0" SelectedItem="{Binding Path=SelectedStation , Mode=TwoWay}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <cal:ActionMessage MethodName="ShowLineStationData"></cal:ActionMessage>

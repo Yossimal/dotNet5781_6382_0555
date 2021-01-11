@@ -28,6 +28,7 @@ namespace BL
         Task<BOLine> RemoveStationFromLine(int index);
         bool IsInternetAvailable();
         IEnumerable<string> GetAllAreas();
+        BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId,out BOStation next,out BOStation prev,bool fullLine=false);
 
 
 

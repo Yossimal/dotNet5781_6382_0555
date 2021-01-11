@@ -8,11 +8,10 @@ namespace PL.Models
 {
     class LineStationModel
     {
-        public int Id { get;set; }
-        StationModel Station { get; set; }
-        LineStationModel Next { get; set; }
-        LineStationModel Prev { get; set; }
-        double distanceFromPrev { get; set; }
-        TimeSpan TimeFromPrev { get; set; }
+        public StationModel Station { get; set; }
+        public StationModel Next { get; set; }
+        public StationModel Prev { get; set; }
+        public double DistanceFromNext { get; set; }
+        public TimeSpan TimeFromNext { get; set; }
     }
 }

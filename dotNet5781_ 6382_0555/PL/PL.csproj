@@ -88,6 +88,7 @@
     <Compile Include="ViewModels\ShowBusDataViewModel.cs" />
     <Compile Include="ViewModels\ShowBusesViewModel.cs" />
     <Compile Include="ViewModels\ShowLineDataViewModel.cs" />
+    <Compile Include="ViewModels\ShowLineStationViewModel.cs" />
     <Compile Include="ViewModels\ShowLinesViewModel.cs" />
     <Compile Include="ViewModels\ShowStationDataViewModel.cs" />
     <Compile Include="ViewModels\ShowStationsViewModel.cs" />

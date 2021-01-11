@@ -11,6 +11,5 @@ namespace BL.BO
         public BOLine Line { get; set; }
         public double DistanceFromNext { get; set; }
         public TimeSpan TimeFromNext { get; set; }
-
     }
 }
