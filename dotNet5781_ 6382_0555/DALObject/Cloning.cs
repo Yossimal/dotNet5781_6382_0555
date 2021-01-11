@@ -9,6 +9,10 @@ using DALAPI.DAO;
 
 namespace DAL
 {
+    /// <summary>
+    /// Deep Clone
+    /// improved clone - search for deepest son and copy from it.
+    /// </summary>
     static class Cloning
     {
         internal static DAOType Clone<DAOType>(this DAOType original) where DAOType:new()

@@ -14,7 +14,7 @@ namespace dotNet5781_03B_6382_0555
         public Bus Bus { get; }
         public AddBusEventArgs(Bus bus)
         {
-            this.Bus = bus;
+            Bus = bus;
         }
     }
 }

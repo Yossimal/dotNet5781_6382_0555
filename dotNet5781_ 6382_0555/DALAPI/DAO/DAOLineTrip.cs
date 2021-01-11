@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Line Trip entity - represents frequancy of buses on a specific line
+    /// </summary>
     public class DAOLineTrip
     {
         #region background data

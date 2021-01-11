@@ -9,7 +9,8 @@ namespace DALAPI.DAO
 
         /// <summary>
         /// The station that the bus will come from
-        /// we need to get the distance and the time for both sides because sometimes the road in one side is  different from the other side.
+        /// We need to get the distance and the time for both sides because 
+        /// sometimes the road in one side is  different from the other side.
         /// </summary>
         #region BackgroundData
         public bool IsRunningId => true;

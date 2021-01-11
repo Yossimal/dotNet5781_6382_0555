@@ -12,32 +12,43 @@ namespace PL.Models
         private string _longitude;
         private string _latitude;
 
-        public AddStationModel() {
+        public AddStationModel()
+        {
             _code = "";
             _longitude = "";
             _latitude = "";
             Name = "";
         }
-        public string Code {
-            get=>_code.ToString();
-            set {               
-                if (int.TryParse(value+"0", out _)||value=="") {
+        public string Code
+        {
+            get => _code.ToString();
+            set
+            {
+                if (int.TryParse(value + "0", out _) || value == "")
+                {
                     _code = value;
                 }
             }
         }
         public string Name { get; set; }
-        public string Longitude { get=>_longitude;
-            set {
-                if (double.TryParse(value + "0", out _) || value == "") {
+        public string Longitude
+        {
+            get => _longitude;
+            set
+            {
+                if (double.TryParse(value + "0", out _) || value == "")
+                {
                     _longitude = value;
                 }
-            } 
+            }
         }
-        public string Latitude { 
-            get=>_latitude;
-            set {
-                if (double.TryParse(value + "0", out _) || value == "") {
+        public string Latitude
+        {
+            get => _latitude;
+            set
+            {
+                if (double.TryParse(value + "0", out _) || value == "")
+                {
                     _latitude = value;
                 }
             }

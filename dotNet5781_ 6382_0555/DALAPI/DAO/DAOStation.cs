@@ -4,6 +4,10 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+    /// <summary>
+    /// Station entity - represents basic data of a station
+    /// station represents by code, name, longitude and latitude
+    /// </summary>
     public class DAOStation
     {
         #region BackgroundData

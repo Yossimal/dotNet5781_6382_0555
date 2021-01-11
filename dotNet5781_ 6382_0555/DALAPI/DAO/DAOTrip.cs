@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DALAPI.DAO
 {
+  
     public class DAOTrip
     {
         #region background data

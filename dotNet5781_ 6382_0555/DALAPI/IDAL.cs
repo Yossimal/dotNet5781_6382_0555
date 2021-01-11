@@ -5,6 +5,9 @@ using DALAPI.DAO;
 
 namespace DALAPI
 {
+    /// <summary>
+    /// Data Access Layer interface
+    /// </summary>
     public interface IDAL
     {
         int Add(object toAdd);
