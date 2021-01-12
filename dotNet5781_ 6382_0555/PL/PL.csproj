@@ -122,6 +122,9 @@
     <Compile Include="Views\ShowLineDataView.xaml.cs">
       <DependentUpon>ShowLineDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ShowLineStationView.xaml.cs">
+      <DependentUpon>ShowLineStationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShowLinesView.xaml.cs">
       <DependentUpon>ShowLinesView.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowLineDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShowLineStationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

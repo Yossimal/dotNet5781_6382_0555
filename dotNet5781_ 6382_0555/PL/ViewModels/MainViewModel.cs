@@ -52,6 +52,7 @@ namespace PL.ViewModels
             _pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
             _pages.Add("ShowBuses", typeof(ShowBusesViewModel));
             _pages.Add("ShowLineData", typeof(ShowLineDataViewModel));
+            _pages.Add("ShowLineStationData", typeof(ShowLineStationViewModel));
             _pages.Add("ShowLines", typeof(ShowLinesViewModel));
             _pages.Add("ShowStations", typeof(ShowStationsViewModel));
             _pages.Add("ShowStationData", typeof(ShowStationDataViewModel));

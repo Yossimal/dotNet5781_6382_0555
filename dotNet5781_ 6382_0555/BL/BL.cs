@@ -498,6 +498,7 @@ namespace BL
             {
                 throw new ItemNotFoundException("Cant find the line staation in the database.");
             }
+            next = GetStation(lineStation.NextStationId);
             return new BOLineStation
             {
                 Code = station.Code,
@@ -507,6 +508,29 @@ namespace BL
                 Line=lineToRet
             };
         }
+        public void UpdateNearStations(int fromCode,int toCode,double distance=-1,TimeSpan? time = null)
+        {
+            IEnumerable<DAOAdjacentStations> stationQuery = dataAPI.Where<DAOAdjacentStations>(s => s.FromStationId == fromCode && s.ToStationId == toCode);
+            if (stationQuery.Count() == 0)
+            {
+                throw new ItemNotFoundException("Cant find the path between those stations.");
+            }
+            DAOAdjacentStations toUpdate = stationQuery.First();
+            //check if we need to do something
+            if (distance < 0 && !time.HasValue) {
+                return;
+            }
+            //check if need to update the distance
+            if (distance > 0) {
+                toUpdate.Distance = distance;
+            }
+            //check if need to update the time
+            if (time.HasValue) {
+                toUpdate.Time = time.Value;
+            }
+            dataAPI.Update(toUpdate);
+        }
+
         #endregion Implementation
         #region private methods
         private List<BOStation> AllLineStation(BOLine line)

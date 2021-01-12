@@ -23,7 +23,7 @@ namespace PL.ViewModels
             _mainViewModel = mainViewModel;
             Line = line;
             LinePath = _line.Stations;
-            
+
         }
 
         public LineModel Line
@@ -53,7 +53,8 @@ namespace PL.ViewModels
         {
             get => _line.Area;
         }
-        public BindableCollection<StationModel> LinePath {
+        public BindableCollection<StationModel> LinePath
+        {
             get => _linePath;
             set
             {
@@ -64,25 +65,32 @@ namespace PL.ViewModels
         public StationModel SelectedStation
         {
             get => _selectedStation;
-            set {
+            set
+            {
                 _selectedStation = value;
                 NotifyOfPropertyChange(() => SelectedStation);
             }
         }
-        public void ShowLineStationData() {
-            if (SelectedStation == null) {
+        public void ShowLineStationData()
+        {
+            if (SelectedStation == null)
+            {
                 return;
             }
             BOStation next, prev;
-            BOLineStation boLineStaiton = logic.GetLineStationFromStationAndLine(Line.Id, int.Parse(SelectedStation.Code),out next,out prev);
-            LineStationModel toSend = new LineStationModel {
-                Next = new StationModel(next),
-                Prev=new StationModel(prev),
-                Station=new StationModel(boLineStaiton),
-                DistanceFromNext=boLineStaiton.DistanceFromNext,
-                TimeFromNext=boLineStaiton.TimeFromNext
+            BOLineStation boLineStaiton = logic.GetLineStationFromStationAndLine(Line.Id, int.Parse(SelectedStation.Code), out next, out prev);
+
+            LineStationModel toSend = new LineStationModel
+            {
+                Next = next == null ? new StationModel() : new StationModel(next),
+                Prev = prev == null ? new StationModel() : new StationModel(prev),
+                Station = new StationModel(boLineStaiton),
+                DistanceFromNext = boLineStaiton.DistanceFromNext,
+                TimeFromNext = boLineStaiton.TimeFromNext
             };
-            
+
+            _mainViewModel.LoadPageNoBack("ShowLineStationData", toSend, Line);
+
         }
 
 
