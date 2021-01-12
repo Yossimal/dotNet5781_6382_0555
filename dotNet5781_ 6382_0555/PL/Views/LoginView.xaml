@@ -8,27 +8,36 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="0.05*" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- Row 0-->
-        <TextBox x:Name="UserName" Grid.Row="0" Grid.Column="0" MinWidth="100"></TextBox>
-        <TextBox x:Name="Password" Grid.Row="0" Grid.Column="1" MinWidth="100"></TextBox>
+        <!-- Image -->
+        <Image Grid.ColumnSpan="5" Source="/images/telematics-bus.jpg" Grid.RowSpan="9"/>
         <!-- Row 1-->
-        <Button x:Name="ClearText" Grid.Column="0" Grid.Row="1">Clear Text</Button>
-        <Button x:Name="Login" Grid.Column="1" Grid.Row="1">Login</Button>
+        <TextBox x:Name="UserName" Grid.Row="2" Grid.Column="1" MinWidth="100" Grid.ColumnSpan="2"></TextBox>
+        <TextBox x:Name="Password" Grid.Row="4" Grid.Column="1" MinWidth="100" Grid.ColumnSpan="2"></TextBox>
         <!-- Row 2-->
-        <Button x:Name="Register" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">Register Now!</Button>
+        <!-- <Button x:Name="ClearText" Grid.Column="1" Grid.Row="2">Clear Text</Button> -->
+        <Button x:Name="Login" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">Login</Button>
+        <!-- Row 2-->
+        <Button x:Name="Register" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2">Register Now!</Button>
+        <Label Grid.ColumnSpan="5" Content="Public transportation management system" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="757" Margin="33,0,0,0"/>
+        <Label Content="Name:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Password:" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

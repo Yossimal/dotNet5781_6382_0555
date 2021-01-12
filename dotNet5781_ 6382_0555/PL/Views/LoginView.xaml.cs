@@ -23,5 +23,6 @@ namespace PL.Views
         {
             InitializeComponent();
         }
-    }
+
+     }
 }
