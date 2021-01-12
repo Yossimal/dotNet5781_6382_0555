@@ -1,4 +1,5 @@
 ﻿using BL.BO;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace BL
         bool IsInternetAvailable();
         IEnumerable<string> GetAllAreas();
         BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId,out BOStation next,out BOStation prev,bool fullLine=false);
-
+        void UpdateNearStations(int fromCode,int toCode,double distance=-1,TimeSpan? time=null);
 
 
     }
