@@ -47,6 +47,7 @@ namespace PL.ViewModels
             get => _user.Password;
             set
             {
+
                 _user.Password = value;
                 NotifyOfPropertyChange(() => User);
                 NotifyOfPropertyChange(() => Password);

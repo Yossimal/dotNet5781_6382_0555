@@ -160,6 +160,10 @@ namespace BL
                 }
                 throw ex;
             }
+            //if the bus is already ready -> return null
+            if (!busToTrack.TimeToReady.HasValue) {
+                return null;
+            }
             return busToTrack.TimeToReady - DateTime.Now;
 
         }
