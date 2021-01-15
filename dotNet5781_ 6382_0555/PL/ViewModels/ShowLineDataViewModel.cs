@@ -7,32 +7,49 @@ using System.Threading.Tasks;
 using PL.Models;
 using BL.BO;
 using BL;
+using System.Windows;
 
 namespace PL.ViewModels
 {
     class ShowLineDataViewModel : Screen
     {
         private LineModel _line;
-        private BindableCollection<StationModel> _linePath;
+        //        private BindableCollection<StationModel> _linePath;
+        private BindableCollection<StationModel> _allStations;
+        private StationModel _selectedStationToAdd;
+        private StationModel _selectedStationToAddBefore;
         private MainViewModel _mainViewModel;
         private StationModel _selectedStation;
         private IBL logic = BLFactory.API;
-
+        #region constructors
         public ShowLineDataViewModel(MainViewModel mainViewModel, LineModel line)
         {
             _mainViewModel = mainViewModel;
             Line = line;
             LinePath = _line.Stations;
-
+            IEnumerable<StationModel> allStations = logic.AllStations().Select(station => new StationModel
+            {
+                Code = station.Code.ToString(),
+                Name = station.Name
+            });
+            AllStations = new BindableCollection<StationModel>(allStations);
+            SelectedStationToAdd = AllStations[0];
+            SelectedStationToAddBefore = LinePath[0];
         }
-
+        #endregion
+        #region properties
+        #region data properties
         public LineModel Line
         {
             get => _line;
             set
             {
                 _line = value;
+                SelectedStationToAdd = _line.Stations[0];
+                SelectedStationToAddBefore = _line.Stations[0];
                 NotifyOfPropertyChange(() => Line);
+                NotifyOfPropertyChange(() => LinePath);
+                NotifyOfPropertyChange(() => PathCombobox);
                 NotifyOfPropertyChange(() => LineNumber);
             }
         }
@@ -55,12 +72,27 @@ namespace PL.ViewModels
         }
         public BindableCollection<StationModel> LinePath
         {
-            get => _linePath;
+            get => Line.Stations;
             set
             {
-                _linePath = value;
+                Line.Stations = value;
                 NotifyOfPropertyChange(() => LinePath);
+                NotifyOfPropertyChange(() => PathCombobox);
+                NotifyOfPropertyChange(() => Line);
             }
+        }
+        public BindableCollection<StationModel> AllStations
+        {
+            get => _allStations;
+            set
+            {
+                _allStations = value;
+                NotifyOfPropertyChange(() => AllStations);
+            }
+        }
+        public BindableCollection<StationModel> PathCombobox
+        {
+            get => Line.Stations;
         }
         public StationModel SelectedStation
         {
@@ -69,6 +101,102 @@ namespace PL.ViewModels
             {
                 _selectedStation = value;
                 NotifyOfPropertyChange(() => SelectedStation);
+            }
+        }
+        public StationModel SelectedStationToAdd
+        {
+            get => _selectedStationToAdd;
+            set
+            {
+                _selectedStationToAdd = value;
+                NotifyOfPropertyChange(() => SelectedStationToAdd);
+                NotifyOfPropertyChange(() => CanAddStationAfter);
+                NotifyOfPropertyChange(() => CanAddStationInEnd);
+            }
+        }
+        public StationModel SelectedStationToAddBefore
+        {
+            get => _selectedStationToAddBefore;
+            set
+            {
+                _selectedStationToAddBefore = value;
+                NotifyOfPropertyChange(() => SelectedStationToAddBefore);
+                NotifyOfPropertyChange(() => CanAddStationAfter);
+            }
+        }
+        #endregion
+        #region event properties
+        public bool CanAddStationAfter
+        {
+            get
+            {
+                if (SelectedStationToAdd == null)
+                {
+                    return false;
+                }
+                return CanAddStationInEnd
+                    && !LinePath.Any(station => station.Code == SelectedStationToAdd.Code);
+            }
+        }
+        public bool CanAddStationInEnd
+        {
+            get
+            {
+                return !LinePath.Any(s=>s.Code==SelectedStationToAdd.Code);
+            }
+        }
+        #endregion
+        #endregion
+        #region events
+        public async void AddStationAfter()
+        {
+            try
+            {
+                int index = LinePath.IndexOf(SelectedStationToAddBefore);
+                BOLine newLine = await logic.AddStationToLine(int.Parse(SelectedStationToAdd.Code), Line.Id, index);
+                LineModel newLineModel = new LineModel
+                {
+                    Code = newLine.LineNumber,
+                    Id = Line.Id,
+                    Area = Line.Area
+                };
+                IEnumerable<StationModel> newPath = newLine.Path.Select(station => new StationModel
+                {
+                    Code = station.Code.ToString(),
+                    Name = station.Name
+                });
+                newLineModel.Stations = new BindableCollection<StationModel>(newPath);
+                Line = newLineModel;
+                MessageBox.Show("The station was added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An unexpected error was occures while trying to add the station.\nIf thet problem appear again, contact us.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public async void AddStationInEnd()
+        {
+            try
+            {
+                BOLine newLine = await logic.AddStationToLine(int.Parse(SelectedStationToAdd.Code), Line.Id);
+                LineModel newLineModel = new LineModel
+                {
+                    Code = newLine.LineNumber,
+                    Id = Line.Id,
+                    Area = Line.Area
+                };
+                IEnumerable<StationModel> newPath = newLine.Path.Select(station => new StationModel
+                {
+                    Code = station.Code.ToString(),
+                    Name = station.Name
+                });
+                newLineModel.Stations = new BindableCollection<StationModel>(newPath);
+                Line = newLineModel;
+                MessageBox.Show("The station was added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An unexpected error was occures while trying to add the station.\nIf thet problem appear again, contact us.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void ShowLineStationData()
@@ -92,7 +220,7 @@ namespace PL.ViewModels
             _mainViewModel.LoadPageNoBack("ShowLineStationData", toSend, Line);
 
         }
-
+        #endregion
 
 
     }

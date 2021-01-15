@@ -391,9 +391,9 @@ namespace BL
             //In the case that we want to add the station as first station we need to have other implementation 
             else if (index == 0)
             {
-                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId).ToList();
+                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId).OrderBy(s=>s.Index).ToList();
                 //Set the data of the station that we want to add
-                toAdd.NextStationId = stationsToUpdate[0].Id;
+                toAdd.NextStationId = stationsToUpdate[0].StationId;
                 toAdd.Index = 0;
                 toAdd.PrevStationId = -1;
                 foreach (DAOLineStation stat in stationsToUpdate)
@@ -408,9 +408,8 @@ namespace BL
             else
             {
                 //Get all the stations from the index to add and after
-                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.Index >= index - 1).ToList();
+                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.Index >= index).OrderBy(s=>s.Index).ToList();
                 DAOLineStation nextStation = Min(stationsToUpdate, ls => ls.Index);
-                int prevStationId = stationsToUpdate[0].PrevStationId;
                 //set the data of the station that we want to add to the line
                 toAdd.Index = stationsToUpdate[0].Index;
                 toAdd.NextStationId = stationsToUpdate[0].StationId;
@@ -423,13 +422,14 @@ namespace BL
                     dataAPI.Update(stationsToUpdate[i]);
                 }
                 //Update the next station of the previos station to be the id of the station that we want to add
-                DAOLineStation prevStation = dataAPI.GetById<DAOLineStation>(prevStationId);
-                prevStation.NextStationId = toAdd.Id;
+                DAOLineStation prevStation = dataAPI.Where<DAOLineStation>(station => station.Index == index - 1).First();
+                prevStation.NextStationId = toAdd.StationId;
+                toAdd.PrevStationId = prevStation.StationId;
                 dataAPI.Update(prevStation);
                 //handle the distances
                 await UpdateNearStations(toAdd.Id, toAdd.NextStationId);
                 await UpdateNearStations(toAdd.PrevStationId, toAdd.Id);
-
+                dataAPI.Add(toAdd);
             }
 
             //return the new line
