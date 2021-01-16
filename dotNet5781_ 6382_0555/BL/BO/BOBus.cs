@@ -16,6 +16,7 @@ namespace BL.BO
         public double FuelRemain { get; set; }
         public BusStatus Status { get; set; }
         public DateTime LastCareDate { get; set; }
+        public DateTime? TimeToReady { get; set; }
         public bool IsAvailable => this.Status == BusStatus.Ready;
         public string AvailabilityMassage
         {
@@ -25,25 +26,26 @@ namespace BL.BO
                 {
                     case BusStatus.Drive:
                         return "The bus is in a drive.";
-                        break;
+                        //break;
                     case BusStatus.InCare:
                         return "The bus is currently in care.";
-                        break;
+                        //break;
                     case BusStatus.Refuel:
                         return "The bus currently refueling.";
-                        break;
+                        //break;
                     case BusStatus.Ready:
                         return "The bus is ready to drive";
-                        break;
+                        //break;
                     default:
                         return "no-message";
                 }
                 //return null;
             }
         }
-        public DateTime? TimeToReady { get; set; }
         public string StatusStr => this.Status.ToString();
-        public DateTime NextCareDate => new DateTime(LastCareDate.Year + 1, LastCareDate.Month, LastCareDate.Day);
+        public DateTime NextCareDate =>
+            new DateTime(LastCareDate.Year + 1, LastCareDate.Month,
+                LastCareDate.Day);
         public BOBus() { }
         public BOBus(DAOBus bus)
         {

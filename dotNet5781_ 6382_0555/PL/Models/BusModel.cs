@@ -35,17 +35,25 @@ namespace PL.Models
             this.LastCareDate = bus.LastCareDate;
             this.NextCareDate = bus.NextCareDate;
         }
-        public BOBus ToBO() {
+        public BOBus ToBO()
+        {
             return new BOBus
             {
-                FuelRemain=this.FuelRemain,
-                LicenseDate=this.LicenseDate,
-                LicenseNumber= ReFormatLicense(this.LicenseNumber),
-                MileageCounter=this.MilageCounter,
-                LastCareDate=this.LastCareDate
+                FuelRemain = this.FuelRemain,
+                LicenseDate = this.LicenseDate,
+                LicenseNumber = ReFormatLicense(this.LicenseNumber),
+                MileageCounter = this.MilageCounter,
+                LastCareDate = this.LastCareDate
             };
         }
         public static Visibility ControlsVisibility { get; set; }
+
+        /// <summary>
+        /// Checks licens's size and return it with an appropriate format
+        /// Validy had been done in BO
+        /// </summary>
+        /// <param name="license"></param>
+        /// <returns></returns>
         public static string FormatLicense(int license)
         {
             string asString = license.ToString();
@@ -55,7 +63,13 @@ namespace PL.Models
             }
             return asString.Substring(0, 2) + '-' + asString.Substring(2, 3) + '-' + asString.Substring(5);
         }
-        public static int ReFormatLicense(string license) {
+        /// <summary>
+        /// ReFormat PL licens in order to return it to BO
+        /// </summary>
+        /// <param name="license"></param>
+        /// <returns></returns>
+        public static int ReFormatLicense(string license)
+        {
             return int.Parse(license.Replace("-", ""));
         }
     }
