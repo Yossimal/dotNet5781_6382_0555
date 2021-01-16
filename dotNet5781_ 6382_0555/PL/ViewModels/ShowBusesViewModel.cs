@@ -41,7 +41,6 @@ namespace PL.ViewModels
         {
             _showAll = !_showAll;
             NotifyOfPropertyChange(() => ShowAllButtonText);
-            //NotifyOfPropertyChange(()=>ControlsVisibility);
             BusModel.ControlsVisibility = _showAll ? Visibility.Hidden : Visibility.Visible;
             SetBusesList();
         }
@@ -58,7 +57,6 @@ namespace PL.ViewModels
         {
             SetBusesList();
         }
-        //public Visibility ControlsVisibility => _showAll ? Visibility.Hidden : Visibility.Visible;
         private void SetBusesList()
         {
             if (_showAll)
@@ -116,7 +114,7 @@ namespace PL.ViewModels
 
         public void ShowBusData() {
             if (SelectedBus != null) {
-                _mainViewModel.LoadPage("ShowBusData", SelectedBus);
+                _mainViewModel.LoadPageNoBack("ShowBusData", SelectedBus);
             }
         }
 

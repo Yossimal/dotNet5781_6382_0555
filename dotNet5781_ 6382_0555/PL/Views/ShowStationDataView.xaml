@@ -24,7 +24,7 @@
         <TextBlock Text="Station Code" Grid.Row="0" Grid.Column="0"/>
         <TextBlock x:Name="StationToShow_Code" Grid.Row="0" Grid.Column="1"/>
         <!-- Row 1-->
-        <TextBlock Text="Aveilability" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Text="Station Name" Grid.Row="1" Grid.Column="0"/>
         <TextBlock x:Name="StationToShow_Name" Grid.Row="1" Grid.Column="1"/>
         <!-- Row 2 -->
         <!--<ListBox x:Name="Stations" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding Path=SelectedStation , Mode=OneWayToSource}" >

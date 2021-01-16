@@ -11,13 +11,12 @@ namespace PL.ViewModels
     {
         private MainViewModel _mainViewModel;
         private BusModel _busToShow;
-        private IBL logic;
+        private IBL logic = BLFactory.API;
         private int LicenseNumber => BusModel.ReFormatLicense(BusToShow.LicenseNumber);
         public ShowBusDataViewModel(MainViewModel mainViewModel, BusModel busToShow)
         {
             _mainViewModel = mainViewModel;
             _busToShow = busToShow;
-            logic = BLFactory.API;
         }
         public BusModel BusToShow
         {

@@ -9,18 +9,25 @@ namespace BL.RestfulAPIModels
 {
     class Distance
     {
-        public const string APIKey = "VQXALgMc0pp6rxh5asFjy2mk0xU_WwoR8BexH7jf7WE";
+        public const string APIKey = "aMQyd9-ACNp0p0gkUGKWswllHoVFYmUOjtDXk-pyGIw";
         public double FromLat { get; set; }
         public double FromLon { get; set; }
         public double ToLat { get; set; }
         public double ToLon { get; set; }
-        public string RequestURL => $@"
+        public string RequestURL
+        {
+            get
+            {
+                string ret = $@"
                                     https://m.fleet.ls.hereapi.com/2/calculateroute.json?
-                                     apiKey={APIKey}
+                                    apiKey={APIKey}
                                     &routeMatch=1
                                     &mode=fastest;car;traffic:disabled
                                     &waypoint0={FromLat},{FromLon}
                                     &waypoint1={ToLat},{ToLon}";
+                return ret.Replace("\r", "").Replace("\t", "").Replace(" ", "").Replace("\n", "");
+            }
+        }
         public double GetDistance(string responseJSONText)
         {
             JObject responseAsJSON = JObject.Parse(responseJSONText);
