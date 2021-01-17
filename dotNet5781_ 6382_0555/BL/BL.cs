@@ -438,9 +438,34 @@ namespace BL
             ret.Path = AllLineStation(ret);
             return ret;
         }
-        public async Task<BOLine> RemoveStationFromLine(int index)
+        public async Task<BOLine> RemoveStationFromLine(int lineId,int stationCode)
         {
-            throw new NotImplementedException();
+            int pathLength = GetLinePathLength(lineId);
+            DAOLineStation stationToRemove = dataAPI.GetById<DAOLineStation>(stationCode);
+            int index = stationToRemove.Index;
+            if (index >= pathLength) {
+                throw new IndexOutOfRangeException("The index is higher then the path length");
+            }
+            List<DAOLineStation> stationsToUpdate=dataAPI.Where<DAOLineStation>(s=>s.Index>index).OrderBy(s=>s.Index).ToList();
+
+            //update the previos station
+            if (index != 0)
+            {
+                DAOLineStation prev = dataAPI.Where<DAOLineStation>(s => s.Index == index - 1).First();
+                prev.NextStationId = stationsToUpdate[0].StationId;
+                stationsToUpdate[0].PrevStationId = prev.StationId;
+                await UpdateNearStations(prev.StationId, prev.NextStationId);
+                dataAPI.Update(prev);
+            }
+            else {
+                stationsToUpdate[0].PrevStationId = -1;
+            }
+            //decreament the index of all the stations in the database
+            foreach (DAOLineStation station in stationsToUpdate) {
+                station.Index--;
+                dataAPI.Update(station);
+            }
+            return GetLine(lineId);
         }
         public bool IsInternetAvailable()
         {

@@ -49,10 +49,22 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="Name" Grid.Column="0" cal:Bind.Model="{Binding}"/>
                         <TextBlock Grid.Column="1" Text="      "/>
                         <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text="      "/>
+                        <Button Content="Remove Station">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="RemoveStation">
+                                        <cal:Parameter Value="{Binding Path=Code}" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
