@@ -34,6 +34,9 @@
     <Reference Include="DALObject">
       <HintPath>..\DALObject\bin\Debug\DALObject.dll</HintPath>
     </Reference>
+    <Reference Include="DALXML">
+      <HintPath>..\DALXML\bin\Debug\DALXML.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

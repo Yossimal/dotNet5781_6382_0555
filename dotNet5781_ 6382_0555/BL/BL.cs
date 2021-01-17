@@ -82,6 +82,13 @@ namespace BL
             }
             catch (Exception ex)
             {
+                bool isHandled = ex is ItemAlreadyExistsException
+                              || ex is BadManagerCodeException
+                              || ex is BadPasswordException
+                              || ex is BadUsernameException;
+                if (isHandled) {
+                    throw ex;
+                }
                 throw new InvalidOperationException("There was problem to write the data", ex);
             }
         }
