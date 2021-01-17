@@ -68,7 +68,7 @@ namespace PL.ViewModels
             else
             {
                 this.Buses = new BindableCollection<BusModel>
-                    (logic.AllAvelibleBuses()
+                    (logic.AllAvailableBuses()
                     .Select(bus => new BusModel(bus)));
             }
         }

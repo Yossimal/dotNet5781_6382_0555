@@ -31,7 +31,10 @@
         <!-- Row 1-->
         <Label FontSize="20" Grid.Row="1" Grid.Column="0">Available Buses</Label>
         <!-- Row 2-->
-        <ListBox x:Name="Buses" Grid.Row="2" Grid.Column="0" SelectedItem="{Binding Path=SelectedBus , Mode=OneWayToSource}" >
+        <ListBox x:Name="Buses" 
+                 Grid.Row="2" 
+                 Grid.Column="0" 
+                 SelectedItem="{Binding Path=SelectedBus , Mode=OneWayToSource}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <cal:ActionMessage MethodName="ShowBusData"></cal:ActionMessage>

@@ -36,7 +36,6 @@
         <Button x:Name="Login" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">Login</Button>
         <!-- Row 2-->
         <Button x:Name="Register" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2">Register Now!</Button>
-        <Label Grid.ColumnSpan="5" Content="Public transportation management system" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="757" Margin="33,0,0,0"/>
         <Label Content="Name:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label Content="Password:" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>

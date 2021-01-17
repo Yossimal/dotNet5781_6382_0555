@@ -85,7 +85,7 @@ namespace BL
                 throw new InvalidOperationException("There was problem to write the data", ex);
             }
         }
-        public IEnumerable<BOBus> AllAvelibleBuses()
+        public IEnumerable<BOBus> AllAvailableBuses()
         {
             //Can be written in two lines with chaining methods LINQ but the course require the SQL style LINQ
             IEnumerable<BOBus> ret = from dataBus in dataAPI.All<DAOBus>()

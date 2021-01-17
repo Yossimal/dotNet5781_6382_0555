@@ -239,5 +239,16 @@
   <ItemGroup>
     <Resource Include="Images\telematics-bus.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\arrow-right-line-back-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\right_arrow_back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Bus.jpeg" />
+    <Resource Include="Images\Lines.jpeg" />
+    <Resource Include="Images\Station.jpeg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

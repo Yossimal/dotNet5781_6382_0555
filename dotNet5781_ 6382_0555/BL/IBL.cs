@@ -9,7 +9,7 @@ namespace BL
     {
         BOUser CheckUserName(BOUser user);
         int Register(BORegister register);
-        IEnumerable<BOBus> AllAvelibleBuses();
+        IEnumerable<BOBus> AllAvailableBuses();
         IEnumerable<BOBus> AllBuses();
         BOBus RefuelBus(int licenseNumber);
         BOBus CareBus(int licenseNumber);
