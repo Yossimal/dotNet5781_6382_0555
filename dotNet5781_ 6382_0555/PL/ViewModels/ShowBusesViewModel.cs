@@ -22,7 +22,6 @@ namespace PL.ViewModels
 
         IBL logic = BLFactory.API;
 
-
         public ShowBusesViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -53,7 +52,6 @@ namespace PL.ViewModels
                 Thread.Sleep(5000);
                 worker.ReportProgress(0);
             }
-
         }
         public void MakeUpdateToBuses(object sender, ProgressChangedEventArgs args)
         {
@@ -63,15 +61,18 @@ namespace PL.ViewModels
         {
             if (_showAll)
             {
-                this.Buses = new BindableCollection<BusModel>(logic.AllBuses()
-                                                                   .Select(bus => new BusModel(bus)));
+                this.Buses = new BindableCollection<BusModel>
+                    (logic.AllBuses()
+                    .Select(bus => new BusModel(bus)));
             }
             else
             {
-                this.Buses = new BindableCollection<BusModel>(logic.AllAvelibleBuses()
-                                                                   .Select(bus => new BusModel(bus)));
+                this.Buses = new BindableCollection<BusModel>
+                    (logic.AllAvelibleBuses()
+                    .Select(bus => new BusModel(bus)));
             }
         }
+
         public BindableCollection<BusModel> Buses
         {
             get => _buses;
@@ -103,12 +104,14 @@ namespace PL.ViewModels
         {
             _mainViewModel.LoadPage("AddBus");
         }
+
         public void CareBus(string licenseToCare)
         {
             // BusModel sender = toCare as BusModel;
             logic.CareBus(BusModel.ReFormatLicense(licenseToCare));
             SetBusesList();
         }
+
         public void ShowBusData() {
             if (SelectedBus != null) {
                 _mainViewModel.LoadPageNoBack("ShowBusData", SelectedBus);
