@@ -17,6 +17,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Row 0-->
@@ -25,7 +27,16 @@
         <!-- Row 1-->
         <Label FontSize="20" Grid.Row="1" Grid.Column="0">Line Path</Label>
         <!-- Row 2-->
-        <ListBox x:Name="LinePath" Grid.Row="2" Grid.Column="0" SelectedItem="{Binding Path=SelectedStation , Mode=TwoWay}" >
+        <Label Content="Choose station to add: " Grid.Row="2" Grid.Column="0"/>
+        <ComboBox x:Name="AllStations" Grid.Row="2" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedStationToAdd,Mode=TwoWay}"></ComboBox>
+        <!-- Row 3-->
+        <Label Content="Choose the station before: " Grid.Row="3" Grid.Column="0"/>
+        <ComboBox x:Name="PathCombobox" Grid.Row="3" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedStationToAddBefore,Mode=TwoWay}"></ComboBox>
+        <!-- Row 4-->
+        <Button x:Name="AddStationInEnd" Content="Add the station in the end" Grid.Column="0" Grid.Row="4"/>
+        <Button x:Name="AddStationAfter" Content="Add Station To Path" Grid.Column="1" Grid.Row="4"></Button>
+        <!-- Row 5-->
+        <ListBox x:Name="LinePath" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" SelectedItem="{Binding Path=SelectedStation , Mode=TwoWay}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <cal:ActionMessage MethodName="ShowLineStationData"></cal:ActionMessage>
@@ -38,10 +49,22 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="Name" Grid.Column="0" cal:Bind.Model="{Binding}"/>
                         <TextBlock Grid.Column="1" Text="      "/>
                         <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text="      "/>
+                        <Button Content="Remove Station">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="RemoveStation">
+                                        <cal:Parameter Value="{Binding Path=Code}" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

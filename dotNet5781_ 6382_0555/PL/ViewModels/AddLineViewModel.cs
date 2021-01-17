@@ -14,6 +14,7 @@ namespace PL.ViewModels
 {
     class AddLineViewModel : Screen
     {
+        #region private fuilds
         private MainViewModel _mainViewModel;
         private LineModel _lineToAdd;
         private BindableCollection<string> _areas;
@@ -21,7 +22,8 @@ namespace PL.ViewModels
         private BindableCollection<StationModel> _path;
         private StationModel _selectedStation;
         private BindableCollection<StationModel> _stations;
-
+        #endregion
+        #region constructors
         public AddLineViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -40,6 +42,9 @@ namespace PL.ViewModels
 
 
         }
+        #endregion
+        #region properties
+        #region data properties
         public bool CanAddLine
         {
             get
@@ -126,6 +131,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => CanAddStation);
             }
         }
+        #endregion
+        #region events properties
         public bool CanAddStation
         {
             get => !Path.Contains(SelectedStation);
@@ -147,7 +154,9 @@ namespace PL.ViewModels
             Path = new BindableCollection<StationModel>();
             SelectedStation = Stations[0];
         }
-
+        #endregion
+        #endregion
+        #region events
         public void AddStation()
         {
             Path.Add(SelectedStation);
@@ -161,6 +170,8 @@ namespace PL.ViewModels
             StationModel toRemove = Path.Where(station => station.Code == stationToRemoveCode).First();
             Path.Remove(toRemove);
         }
+       
+  
         public async void AddLine()
         {
             if (!logic.IsInternetAvailable())
@@ -185,6 +196,7 @@ namespace PL.ViewModels
                 MessageBox.Show("Unexpected error was occured while trying to add the line.\n Try to check your internet connection.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion
         #region private methods
         static bool IsNullEmptyOrWhiteSpace(string str)
         {
