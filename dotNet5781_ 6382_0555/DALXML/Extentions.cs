@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace DALXML
 {
+    /// <summary>
+    /// extention functions for DAL Objects
+    /// </summary>
     static class Extentions
     {
         internal static int GetId(this object obj)
@@ -65,5 +68,4 @@ namespace DALXML
             idProp.SetValue(obj, setTo);
         }
     }
-
 }

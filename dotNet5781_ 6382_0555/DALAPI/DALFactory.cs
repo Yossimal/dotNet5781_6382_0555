@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 
 
 namespace DALAPI
@@ -16,11 +17,12 @@ namespace DALAPI
     public static class DALFactory
     {
 
-       public static IDAL API{
-           get
-           {
-                return DAL.DALObject.Instance;
-           }
-       }
+        public static IDAL API
+        {
+            get
+            {
+                return DAL.DALXML.Instance;
+            }
+        }
     }
 }
