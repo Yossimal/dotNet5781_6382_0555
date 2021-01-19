@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BL;
 using System.Windows;
+using System.Security;
+using System.Net;
 
 namespace PL.ViewModels
 {
@@ -47,30 +49,30 @@ namespace PL.ViewModels
             get => _user.Password;
             set
             {
-
                 _user.Password = value;
                 NotifyOfPropertyChange(() => User);
                 NotifyOfPropertyChange(() => Password);
             }
         }
 
+        //public bool CanClearText(string userName, string password)
+        //{
+        //    return !(String.IsNullOrWhiteSpace(userName) && String.IsNullOrWhiteSpace(password));
+        //}
 
-        public bool CanClearText(string userName, string password)
-        {
-            return !(String.IsNullOrWhiteSpace(userName) && String.IsNullOrWhiteSpace(password));
-        }
+        //public void ClearText(string userName, string password)
+        //{
+        //    UserName = "";
+        //    Password = "";
+        //}
 
-        public void ClearText(string userName, string password)
-        {
-            UserName = "";
-            Password = "";
-        }
         public void Login(string userName, string password)
         {
             BOUser logicUser = new BOUser
             {
                 UserName = userName,
                 Password = password
+
             };
             try
             {
@@ -85,6 +87,7 @@ namespace PL.ViewModels
                 }
             }
         }
+
         public bool CanLogin(string userName, string password)
         {
             return !(String.IsNullOrWhiteSpace(userName)

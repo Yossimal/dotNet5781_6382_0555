@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
 
 namespace PL.Models
 {
@@ -14,7 +15,8 @@ namespace PL.Models
         public string Password { get; set; }
         public bool IsManager { get; set; }
 
-        public UserModel(BOUser user) {
+        public UserModel(BOUser user)
+        {
             this.UserName = user.UserName;
             this.Password = user.Password;
             this.IsManager = user.IsManager;
@@ -23,3 +25,5 @@ namespace PL.Models
         public UserModel() { }
     }
 }
+
+

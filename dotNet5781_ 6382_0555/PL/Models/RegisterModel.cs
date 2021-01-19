@@ -12,3 +12,4 @@ namespace PL.Models
         public string ManagerCode { get; set; }
     }
 }
+

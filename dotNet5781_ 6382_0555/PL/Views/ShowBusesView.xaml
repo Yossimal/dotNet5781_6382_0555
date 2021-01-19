@@ -11,46 +11,53 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="0.02*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Row 0-->
         <Grid Grid.Row="0" Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="AddBus" Content="Add Bus"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button x:Name="ToggleAllBuses" Content="{Binding Path=ShowAllButtonText,Mode=OneWay}"  Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="ToggleAllBuses" Content = "{Binding Path=ShowAllButtonText,Mode=OneWay}"  Grid.Column="0"/>
+            <Button x:Name="AddBus" Content="Add Bus"  Grid.Column="1"/>
         </Grid>
         <!-- Row 1-->
-        <Label FontSize="20" Grid.Row="1" Grid.Column="0">Available Buses</Label>
+        <!--Label FontSize="20" Grid.Row="1" Grid.Column="0">Available Buses</-->
         <!-- Row 2-->
-        <ListBox x:Name="Buses" 
-                 Grid.Row="2" 
-                 Grid.Column="0" 
-                 SelectedItem="{Binding Path=SelectedBus , Mode=OneWayToSource}">
+        <ListBox x:Name="Buses" Grid.Row="2" Grid.Column="0" Grid.IsSharedSizeScope="True" 
+                 SelectedItem="{Binding Path=SelectedBus, Mode=OneWayToSource}">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <cal:ActionMessage MethodName="ShowBusData"></cal:ActionMessage>
+                    <cal:ActionMessage MethodName="ShowBusData"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*" SharedSizeGroup="LicenseNumber"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock x:Name="LicenseNumber" Grid.Column="0" cal:Bind.Model="{Binding}"/>
-                        <Button Content="Refuel" Grid.Column="1" Visibility="{Binding Path=ControlsVisibility,Mode=OneWay}">
+                        <Button Content="Refuel" Grid.Column="2" Visibility="{Binding Path=ControlsVisibility,Mode=OneWay}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <cal:ActionMessage MethodName="RefuelBus">
@@ -59,7 +66,7 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
-                        <Button Content="Care" Grid.Column="2" Visibility="{Binding Path=ControlsVisibility,Mode=OneWay}">
+                        <Button Content="Care" Grid.Column="3" Visibility="{Binding Path=ControlsVisibility,Mode=OneWay}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <cal:ActionMessage MethodName="CareBus">
@@ -68,10 +75,11 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
-
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        
     </Grid>
+    
 </UserControl>
