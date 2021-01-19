@@ -21,7 +21,7 @@ namespace DALAPI
         {
             get
             {
-                return DAL.DALXML.Instance;
+                return DAL.DALObject.Instance;
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using BL;
 using Caliburn.Micro;
 using PL.Models;
+using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
@@ -46,12 +47,40 @@ namespace PL.ViewModels
         }
         public void Refuel()
         {
-            logic.RefuelBus(LicenseNumber);
+            try
+            {
+                logic.RefuelBus(LicenseNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is BusNotAvailableException)
+                {
+                    MessageBox.Show("The bus is not ready yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
             RefreshData();
         }
         public void Care()
         {
-            logic.CareBus(LicenseNumber);
+            try
+            {
+                logic.CareBus(LicenseNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is BusNotAvailableException)
+                {
+                    MessageBox.Show("The bus is not ready yet.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
             RefreshData();
         }
         public void RefreshData()

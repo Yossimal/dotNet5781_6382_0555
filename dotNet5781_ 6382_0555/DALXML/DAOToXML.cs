@@ -22,18 +22,21 @@ namespace DAL
                 PropertyInfo objectProp = retType.GetProperty(element.Name.LocalName);
                 if (objectProp.CanWrite)
                 {
-                    objectProp.SetValue(ret, stringToType(objectProp,stringToType(objectProp,xml.Value).ToString()));
+                    objectProp.SetValue(ret, stringToType(objectProp, stringToType(objectProp, xml.Value).ToString()));
                 }
             }
 
             return ret;
         }
-        public static XElement ToXElement(this object dao) {
+        public static XElement ToXElement(this object dao)
+        {
             Type daoType = dao.GetType();
             XElement ret = new XElement(daoType.Name);
-            foreach (PropertyInfo prop in daoType.GetProperties()) {
+            foreach (PropertyInfo prop in daoType.GetProperties())
+            {
                 XElement propElement = new XElement(prop.Name);
                 propElement.Value = typeToString(prop.PropertyType, prop.GetValue(dao));
+                ret.Add(propElement);
             }
             return ret;
         }
@@ -61,7 +64,8 @@ namespace DAL
             }
             return data;
         }
-        private static string typeToString(Type type, object obj) {
+        private static string typeToString(Type type, object obj)
+        {
             return obj.ToString();
         }
     }

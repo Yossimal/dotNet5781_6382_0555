@@ -1,19 +1,14 @@
 ﻿using BL;
-using BL.BO;
 using Caliburn.Micro;
 using PL.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace PL.ViewModels
 {
-    class ShowBusesViewModel : Screen
+    class ShowBusesViewModel : Conductor<object>
     {
         MainViewModel _mainViewModel;
         private BindableCollection<BusModel> _buses;
@@ -114,8 +109,10 @@ namespace PL.ViewModels
 
         public void ShowBusData() {
             if (SelectedBus != null) {
-                _mainViewModel.LoadPageNoBack("ShowBusData", SelectedBus);
+                // _mainViewModel.LoadPageNoBack("ShowBusData", SelectedBus);
+                ActivateItem(new ShowBusDataViewModel(_mainViewModel, SelectedBus));
             }
+            
         }
 
     }

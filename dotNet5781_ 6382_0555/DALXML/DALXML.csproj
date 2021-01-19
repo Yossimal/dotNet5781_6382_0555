@@ -45,6 +45,7 @@
     <Compile Include="DAOToXML.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLSchemas\MetadataTypeFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DALAPI\DALAPI.csproj">
@@ -52,5 +53,6 @@
       <Name>DALAPI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

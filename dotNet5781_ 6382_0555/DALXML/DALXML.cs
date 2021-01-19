@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using DALXML.XMLSchemas;
 
 namespace DAL
 {
@@ -20,24 +21,41 @@ namespace DAL
         private DALXML(string runningIdsPath, string saveDirectory)
         {
             _files = new Dictionary<Type, string>();
-            _runningIds = runningIdsPath;
             _saveDirectory = saveDirectory;
-            if (!Directory.Exists(saveDirectory))
+
+            if (File.Exists(saveDirectory + '\\' + METADATA_NAME))
             {
-                Directory.CreateDirectory(saveDirectory);
+                ReadMetadata(saveDirectory + '\\' + METADATA_NAME);
             }
+            else
+            {
+                if (!Directory.Exists(saveDirectory))
+                {
+                    Directory.CreateDirectory(saveDirectory);
+                }
+                _runningIds = runningIdsPath;
+                if (!File.Exists(saveDirectory + '\\' + _runningIds))
+                {
+                    XElement runningIds = new XElement("root");
+                    runningIds.Save(saveDirectory + '\\' + _runningIds);
+                }
+                SaveMetadata();
+            }
+
         }
-         static DALXML() {
-            _instance = new DALXML("runningIds.xml","xmlData");
+        static DALXML()
+        {
+            _instance = new DALXML("runningIds.xml", "xmlData");
         }
         #endregion
         #region private variables
         private Dictionary<Type, string> _files;
         private string _runningIds;
         private string _saveDirectory;
+        private const string METADATA_NAME = "metadata.xml";
         #endregion
 
-
+        #region implementaion
         public int Add(object toAdd)
         {
             Type toAddType = toAdd.GetType();
@@ -45,7 +63,7 @@ namespace DAL
             XElement listToAdd = GetListByType(toAddType);
             if (toAdd.IsRunningId())
             {
-                XElement runningIdXML = XElement.Load(_runningIds);
+                XElement runningIdXML = XElement.Load(_saveDirectory + '\\' + _runningIds);
                 IEnumerable<XElement> query = runningIdXML.Elements().Where(element => element.Name.LocalName == toAddType.Name);
                 if (query.Count() == 0)
                 {
@@ -55,7 +73,7 @@ namespace DAL
                     XElement runningIdElement = new XElement(toAddType.Name);
                     runningIdElement.Value = currentId.ToString();
                     runningIdXML.Add(runningIdElement);
-                    runningIdXML.Save(_runningIds);
+                    runningIdXML.Save(_saveDirectory + '\\' + _runningIds);
                 }
                 else
                 {
@@ -141,7 +159,7 @@ namespace DAL
         {
             return All<DAOType>().Where(dao => condition(dao));
         }
-
+        #endregion
         #region private methods
         private XElement GetListByType(Type type)
         {
@@ -152,10 +170,46 @@ namespace DAL
                 //FileStream file = File.Create(filePath); file.Close();
                 XElement root = new XElement("root");
                 _files.Add(type, fileName);
-                
                 root.Save(filePath);
+                SaveMetadata();
             }
             return XElement.Load(_saveDirectory + '\\' + _files[type]);
+        }
+        private void ReadMetadata(string path)
+        {
+            XElement metadataXML = XElement.Load(path);
+            //read the xml files from the metadata
+            XElement files = metadataXML.Elements()
+                                        .First(element => element.Name.LocalName == "files");
+            foreach (XElement file in files.Elements())
+            {
+                MetadataTypeFile typeFile = MetadataTypeFile.Deserialize(file);
+                KeyValuePair<Type, string> pairToAdd = typeFile.GetType();
+                _files.Add(pairToAdd.Key, pairToAdd.Value);
+            }
+            //read the running ids file path from the metadata
+            string _runningIds = metadataXML.Elements()
+                                           .First(element => element.Name.LocalName == "running-ids-path")
+                                           .Value;
+
+        }
+        private void SaveMetadata()
+        {
+            XElement metadataXML = new XElement("root");
+            //Add the files list to the metadata
+            XElement files = new XElement("files");
+            foreach (KeyValuePair<Type, string> pair in _files)
+            {
+                MetadataTypeFile fileType = MetadataTypeFile.GetMetadataTypeFile(pair);
+                XElement fileTypeXML = fileType.Serialize();
+                files.Add(fileTypeXML);
+            }
+            metadataXML.Add(files);
+            //add the running ids file path to the metadata
+            XElement runningIds = new XElement("running-ids-path");
+            runningIds.Value = _runningIds;
+            metadataXML.Add(runningIds);
+            metadataXML.Save(_saveDirectory + '\\' + METADATA_NAME);
         }
         #endregion
     }

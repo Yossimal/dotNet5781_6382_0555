@@ -38,9 +38,10 @@ namespace PL.ViewModels
             Path = new BindableCollection<StationModel>();
             IEnumerable<StationModel> allStations = logic.AllStations().Select(station => new StationModel { Code = station.Code.ToString(), Name = station.Name });
             Stations = new BindableCollection<StationModel>(allStations);
-            SelectedStation = Stations[0];
-
-
+            if (Stations.Count > 0)
+            {
+                SelectedStation = Stations[0];
+            }
         }
         #endregion
         #region properties
@@ -170,8 +171,8 @@ namespace PL.ViewModels
             StationModel toRemove = Path.Where(station => station.Code == stationToRemoveCode).First();
             Path.Remove(toRemove);
         }
-       
-  
+
+
         public async void AddLine()
         {
             if (!logic.IsInternetAvailable())
