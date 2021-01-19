@@ -7,45 +7,72 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="0.02*" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition Width="0.3*"/>
         </Grid.ColumnDefinitions>
-        
-        <!-- Row 0-->
-        <TextBlock Text="License Number" Grid.Row="0" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_LicenseNumber" Grid.Row="0" Grid.Column="1"/>
-        <!-- Row 1-->
-        <TextBlock Text="Aveilability" Grid.Row="1" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_AvailabilityMessage" Grid.Row="1" Grid.Column="1"/>
-        <!-- Row 2-->
-        <TextBlock Text="Fuel Remain" Grid.Row="2" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_FuelRemain" Grid.Row="2" Grid.Column="1"/>
-        <!-- Row 3-->
-        <TextBlock Text="Milage" Grid.Row="3" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_MilageCounter" Grid.Row="3" Grid.Column="1"/>
-        <!-- Row 4-->
-        <TextBlock Text="License Date" Grid.Row="4" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_LicenseDate" Grid.Row="4" Grid.Column="1"/>
-        <!-- Row 5-->
-        <TextBlock Text="Next Care Date" Grid.Row="5" Grid.Column="0"/>
-        <TextBlock x:Name="BusToShow_NextCareDate" Grid.Row="5" Grid.Column="1"/>
-        <!-- Row 6-->
-        <Button x:Name="Refuel" Content="Refuel Bus" Grid.Row="6" Grid.Column="0"/>
-        <Button x:Name="Care" Content="Send Bus to Care" Grid.Row="6" Grid.Column="1"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+        <Button x:Name="Refuel" Content="Refuel Bus" Grid.Column="0" />
+            <Button x:Name="Care" Content="Send to Care" Grid.Column="1" />
         <!-- Row 7-->
-        <Button x:Name="DeleteBus" Content="Delete The Bus" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <Button x:Name="DeleteBus" Content="Delete Bus" Grid.Column="2" Background="DarkRed"/>
+     </Grid>
+        <Border Background="White" BorderBrush="LightSteelBlue" BorderThickness="2" Grid.Row="2">
+            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.02*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.02*"/>
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <!-- Row 0-->
+            <TextBlock Text="License Number:" Grid.Row="1" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_LicenseNumber" Grid.Row="1" Grid.Column="2"/>
+            <!-- Row 1-->
+            <TextBlock Text="Availability:" Grid.Row="2" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_AvailabilityMessage" Grid.Row="2" Grid.Column="2"/>
+            <!-- Row 2-->
+            <TextBlock Text="Fuel Remain:" Grid.Row="3" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_FuelRemain" Grid.Row="3" Grid.Column="2"/>
+            <!-- Row 3-->
+            <TextBlock Text="Milage:" Grid.Row="4" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_MilageCounter" Grid.Row="4" Grid.Column="2"/>
+            <!-- Row 4-->
+            <TextBlock Text="License Date:" Grid.Row="5" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_LicenseDate" Grid.Row="5" Grid.Column="2"/>
+            <!-- Row 5-->
+            <TextBlock Text="Next Care Date:" Grid.Row="6" Grid.Column="1" FontWeight="DemiBold"/>
+            <TextBlock x:Name="BusToShow_NextCareDate" Grid.Row="6" Grid.Column="2"/>
+            <!-- Row 6-->
+            <Grid Grid.Row="7" Grid.ColumnSpan="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            
+            </Grid>
+        </Grid>
+    </Border>
+   </Grid>
 </UserControl>

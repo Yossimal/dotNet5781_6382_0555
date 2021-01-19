@@ -30,7 +30,7 @@ namespace PL.ViewModels
         }
         public string ShowAllButtonText
         {
-            get => _showAll ? "Show available only" : "Show all buses";
+            get => _showAll ? "Show available" : "Show all buses";
         }
         public void ToggleAllBuses()
         {
