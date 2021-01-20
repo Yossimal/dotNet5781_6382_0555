@@ -22,7 +22,7 @@ namespace DAL
                 PropertyInfo objectProp = retType.GetProperty(element.Name.LocalName);
                 if (objectProp.CanWrite)
                 {
-                    objectProp.SetValue(ret, stringToType(objectProp, stringToType(objectProp, xml.Value).ToString()));
+                    objectProp.SetValue(ret, stringToType(objectProp, element.Value));
                 }
             }
 
@@ -42,7 +42,11 @@ namespace DAL
         }
         private static object stringToType(PropertyInfo prop, string data)
         {
-            if (prop.PropertyType == typeof(DateTime))
+            if (data == "NuN")
+            {
+                return null;
+            }
+            else if (prop.PropertyType == typeof(DateTime))
             {
                 return DateTime.Parse(data);
             }
@@ -62,10 +66,18 @@ namespace DAL
             {
                 return bool.Parse(data);
             }
+            else if (prop.PropertyType == typeof(DALAPI.BusStatus))
+            {
+                return Enum.Parse(typeof(DALAPI.BusStatus), data);
+            }
             return data;
         }
         private static string typeToString(Type type, object obj)
         {
+            if (obj == null)
+            {
+                return "NuN";
+            }
             return obj.ToString();
         }
     }

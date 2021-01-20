@@ -188,10 +188,10 @@ namespace DAL
                 _files.Add(pairToAdd.Key, pairToAdd.Value);
             }
             //read the running ids file path from the metadata
-            string _runningIds = metadataXML.Elements()
+            _runningIds = metadataXML.Elements()
                                            .First(element => element.Name.LocalName == "running-ids-path")
                                            .Value;
-
+            _runningIds = _saveDirectory + '\\' + _runningIds;
         }
         private void SaveMetadata()
         {

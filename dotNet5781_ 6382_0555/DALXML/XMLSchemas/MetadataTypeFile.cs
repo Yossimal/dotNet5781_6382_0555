@@ -14,23 +14,28 @@ namespace DALXML.XMLSchemas
         public string TypeAssembly { get; set; }
         public string TypeNamespace { get; set; }
         public string FileName { get; set; }
-        public new KeyValuePair<Type,string> GetType() {
-            Type type= Type.GetType($"{this.TypeNamespace}.{this.TypeName} , {this.TypeAssembly}");
+        public new KeyValuePair<Type, string> GetType()
+        {
+            Assembly asm = Assembly.Load(TypeAssembly);
+            Type type = asm.GetType($"{this.TypeNamespace}.{this.TypeName}");
             return new KeyValuePair<Type, string>(type, this.FileName);
         }
-        public XElement Serialize() {
+        public XElement Serialize()
+        {
             return Serialize(this);
         }
-        public static MetadataTypeFile GetMetadataTypeFile(KeyValuePair<Type, string> pair) {
+        public static MetadataTypeFile GetMetadataTypeFile(KeyValuePair<Type, string> pair)
+        {
             MetadataTypeFile ret = new MetadataTypeFile();
             Type type = pair.Key;
-            ret.TypeAssembly = "DALAPI";
+            ret.TypeAssembly = type.Assembly.FullName;
             ret.TypeName = type.Name;
             ret.TypeNamespace = type.Namespace;
             ret.FileName = pair.Value;
             return ret;
         }
-        public static XElement Serialize(MetadataTypeFile metadata) {
+        public static XElement Serialize(MetadataTypeFile metadata)
+        {
             XElement ret = new XElement("type-file");
             XElement fileName = new XElement("file-name");
             fileName.Value = metadata.FileName;
