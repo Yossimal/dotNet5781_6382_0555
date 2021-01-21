@@ -53,9 +53,11 @@
     <Compile Include="BO\BOBus.cs" />
     <Compile Include="BO\BOLine.cs" />
     <Compile Include="BO\BOLineStation.cs" />
+    <Compile Include="BO\BOLineTiming.cs" />
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOStation.cs" />
     <Compile Include="BO\BOUser.cs" />
+    <Compile Include="EventArgs\LineTimeUpdateEventArgs.cs" />
     <Compile Include="Exceptions\BadLoginDataException.cs" />
     <Compile Include="Exceptions\BadManagerCodeException.cs" />
     <Compile Include="Exceptions\BadPasswordException.cs" />
@@ -70,6 +72,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestfulAPIModels\APIHelper.cs" />
     <Compile Include="RestfulAPIModels\Distance.cs" />
+    <Compile Include="Simulation\DrivesManager.cs" />
+    <Compile Include="Simulation\LineDriveHandler.cs" />
+    <Compile Include="Simulation\Simulator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DALAPI\DALAPI.csproj">

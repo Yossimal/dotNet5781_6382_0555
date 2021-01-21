@@ -285,7 +285,7 @@ namespace BL
                 throw new ItemNotFoundException("Can't find a line with that id.");
             }
             BOLine ret = new BOLine(daoLine);
-            ret.Path = AllLineStation(ret);
+            ret.Path = AllLineStations(ret);
             return ret;
         }
         public IEnumerable<BOLine> GetAllLines(int lineNumber)
@@ -294,7 +294,7 @@ namespace BL
                  .Select(line =>
                  {
                      BOLine ret = new BOLine(line);
-                     ret.Path = AllLineStation(ret);
+                     ret.Path = AllLineStations(ret);
                      return ret;
                  });
         }
@@ -304,7 +304,7 @@ namespace BL
                 .Select(line =>
                 {
                     BOLine ret = new BOLine(line);
-                    ret.Path = AllLineStation(ret);
+                    ret.Path = AllLineStations(ret);
                     return ret;
                 });
         }
@@ -442,7 +442,7 @@ namespace BL
             //return the new line
             DAOLine daoRet = dataAPI.GetById<DAOLine>(lineId);
             BOLine ret = new BOLine(daoRet);
-            ret.Path = AllLineStation(ret);
+            ret.Path = AllLineStations(ret);
             return ret;
         }
         public async Task<BOLine> RemoveStationFromLine(int lineId,int stationCode)
@@ -568,8 +568,8 @@ namespace BL
         }
 
         #endregion Implementation
-        #region private methods
-        private List<BOStation> AllLineStation(BOLine line)
+        #region private and internal methods
+        internal List<BOStation> AllLineStations(BOLine line)
         {
 
             List<BOStation> ret = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)

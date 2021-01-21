@@ -27,7 +27,7 @@ namespace DALAPI
         }
         public static IDAL API
         {
-            [MethodImpl(Met‌​hodImplOptions.NoInlining)]
+            
             get
             {
                 
