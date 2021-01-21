@@ -9,7 +9,7 @@ using DALXML.XMLSchemas;
 
 namespace DAL
 {
-    public class DALXML : IDAL
+    sealed public class DALXML : IDAL
     {
         #region singelton
         /// <summary>
@@ -53,6 +53,7 @@ namespace DAL
         private string _runningIds;
         private string _saveDirectory;
         private const string METADATA_NAME = "metadata.xml";
+        private Random _rand = new Random(DateTime.Now.Millisecond);
         #endregion
 
         #region implementaion
@@ -165,15 +166,19 @@ namespace DAL
         {
             if (!_files.ContainsKey(type))
             {
-                string fileName = type.Name + "." + DateTime.Now.Millisecond + ".xml";
-                string filePath = _saveDirectory + "\\" + fileName;
-                //FileStream file = File.Create(filePath); file.Close();
-                XElement root = new XElement("root");
-                _files.Add(type, fileName);
-                root.Save(filePath);
-                SaveMetadata();
+                return CreateFile(type);
             }
             return XElement.Load(_saveDirectory + '\\' + _files[type]);
+        }
+        private XElement CreateFile(Type type)
+        {
+            string fileName = $"{_rand.Next((int)Math.Pow(10, 8), (int)Math.Pow(10, 9))}.{_rand.Next((int)Math.Pow(10, 8), (int)Math.Pow(10, 9))}.xml";
+            string filePath = _saveDirectory + "\\" + fileName;
+            XElement root = new XElement("root");
+            _files.Add(type, fileName);
+            root.Save(filePath);
+            SaveMetadata();
+            return root;
         }
         private void ReadMetadata(string path)
         {
@@ -209,6 +214,7 @@ namespace DAL
             XElement runningIds = new XElement("running-ids-path");
             runningIds.Value = _runningIds;
             metadataXML.Add(runningIds);
+            //Save the metadata file
             metadataXML.Save(_saveDirectory + '\\' + METADATA_NAME);
         }
         #endregion

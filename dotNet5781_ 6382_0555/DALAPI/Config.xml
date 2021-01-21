@@ -1,4 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
-  
+  <implementation>
+    <current>xml</current>
+    <options>
+      <object>
+        <type>DAL.DALObject</type>
+        <assembly>DALObject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+      </object>
+      <xml>
+        <type>DAL.DALXML</type>
+        <assembly>DALXML, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</assembly>
+      </xml>
+    </options>
+  </implementation>
 </root>

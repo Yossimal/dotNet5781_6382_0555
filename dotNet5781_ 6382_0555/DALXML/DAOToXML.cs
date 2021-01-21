@@ -22,7 +22,7 @@ namespace DAL
                 PropertyInfo objectProp = retType.GetProperty(element.Name.LocalName);
                 if (objectProp.CanWrite)
                 {
-                    objectProp.SetValue(ret, stringToType(objectProp, element.Value));
+                    objectProp.SetValue(ret, StringToType(objectProp, element.Value));
                 }
             }
 
@@ -35,12 +35,12 @@ namespace DAL
             foreach (PropertyInfo prop in daoType.GetProperties())
             {
                 XElement propElement = new XElement(prop.Name);
-                propElement.Value = typeToString(prop.PropertyType, prop.GetValue(dao));
+                propElement.Value = TypeToString(prop.PropertyType, prop.GetValue(dao));
                 ret.Add(propElement);
             }
             return ret;
         }
-        private static object stringToType(PropertyInfo prop, string data)
+        private static object StringToType(PropertyInfo prop, string data)
         {
             if (data == "NuN")
             {
@@ -70,9 +70,12 @@ namespace DAL
             {
                 return Enum.Parse(typeof(DALAPI.BusStatus), data);
             }
+            else if (prop.PropertyType == typeof(DALAPI.Area)) {
+                return Enum.Parse(prop.PropertyType, data);
+            }
             return data;
         }
-        private static string typeToString(Type type, object obj)
+        private static string TypeToString(Type type, object obj)
         {
             if (obj == null)
             {

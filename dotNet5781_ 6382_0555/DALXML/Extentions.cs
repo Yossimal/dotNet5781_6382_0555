@@ -9,7 +9,7 @@ using System.Reflection;
 namespace DALXML
 {
     /// <summary>
-    /// extention functions for DAL Objects
+    /// extention functions for DAO
     /// </summary>
     static class Extentions
     {

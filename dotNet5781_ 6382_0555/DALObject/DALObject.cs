@@ -13,7 +13,7 @@ using DS;
 namespace DAL
 {
 
-    public class DALObject : IDAL
+    sealed public class DALObject : IDAL
     {
         #region singelton
         /// <summary>
