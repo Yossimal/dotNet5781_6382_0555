@@ -99,14 +99,15 @@ namespace BL
             //Can be written in two lines with chaining methods LINQ but the course require the SQL style LINQ
             IEnumerable<BOBus> ret = from dataBus in dataAPI.All<DAOBus>()
                                      let bus = new BOBus(dataBus)
-                                     where bus.Status == BusStatus.Ready
+                                     where bus.Status == BusStatus.Ready || bus.TimeToReady < DateTime.Now
                                      select bus;
-            return ret;
+            return RefreshBusesAvelability(ret);
         }
         public IEnumerable<BOBus> AllBuses()
         {
-            return dataAPI.All<DAOBus>()
-                          .Select(bus => new BOBus(bus));
+            var ret = dataAPI.All<DAOBus>()
+                             .Select(bus => new BOBus(bus));
+            return RefreshBusesAvelability(ret);
         }
         public BOBus RefuelBus(int licenseNumber)
         {
@@ -174,6 +175,13 @@ namespace BL
             {
                 return null;
             }
+            else if (busToTrack.TimeToReady < DateTime.Now)
+            {
+                busToTrack.TimeToReady = null;
+                busToTrack.Status = BusStatus.Ready;
+                dataAPI.Update(busToTrack);
+                return null;
+            }
             return busToTrack.TimeToReady - DateTime.Now;
 
         }
@@ -219,6 +227,12 @@ namespace BL
         public BOBus GetBus(int licenseNumber)
         {
             DAOBus toReturn = dataAPI.GetById<DAOBus>(licenseNumber);
+            if (toReturn.TimeToReady.HasValue && toReturn.TimeToReady < DateTime.Now)
+            {
+                toReturn.Status = BusStatus.Ready;
+                toReturn.TimeToReady = null;
+                dataAPI.Update(toReturn);
+            }
             if (toReturn == null)
             {
                 throw new ItemNotFoundException("Can't find the bus with the given license number");
@@ -735,7 +749,22 @@ namespace BL
             return lst.First(t => comperer(t) == minVal);
         }
 
-
+        private IEnumerable<BOBus> RefreshBusesAvelability(IEnumerable<BOBus> toRefresh)
+        {
+            foreach (BOBus bus in toRefresh)
+            {
+                if (bus.Status != BusStatus.Ready)
+                {
+                    bus.TimeToReady = null;
+                    bus.Status = BusStatus.Ready;
+                    DAOBus toUpdate = dataAPI.GetById<DAOBus>(bus.LicenseNumber);
+                    toUpdate.TimeToReady = bus.TimeToReady;
+                    toUpdate.Status = bus.Status;
+                    dataAPI.Update(toUpdate);
+                }
+            }
+            return toRefresh;
+        }
 
 
         #endregion
