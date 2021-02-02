@@ -51,7 +51,9 @@ namespace BL.Simulation
             while (!_needToStop)
             {
                 BOLineTiming timing = new BOLineTiming();
+                
                 //TODO : calculate the time and report progress
+                
                 Thread.Sleep(1000);
             }
         }

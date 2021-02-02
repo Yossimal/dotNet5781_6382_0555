@@ -49,6 +49,7 @@ namespace PL.ViewModels
             _pages.Add("Login", typeof(LoginViewModel));
             _pages.Add("ManagerHome", typeof(ManagerHomeViewModel));
             _pages.Add("Register", typeof(RegisterViewModel));
+            _pages.Add("Simulation", typeof(SimulationViewModel));
             _pages.Add("ShowBusData", typeof(ShowBusDataViewModel));
             _pages.Add("ShowBuses", typeof(ShowBusesViewModel));
             _pages.Add("ShowLineData", typeof(ShowLineDataViewModel));
@@ -56,6 +57,7 @@ namespace PL.ViewModels
             _pages.Add("ShowLines", typeof(ShowLinesViewModel));
             _pages.Add("ShowStations", typeof(ShowStationsViewModel));
             _pages.Add("ShowStationData", typeof(ShowStationDataViewModel));
+            
         }
 
         /// <summary>

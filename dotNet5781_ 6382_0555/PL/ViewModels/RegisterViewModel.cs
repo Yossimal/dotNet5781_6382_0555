@@ -137,7 +137,8 @@ namespace PL.ViewModels
             }
             else
             {
-                MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                _mainViewModel.LoadPage("Simulation");
+                //MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

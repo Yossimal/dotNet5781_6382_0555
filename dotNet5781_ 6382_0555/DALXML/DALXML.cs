@@ -196,7 +196,6 @@ namespace DAL
             _runningIds = metadataXML.Elements()
                                            .First(element => element.Name.LocalName == "running-ids-path")
                                            .Value;
-            _runningIds = _saveDirectory + '\\' + _runningIds;
         }
         private void SaveMetadata()
         {

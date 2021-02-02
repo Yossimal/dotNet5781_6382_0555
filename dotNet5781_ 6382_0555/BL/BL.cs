@@ -1,6 +1,7 @@
 ﻿using BL.BO;
 using BL.Internal_Objects;
 using BL.RestfulAPIModels;
+using BL.Simulation;
 using DALAPI;
 using DALAPI.DAO;
 using System;
@@ -86,7 +87,8 @@ namespace BL
                               || ex is BadManagerCodeException
                               || ex is BadPasswordException
                               || ex is BadUsernameException;
-                if (isHandled) {
+                if (isHandled)
+                {
                     throw ex;
                 }
                 throw new InvalidOperationException("There was problem to write the data", ex);
@@ -168,7 +170,8 @@ namespace BL
                 throw ex;
             }
             //if the bus is already ready -> return null
-            if (!busToTrack.TimeToReady.HasValue) {
+            if (!busToTrack.TimeToReady.HasValue)
+            {
                 return null;
             }
             return busToTrack.TimeToReady - DateTime.Now;
@@ -398,7 +401,7 @@ namespace BL
             //In the case that we want to add the station as first station we need to have other implementation 
             else if (index == 0)
             {
-                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId).OrderBy(s=>s.Index).ToList();
+                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId).OrderBy(s => s.Index).ToList();
                 //Set the data of the station that we want to add
                 toAdd.NextStationId = stationsToUpdate[0].StationId;
                 toAdd.Index = 0;
@@ -415,7 +418,7 @@ namespace BL
             else
             {
                 //Get all the stations from the index to add and after
-                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.Index >= index).OrderBy(s=>s.Index).ToList();
+                List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.Index >= index).OrderBy(s => s.Index).ToList();
                 DAOLineStation nextStation = Min(stationsToUpdate, ls => ls.Index);
                 //set the data of the station that we want to add to the line
                 toAdd.Index = stationsToUpdate[0].Index;
@@ -445,15 +448,16 @@ namespace BL
             ret.Path = AllLineStations(ret);
             return ret;
         }
-        public async Task<BOLine> RemoveStationFromLine(int lineId,int stationCode)
+        public async Task<BOLine> RemoveStationFromLine(int lineId, int stationCode)
         {
             int pathLength = GetLinePathLength(lineId);
             DAOLineStation stationToRemove = dataAPI.GetById<DAOLineStation>(stationCode);
             int index = stationToRemove.Index;
-            if (index >= pathLength) {
+            if (index >= pathLength)
+            {
                 throw new IndexOutOfRangeException("The index is higher then the path length");
             }
-            List<DAOLineStation> stationsToUpdate=dataAPI.Where<DAOLineStation>(s=>s.Index>index).OrderBy(s=>s.Index).ToList();
+            List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.Index > index).OrderBy(s => s.Index).ToList();
 
             //update the previos station
             if (index != 0)
@@ -464,11 +468,13 @@ namespace BL
                 await UpdateNearStations(prev.StationId, prev.NextStationId);
                 dataAPI.Update(prev);
             }
-            else {
+            else
+            {
                 stationsToUpdate[0].PrevStationId = -1;
             }
             //decreament the index of all the stations in the database
-            foreach (DAOLineStation station in stationsToUpdate) {
+            foreach (DAOLineStation station in stationsToUpdate)
+            {
                 station.Index--;
                 dataAPI.Update(station);
             }
@@ -484,7 +490,7 @@ namespace BL
             return new string[5] { "General", "North", "South", "Center", "Jerusalem" };
         }
 
-        public BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId,out BOStation next,out BOStation prev, bool getFullLine = false)
+        public BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId, out BOStation next, out BOStation prev, bool getFullLine = false)
         {
             DAOStation station = dataAPI.GetById<DAOStation>(stationId);
             DAOLineStation lineStation = dataAPI.Where<DAOLineStation>(s => s.StationId == stationId && s.LineId == lineId).First();
@@ -514,7 +520,7 @@ namespace BL
                     throw new ItemNotFoundException("Cant find the line staation in the database.");
                 }
                 prev = GetStation(lineStation.PrevStationId);
-                
+
                 return new BOLineStation
                 {
                     Code = station.Code,
@@ -527,7 +533,8 @@ namespace BL
             //if it not the last station -> we need to get also the distance from the next station
             DAOAdjacentStations nextStationData = dataAPI.Where<DAOAdjacentStations>(adjacentStations => (adjacentStations.FromStationId == station.Id) && (adjacentStations.ToStationId == lineStation.NextStationId)).First();
             //if this is the first station we dont want to update the prev station
-            if (lineStation.Index != 0) {
+            if (lineStation.Index != 0)
+            {
                 prev = GetStation(lineStation.PrevStationId);
             }
             if (lineStation == null || station == null || line == null || nextStationData == null)
@@ -541,10 +548,10 @@ namespace BL
                 Name = station.Name,
                 DistanceFromNext = nextStationData.Distance,
                 TimeFromNext = nextStationData.Time,
-                Line=lineToRet
+                Line = lineToRet
             };
         }
-        public void UpdateNearStations(int fromCode,int toCode,double distance=-1,TimeSpan? time = null)
+        public void UpdateNearStations(int fromCode, int toCode, double distance = -1, TimeSpan? time = null)
         {
             IEnumerable<DAOAdjacentStations> stationQuery = dataAPI.Where<DAOAdjacentStations>(s => s.FromStationId == fromCode && s.ToStationId == toCode);
             if (stationQuery.Count() == 0)
@@ -553,18 +560,32 @@ namespace BL
             }
             DAOAdjacentStations toUpdate = stationQuery.First();
             //check if we need to do something
-            if (distance < 0 && !time.HasValue) {
+            if (distance < 0 && !time.HasValue)
+            {
                 return;
             }
             //check if need to update the distance
-            if (distance > 0) {
+            if (distance > 0)
+            {
                 toUpdate.Distance = distance;
             }
             //check if need to update the time
-            if (time.HasValue) {
+            if (time.HasValue)
+            {
                 toUpdate.Time = time.Value;
             }
             dataAPI.Update(toUpdate);
+        }
+        public void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
+        {
+            Simulator.Instance.StartSimulation(startTime, rate, updateTime);
+        }
+        public void StopSimulator()
+        {
+            Simulator.Instance.StopSimulation();
+        }
+        public void SetStationPanel(int station, Action<object> updateBus)
+        {
         }
 
         #endregion Implementation

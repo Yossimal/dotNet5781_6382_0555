@@ -42,41 +42,48 @@ namespace DAL
         }
         private static object StringToType(PropertyInfo prop, string data)
         {
+            Type dataType = prop.PropertyType;
+            if (Nullable.GetUnderlyingType(prop.PropertyType) != null)
+            {
+                dataType = Nullable.GetUnderlyingType(dataType);
+            }
             if (data == "NuN")
             {
                 return null;
             }
-            else if (prop.PropertyType == typeof(DateTime))
+            else if (dataType == typeof(DateTime))
             {
                 return DateTime.Parse(data);
             }
-            else if (prop.PropertyType == typeof(int))
+            else if (dataType == typeof(int))
             {
                 return int.Parse(data);
             }
-            else if (prop.PropertyType == typeof(TimeSpan))
+            else if (dataType == typeof(TimeSpan))
             {
                 return TimeSpan.Parse(data);
             }
-            else if (prop.PropertyType == typeof(double))
+            else if (dataType == typeof(double))
             {
                 return double.Parse(data);
             }
-            else if (prop.PropertyType == typeof(bool))
+            else if (dataType == typeof(bool))
             {
                 return bool.Parse(data);
             }
-            else if (prop.PropertyType == typeof(DALAPI.BusStatus))
+            else if (dataType == typeof(DALAPI.BusStatus))
             {
                 return Enum.Parse(typeof(DALAPI.BusStatus), data);
             }
-            else if (prop.PropertyType == typeof(DALAPI.Area)) {
+            else if (dataType == typeof(DALAPI.Area))
+            {
                 return Enum.Parse(prop.PropertyType, data);
             }
             return data;
         }
         private static string TypeToString(Type type, object obj)
         {
+
             if (obj == null)
             {
                 return "NuN";
