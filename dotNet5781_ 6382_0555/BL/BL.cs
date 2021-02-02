@@ -100,14 +100,16 @@ namespace BL
             IEnumerable<BOBus> ret = from dataBus in dataAPI.All<DAOBus>()
                                      let bus = new BOBus(dataBus)
                                      where bus.Status == BusStatus.Ready || bus.TimeToReady < DateTime.Now
+                                     orderby bus.LicenseNumber
                                      select bus;
-            return RefreshBusesAvelability(ret);
+            return RefreshBusesAvailability(ret);
         }
         public IEnumerable<BOBus> AllBuses()
         {
             var ret = dataAPI.All<DAOBus>()
-                             .Select(bus => new BOBus(bus));
-            return RefreshBusesAvelability(ret);
+                             .Select(bus => new BOBus(bus))
+                             .OrderBy(bus => bus.LicenseNumber);                  
+            return RefreshBusesAvailability(ret);
         }
         public BOBus RefuelBus(int licenseNumber)
         {
@@ -749,7 +751,7 @@ namespace BL
             return lst.First(t => comperer(t) == minVal);
         }
 
-        private IEnumerable<BOBus> RefreshBusesAvelability(IEnumerable<BOBus> toRefresh)
+        private IEnumerable<BOBus> RefreshBusesAvailability(IEnumerable<BOBus> toRefresh)
         {
             foreach (BOBus bus in toRefresh)
             {
