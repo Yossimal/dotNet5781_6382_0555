@@ -59,6 +59,8 @@ namespace DAL
         #region implementaion
         public int Add(object toAdd)
         {
+            
+            
             Type toAddType = toAdd.GetType();
             XElement toAddXML = toAdd.ToXElement();
             XElement listToAdd = GetListByType(toAddType);
@@ -196,7 +198,8 @@ namespace DAL
             _runningIds = metadataXML.Elements()
                                            .First(element => element.Name.LocalName == "running-ids-path")
                                            .Value;
-            _runningIds = _saveDirectory + '\\' + _runningIds;
+           // _runningIds = _saveDirectory + '\\' + _runningIds;
+
         }
         private void SaveMetadata()
         {

@@ -31,9 +31,9 @@ namespace BL
         IEnumerable<string> GetAllAreas();
         BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId, out BOStation next, out BOStation prev, bool fullLine = false);
         void UpdateNearStations(int fromCode, int toCode, double distance = -1, TimeSpan? time = null);
-        void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
-        void StopSimulator();
-        void SetStationPanel(int station, Action<object> updateBus);
+        //void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
+        //void StopSimulator();
+        //void SetStationPanel(int station, Action<object> updateBus);
 
 
     }

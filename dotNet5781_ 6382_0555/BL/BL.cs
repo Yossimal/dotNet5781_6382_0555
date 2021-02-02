@@ -104,7 +104,7 @@ namespace BL
         public IEnumerable<BOBus> AllBuses()
         {
             return dataAPI.All<DAOBus>()
-                .Select(bus => new BOBus(bus));
+                          .Select(bus => new BOBus(bus));
         }
         public BOBus RefuelBus(int licenseNumber)
         {

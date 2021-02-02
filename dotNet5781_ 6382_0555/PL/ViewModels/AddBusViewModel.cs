@@ -50,11 +50,12 @@ namespace PL.ViewModels
             set
             {
                 int temp;
+                //Condition to ensure that only digits will be written
                 if (int.TryParse(value, out temp) || String.IsNullOrEmpty(value))
                 {
+                    value = temp.ToString();
                     _busToAdd.LicenseNumber = value;
                 }
-                _busToAdd.LicenseNumber = value;
                 NotifyOfPropertyChange(() => LicenseNumber);
                 NotifyOfPropertyChange(() => BusToAdd);
             }
@@ -76,8 +77,7 @@ namespace PL.ViewModels
             set
             {
                 double temp;
-                bool check = double.TryParse(value, out temp) || String.IsNullOrEmpty(value);
-                if (check)
+                if (double.TryParse(value, out temp) || String.IsNullOrEmpty(value))
                 {
                     _busToAdd.MilageCounter = temp;
                 }
