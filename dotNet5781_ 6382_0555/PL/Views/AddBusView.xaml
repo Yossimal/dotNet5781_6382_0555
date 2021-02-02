@@ -22,16 +22,16 @@
         <!-- Row 0 -->
         <Label Grid.Row="0" Grid.Column="0" FontSize="20"  Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">Insert Bus Data</Label>
         <!-- Row 1 -->
-        <Label Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Content="Bus License Number"></Label>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" x:Name="LicenseNumber" MinWidth="100"></TextBox>
+        <Label Content="License Number:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" ></Label>
+        <TextBox x:Name="LicenseNumber" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20"  MinWidth="100"></TextBox>
         <!-- Row 2 -->
-        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Content="The Bus License Date"></Label>
+        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Content="License Date:"></Label>
         <DatePicker x:Name="LicenseDate" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" MinWidth="100"></DatePicker>
         <!-- Row 3 -->
-        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Bus Current Milage"></Label>
+        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Current Milage:"></Label>
         <TextBox x:Name="MilageCounter" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Height="20" MinWidth="100"></TextBox>
         <!-- Row 4-->
-        <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Path=LastCareDateVisibility,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="The Bus Last Care Date"></Label>
+        <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Path=LastCareDateVisibility,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Last Care Date:"></Label>
         <DatePicker x:Name="LastCareDate" Grid.Row="4"  Visibility="{Binding Path=LastCareDateVisibility,Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Grid.Column="1" MinWidth="100"></DatePicker>
         <!-- Row 5-->
         <Button Grid.Column="0" Grid.Row="5" x:Name="AddBus" Content="Add The Bus"/>

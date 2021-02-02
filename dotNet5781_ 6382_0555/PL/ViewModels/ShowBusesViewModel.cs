@@ -56,18 +56,17 @@ namespace PL.ViewModels
         {
             if (_showAll)
             {
-                this.Buses = new BindableCollection<BusModel>
-                    (logic.AllBuses()
-                    .Select(bus => new BusModel(bus)));
+                this.Buses = 
+                    new BindableCollection<BusModel>(logic.AllBuses()
+                                                          .Select(bus => new BusModel(bus)));
             }
             else
             {
-                this.Buses = new BindableCollection<BusModel>
-                    (logic.AllAvailableBuses()
-                    .Select(bus => new BusModel(bus)));
+                this.Buses = 
+                    new BindableCollection<BusModel>(logic.AllAvailableBuses()
+                                                          .Select(bus => new BusModel(bus)));
             }
         }
-
         public BindableCollection<BusModel> Buses
         {
             get => _buses;
@@ -87,33 +86,27 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => SelectedBus);
             }
         }
-
         public void RefuelBus(string licenseToRefuel)
         {
             //BusModel sender = toRefuel as BusModel;
             logic.RefuelBus(BusModel.ReFormatLicense(licenseToRefuel));
             SetBusesList();
         }
-
-        public void AddBus()
-        {
-            _mainViewModel.LoadPage("AddBus");
-        }
-
         public void CareBus(string licenseToCare)
         {
             // BusModel sender = toCare as BusModel;
             logic.CareBus(BusModel.ReFormatLicense(licenseToCare));
             SetBusesList();
         }
-
+        public void AddBus()
+        {
+            _mainViewModel.LoadPage("AddBus");
+        }
         public void ShowBusData() {
             if (SelectedBus != null) {
                 // _mainViewModel.LoadPageNoBack("ShowBusData", SelectedBus);
                 ActivateItem(new ShowBusDataViewModel(_mainViewModel, SelectedBus));
             }
-            
         }
-
     }
 }

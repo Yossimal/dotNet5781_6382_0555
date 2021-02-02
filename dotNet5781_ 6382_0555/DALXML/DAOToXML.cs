@@ -22,7 +22,7 @@ namespace DAL
                 PropertyInfo objectProp = retType.GetProperty(element.Name.LocalName);
                 if (objectProp.CanWrite)
                 {
-                    objectProp.SetValue(ret, StringToType(objectProp, element.Value));
+                   objectProp.SetValue(ret, StringToType(objectProp, element.Value));
                 }
             }
 
