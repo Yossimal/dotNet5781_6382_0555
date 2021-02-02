@@ -755,7 +755,7 @@ namespace BL
         {
             foreach (BOBus bus in toRefresh)
             {
-                if (bus.Status != BusStatus.Ready)
+                if (bus.TimeToReady<=DateTime.Now && bus.Status != BusStatus.Ready)
                 {
                     bus.TimeToReady = null;
                     bus.Status = BusStatus.Ready;
