@@ -410,7 +410,7 @@ namespace BL
                 prev.NextStationId = toAdd.StationId;
                 dataAPI.Update(prev);
                 dataAPI.Add(toAdd);
-                await UpdateNearStations(toAdd.PrevStationId, toAdd.Id);
+                await UpdateNearStations(toAdd.PrevStationId, toAdd.StationId);
             }
             //In the case that we want to add the station as first station we need to have other implementation 
             else if (index == 0)
@@ -426,7 +426,7 @@ namespace BL
                     dataAPI.Update(stat);
                 }
                 dataAPI.Add(toAdd);
-                await UpdateNearStations(toAdd.Id, toAdd.NextStationId);
+                await UpdateNearStations(toAdd.StationId, toAdd.NextStationId);
             }
             //If the method has called with index>0 -> update all the indexes of the stations in the line before the index
             else
@@ -451,8 +451,8 @@ namespace BL
                 toAdd.PrevStationId = prevStation.StationId;
                 dataAPI.Update(prevStation);
                 //handle the distances
-                await UpdateNearStations(toAdd.Id, toAdd.NextStationId);
-                await UpdateNearStations(toAdd.PrevStationId, toAdd.Id);
+                await UpdateNearStations(toAdd.StationId, toAdd.NextStationId);
+                await UpdateNearStations(toAdd.PrevStationId, toAdd.StationId);
                 dataAPI.Add(toAdd);
             }
 
@@ -607,32 +607,34 @@ namespace BL
         internal List<BOStation> AllLineStations(BOLine line)
         {
 
-            List<BOStation> ret = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id)
-                          .Join(dataAPI.All<DAOStation>(),
+            var part1 = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id);
+            var part2 = part1.Join(dataAPI.All<DAOStation>(),
                            s => s.StationId,
                            s => s.Id,
-                           (lineStation, station) => new { station = new BOStation(station), nextStationId = lineStation.NextStationId, index = lineStation.Index })
-                          .Join(dataAPI.All<DAOAdjacentStations>(),
-                               s => s.station.Code,
-                               s => s.FromStationId,
-                               (stationData, adjacentStation) => new { stationData = stationData, adjacentStationData = adjacentStation })
-                          .Where(data => data.stationData.nextStationId == data.adjacentStationData.ToStationId)
-                          .Select(data => new
-                          {
-                              station = new BOLineStation
-                              {
-                                  Code = data.stationData.station.Code,
-                                  Name = data.stationData.station.Name,
-                                  Line = line,
-                                  DistanceFromNext = data.adjacentStationData.Distance,
-                                  TimeFromNext = data.adjacentStationData.Time
-                              },
-                              data.stationData.index
-                          }).OrderBy(station => station.index)
-                           .Select(station => (station.station as BOStation))
-                           .ToList();
+                           (lineStation, station) => new { station = new BOStation(station), nextStationId = lineStation.NextStationId, index = lineStation.Index });
+            var part3 = part2.Join(dataAPI.All<DAOAdjacentStations>(),
+                                s => s.station.Code,
+                                s => s.FromStationId,
+                                (stationData, adjacentStation) => new { stationData = stationData, adjacentStationData = adjacentStation });
+            var part4 = part3.Where(data => data.stationData.nextStationId == data.adjacentStationData.ToStationId)
+                                       .Select(data => new
+                                       {
+                                           station = new BOLineStation
+                                           {
+                                               Code = data.stationData.station.Code,
+                                               Name = data.stationData.station.Name,
+                                               Line = line,
+                                               DistanceFromNext = data.adjacentStationData.Distance,
+                                               TimeFromNext = data.adjacentStationData.Time
+                                           },
+                                           data.stationData.index
+                                       }).OrderBy(station => station.index)
+                                        .Select(station => (station.station as BOStation))
+                                        .ToList();
+            var ret = part4;
             ////We need to add the last station
-            int lastStationIndex = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id).Max(x => x.Index);
+            var query = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id);
+            int lastStationIndex = query.Max(x => x.Index);
             DAOLineStation lastLineStation = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id && s.Index == lastStationIndex).First();
             DAOStation lastStation = dataAPI.Where<DAOStation>(s => s.Code == lastLineStation.StationId).First();
             BOStation lastStationBO = new BOStation
@@ -712,7 +714,7 @@ namespace BL
         private async Task UpdateNearStations(int fromId, int toId)
         {
             //Check if the stations data exists in the database
-            if (dataAPI.Where<DAOAdjacentStations>(s => s.FromStationId == fromId && s.ToStationId == toId).Count() == 0)
+            if (dataAPI.Where<DAOAdjacentStations>(s => s.FromStationId == fromId && s.ToStationId == toId).Count() != 0)
             {
                 return;
             }
@@ -753,7 +755,7 @@ namespace BL
         {
             foreach (BOBus bus in toRefresh)
             {
-                if (bus.TimeToReady<=DateTime.Now && bus.Status != BusStatus.Ready)
+                if (bus.TimeToReady <= DateTime.Now && bus.Status != BusStatus.Ready)
                 {
                     bus.TimeToReady = null;
                     bus.Status = BusStatus.Ready;

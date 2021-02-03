@@ -60,7 +60,7 @@ namespace DAL
         public int Add(object toAdd)
         {
             Type toAddType = toAdd.GetType();
-            XElement toAddXML = toAdd.ToXElement();
+
             XElement listToAdd = GetListByType(toAddType);
             if (toAdd.IsRunningId())
             {
@@ -82,7 +82,7 @@ namespace DAL
                     toAdd.SetId(currentId);
                     currentId++;
                     query.First().Value = currentId.ToString();
-                    runningIdXML.Save(_runningIds);
+                    runningIdXML.Save(_saveDirectory+'\\'+_runningIds);
                 }
             }
             else
@@ -100,6 +100,7 @@ namespace DAL
                     throw new ItemAlreadyExistsException($"There is already an item with type {toAddType.Name} and Id {toAdd.GetId()} in the data storge.");
                 }
             }
+            XElement toAddXML = toAdd.ToXElement();
             listToAdd.Add(toAddXML);
             listToAdd.Save(_saveDirectory + '\\' + _files[toAddType]);
             return toAdd.GetId();
