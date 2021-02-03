@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    internal class BL : IBL
+    internal class BL : IBL 
     {
         #region Singelton
         private static readonly BL _instance = new BL();
