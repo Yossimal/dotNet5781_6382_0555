@@ -20,7 +20,7 @@ namespace BL.Simulation
             _simulator = new Simulator();
         }
         #endregion Singleton
-        private volatile bool _needToStop = false;
+        internal volatile bool needToStop = false;
         public void StartSimulation(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
             SimulationStopwatch stopwatch = new SimulationStopwatch(rate, startTime);
@@ -31,7 +31,7 @@ namespace BL.Simulation
                 stopwatch = stopwatch,
                 updateTime = updateTime
             };
-            _needToStop = false;
+            needToStop = false;
             simulationWorker.DoWork += DoWorkSimulation;
             simulationWorker.ProgressChanged += ProgressChangedSimulation;
             simulationWorker.RunWorkerCompleted += RunWorkerComplitedSimulation;
@@ -40,7 +40,7 @@ namespace BL.Simulation
         }
         public void StopSimulation()
         {
-            _needToStop = true;
+            needToStop = true;
         }
 
         private void DoWorkSimulation(object sender, DoWorkEventArgs args)
@@ -48,7 +48,7 @@ namespace BL.Simulation
             DoWorkSimulationData data = args.Argument as DoWorkSimulationData;
             BackgroundWorker worker = sender as BackgroundWorker;
             data.stopwatch.Restart();
-            while (!_needToStop)
+            while (!needToStop)
             {
                 Thread.Sleep(1000);
                 ProgressChangedSimulationData dataToUpdate = new ProgressChangedSimulationData
