@@ -16,14 +16,17 @@ namespace BL.Simulation
         private static Simulator _simulator;
         public static Simulator Instance => _simulator;
         private Simulator() { }
-        static Simulator() {
+        static Simulator()
+        {
             _simulator = new Simulator();
         }
         #endregion Singleton
+        private SimulationStopwatch stopwatch;
         internal volatile bool needToStop = false;
+        internal TimeSpan CurrentTime => stopwatch.CurrentTime;
         public void StartSimulation(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
-            SimulationStopwatch stopwatch = new SimulationStopwatch(rate, startTime);
+            stopwatch = new SimulationStopwatch(rate, startTime);
             BackgroundWorker simulationWorker = new BackgroundWorker();
             simulationWorker.WorkerReportsProgress = true;
             DoWorkSimulationData doWorkData = new DoWorkSimulationData
@@ -58,7 +61,8 @@ namespace BL.Simulation
                 };
                 worker.ReportProgress(0, dataToUpdate);
             }
-            args.Result = new RunWorkerCompleatedSimulationData {
+            args.Result = new RunWorkerCompleatedSimulationData
+            {
                 stopwatch = data.stopwatch
             };
         }

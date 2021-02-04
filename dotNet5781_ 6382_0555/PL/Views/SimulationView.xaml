@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:PL.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -11,8 +13,13 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -29,5 +36,51 @@
         <TextBox x:Name="Rate" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"></TextBox>
         <!-- Row 3 - Simulation toggle-->
         <Button x:Name="SimulationButtonClick" Grid.Column="0" Grid.Row="3" Content="{Binding Path=SimulationToggleButtonText, Mode=OneWay}"  Grid.ColumnSpan="3" />
+        <!-- Row 4 -  StationSelector -->
+        <ListBox x:Name="Stations" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <cal:ActionMessage MethodName="SetStation">
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="Name" Grid.Column="0" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text="   " Grid.Column="1"/>
+                        <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- Row 5 -  Lines Arrival View -->
+        <ListBox x:Name="Drives" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="LineNumber" Grid.Column="0" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text="   " Grid.Column="1"/>
+                        <TextBlock x:Name="NearestArrivalTime" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        <TextBlock Text=" " Grid.Column="3"/>
+                        <TextBlock x:Name="LastStationName" Grid.Column="4" cal:Bind.Model="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
-    </UserControl>
+</UserControl>

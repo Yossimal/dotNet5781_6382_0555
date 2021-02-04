@@ -57,7 +57,6 @@
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOStation.cs" />
     <Compile Include="BO\BOUser.cs" />
-    <Compile Include="EventArgs\LineTimeUpdateEventArgs.cs" />
     <Compile Include="Exceptions\BadLoginDataException.cs" />
     <Compile Include="Exceptions\BadManagerCodeException.cs" />
     <Compile Include="Exceptions\BadPasswordException.cs" />
@@ -67,6 +66,7 @@
     <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="IBL.cs" />
+    <Compile Include="Internal Objects\BusSendData.cs" />
     <Compile Include="Internal Objects\DoWorkSimulationData.cs" />
     <Compile Include="Internal Objects\Location.cs" />
     <Compile Include="Internal Objects\ProgressChangedSimulationData.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="RestfulAPIModels\APIHelper.cs" />
     <Compile Include="RestfulAPIModels\Distance.cs" />
     <Compile Include="Simulation\DrivesManager.cs" />
+    <Compile Include="Simulation\EventArgs\LineDriveEventArgs.cs" />
     <Compile Include="Simulation\LineDriveHandler.cs" />
     <Compile Include="Simulation\Simulator.cs" />
   </ItemGroup>

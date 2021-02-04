@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="Models\AddStationModel.cs" />
     <Compile Include="Models\BusModel.cs" />
+    <Compile Include="Models\LineDriveModel.cs" />
     <Compile Include="Models\LineModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\StationModel.cs" />

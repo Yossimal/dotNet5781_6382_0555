@@ -2,6 +2,7 @@
 using BL.Internal_Objects;
 using BL.RestfulAPIModels;
 using BL.Simulation;
+using BL.Simulation.EventArgs;
 using DALAPI;
 using DALAPI.DAO;
 using System;
@@ -600,8 +601,14 @@ namespace BL
         {
             Simulator.Instance.StopSimulation();
         }
-        public void SetStationPanel(int station, Action<object> updateBus)
-        {
+        public void OnLineUpdate(EventHandler<LineDriveEventArgs> handler) {
+            DrivesManager.Instance.onLineUpdate += handler;
+        }
+        public void OnLineFinish(EventHandler<LineDriveEventArgs> handler) {
+            DrivesManager.Instance.onLineFinish += handler;
+        }
+        public void SetStationToTrack(int stationId) {
+            DrivesManager.Instance.SetStationPanel(stationId);
         }
 
         #endregion Implementation

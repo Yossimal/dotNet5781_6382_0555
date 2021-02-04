@@ -1,4 +1,5 @@
 ﻿using BL.BO;
+using BL.Simulation.EventArgs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,8 +34,8 @@ namespace BL
         void UpdateNearStations(int fromCode, int toCode, double distance = -1, TimeSpan? time = null);
         void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime);
         void StopSimulator();
-        void SetStationPanel(int station, Action<object> updateBus);
-
-
+        void OnLineUpdate(EventHandler<LineDriveEventArgs> handler);
+        void OnLineFinish(EventHandler<LineDriveEventArgs> handler);
+        void SetStationToTrack(int stationId);
     }
 }

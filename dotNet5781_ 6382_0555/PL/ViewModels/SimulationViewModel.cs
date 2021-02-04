@@ -1,5 +1,8 @@
 ﻿using BL;
+using BL.BO;
+using BL.Simulation.EventArgs;
 using Caliburn.Micro;
+using PL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +19,20 @@ namespace PL.ViewModels
         private TimeSpan _startTime;
         private IBL logic = BLFactory.API;
         private bool _isSimulationRunning = false;
+        private BindableCollection<StationModel> _stations;
+        private BindableCollection<LineDriveModel> _drives;
+        private StationModel _selectedStation;
+
 
         public SimulationViewModel(MainViewModel mainViewModel)
         {
             this._mainViewModel = mainViewModel;
             this._currentTime = TimeSpan.Zero;
             this._startTime = TimeSpan.Zero;
+            this.logic.OnLineUpdate(OnLineUpdate);
+            this.logic.OnLineFinish(OnLineFinish);
+            this.Stations = new BindableCollection<StationModel>(logic.AllStations().Select(s => new StationModel { Code = s.Code.ToString(), Name = s.Name }));
+            this.Drives = new BindableCollection<LineDriveModel>();
         }
         public string CurrentTime
         {
@@ -94,6 +105,33 @@ namespace PL.ViewModels
                 }
             }
         }
+        public BindableCollection<StationModel> Stations
+        {
+            get => _stations;
+            set
+            {
+                _stations = value;
+                NotifyOfPropertyChange(() => Stations);
+            }
+        }
+        public BindableCollection<LineDriveModel> Drives
+        {
+            get => _drives;
+            set
+            {
+                this._drives = value;
+                NotifyOfPropertyChange(() => Drives);
+            }
+        }
+        public StationModel SelectedStation
+        {
+            get => _selectedStation;
+            set
+            {
+                _selectedStation = value;
+                NotifyOfPropertyChange(() => SelectedStation);
+            }
+        }
         public void SimulationButtonClick()
         {
             if (_isSimulationRunning)
@@ -107,6 +145,10 @@ namespace PL.ViewModels
             _isSimulationRunning = !_isSimulationRunning;
             NotifyOfPropertyChange(() => SimulationToggleButtonText);
         }
+        public void SetStation()
+        {
+            logic.SetStationToTrack(int.Parse(SelectedStation.Code));
+        }
         private void RunSimulation()
         {
             logic.StartSimulator(StartTime, Rate, OnTimeChange);
@@ -119,6 +161,36 @@ namespace PL.ViewModels
         {
             _currentTime = span;
             NotifyOfPropertyChange(() => CurrentTime);
+        }
+        private void OnLineUpdate(object sender, LineDriveEventArgs args)
+        {
+            BOLineTiming timing = args.lineTiming;
+            LineDriveModel drive = Drives.FirstOrDefault(d => timing.LineId == d.LineId);
+            if (drive == null)
+            {
+                drive = new LineDriveModel()
+                {
+                    LineId = timing.LineId,
+                    LineNumber = timing.LineNumber,
+                    NearestArrivalTime = timing.ArrivalTime,
+                    LastStationName = timing.LastStationName
+                };
+                Drives.Add(drive);
+            }
+            else if (drive.NearestArrivalTime > timing.ArrivalTime)
+            {
+                drive.NearestArrivalTime = timing.ArrivalTime;
+            }
+            Drives = new BindableCollection<LineDriveModel>(Drives.OrderBy(d => d.NearestArrivalTime));
+        }
+        private void OnLineFinish(object sender, LineDriveEventArgs args)
+        {
+            
+            LineDriveModel toRemove = Drives.FirstOrDefault(d => d.LineId == args.lineTiming.LineId);
+            if (toRemove == null) {
+                return;
+            }
+            Drives.Remove(toRemove);
         }
     }
 }

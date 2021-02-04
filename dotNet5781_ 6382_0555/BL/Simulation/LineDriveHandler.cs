@@ -13,29 +13,31 @@ namespace BL.Simulation
 {
     internal class LineDriveHandler
     {
-        public BOLineTiming LineTiming { get; set; }
         //public event EventHandler<>
         private static Random _rand = new Random(DateTime.Now.Millisecond);
-        private IDAL _dataAPI = DALFactory.API;
+        private Simulator _simulator = Simulator.Instance;
         private volatile bool _needToStop;
+        private TimeSpan _startTime;
         private BOLine _line;
+        private BOStation _stationToTrack;
         private List<BOLineStation> _linePath;
         private BackgroundWorker _driveBackgroundWorker;
-        private Action<BOLineTiming> _onProgressAction;
         private Action _finishAction;
         private const float MINIMUM_COEFFICIENT = 0.9f;
         private const float MAXIMUM_COEFFICIENT = 2f;
 
 
-        public LineDriveHandler(BOLineTiming lineTiming,Action<BOLineTiming> onTrack,Action onFinish)
+        public LineDriveHandler(BOLine lineToDrive, BOStation stationToTrack,TimeSpan startTime)
         {
-            this.LineTiming = lineTiming;
+            this._startTime = startTime;
+            this._stationToTrack = stationToTrack;
             this._needToStop = false;
-            this._line = BLFactory.API.GetLine(lineTiming.LineId);
+            this._line = lineToDrive;
             this._linePath = GetLinePath().ToList();
             this._driveBackgroundWorker = new BackgroundWorker();
             this._driveBackgroundWorker.DoWork += DoWork;
             this._driveBackgroundWorker.ProgressChanged += ProgressChanged;
+            this._driveBackgroundWorker.WorkerReportsProgress = true;
             this._driveBackgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
 
         }
@@ -47,27 +49,44 @@ namespace BL.Simulation
         {
             _needToStop = true;
         }
-        private  void DoWork(object sender, DoWorkEventArgs args) {
-            while (!_needToStop)
+        private void DoWork(object sender, DoWorkEventArgs args)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            while (!_needToStop && CalculateArrivalTime(_simulator.CurrentTime)<_simulator.CurrentTime)
             {
                 BOLineTiming timing = new BOLineTiming();
-                
-                //TODO : calculate the time and report progress
-                
+                timing.ArrivalTime = CalculateArrivalTime(_simulator.CurrentTime);
+                timing.LastStationName = _line.Path.Last().Name;
+                timing.LineNumber = _line.LineNumber;
+                timing.StartTime = _startTime;
+                timing.LineNumber = _line.LineNumber;
+                timing.LineId = _line.Id;
+                worker.ReportProgress(0, timing);
                 Thread.Sleep(1000);
             }
+            //set the finish report
+            BOLineTiming result = new BOLineTiming();
+            result.ArrivalTime = TimeSpan.Zero;
+            result.LastStationName = _line.Path.Last().Name;
+            result.LineNumber = _line.LineNumber;
+            result.StartTime = _startTime;
+            result.LineNumber = _line.LineNumber;
+            result.LineId = _line.Id;
+            args.Result= result;
         }
-        private void ProgressChanged(object sender, ProgressChangedEventArgs args) {
+        private void ProgressChanged(object sender, ProgressChangedEventArgs args)
+        {
             BOLineTiming timing = args.UserState as BOLineTiming;
-            _onProgressAction(timing);
+            DrivesManager.Instance.LineUpdate(timing);
         }
-        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs args) {
-            _finishAction();
+        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs args)
+        {
+            BOLineTiming result = args.Result as BOLineTiming;
+            DrivesManager.Instance.LineFinish(result);
         }
-
-        private TimeSpan CalculateArrivalTime(TimeSpan currentTime) {
-            //TODO : calculate the time using the current time and the bus starting time
-            return TimeSpan.Zero;
+        private TimeSpan CalculateArrivalTime(TimeSpan currentTime)
+        {
+            return GetTime()- (currentTime-_startTime);
         }
         private BOStation CalculateCurrentStation(TimeSpan currentTime)
         {
@@ -78,7 +97,8 @@ namespace BL.Simulation
         private IEnumerable<BOLineStation> GetLinePath()
         {
             return _line.Path.Select(station => BL.Instance.GetLineStationFromStationAndLine(_line.Id, station.Code, out _, out _))
-                             .Select(station=> {
+                             .Select(station =>
+                             {
                                  station.TimeFromNext = RandomizeTime(station.TimeFromNext);
                                  return station;
                              });
@@ -88,6 +108,30 @@ namespace BL.Simulation
         {
             double coefficient = _rand.NextDouble() * (MAXIMUM_COEFFICIENT - MINIMUM_COEFFICIENT) + MINIMUM_COEFFICIENT;
             return TimeSpan.FromSeconds(timeFromNext.TotalSeconds * coefficient);
+        }
+        private double GetDistance() {
+            double ret = 0;
+            for(int i = 0; i < _linePath.Count; i++)
+            {
+                if (_linePath[i].Code == _stationToTrack.Code) {
+                    break;
+                }
+                ret += _linePath[i].DistanceFromNext;
+            }
+            return ret;
+        }
+        private TimeSpan GetTime()
+        {
+            TimeSpan ret = TimeSpan.Zero;
+            for (int i = 0; i < _linePath.Count; i++)
+            {
+                if (_linePath[i].Code == _stationToTrack.Code)
+                {
+                    break;
+                }
+                ret += _linePath[i].TimeFromNext;
+            }
+            return ret;
         }
     }
 }

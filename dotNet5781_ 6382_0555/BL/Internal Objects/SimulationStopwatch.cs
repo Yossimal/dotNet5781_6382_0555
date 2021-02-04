@@ -11,6 +11,7 @@ namespace BL.Internal_Objects
     {
         private TimeSpan _startTime;
         private Stopwatch _stopwatch;
+        private TimeSpan _lastCheckTime;
         private int _rate = 1;
         public SimulationStopwatch(int rate,TimeSpan startTime)
         {
@@ -34,6 +35,7 @@ namespace BL.Internal_Objects
         {
             _stopwatch.Stop();
         }
+        
         
     }
 }
