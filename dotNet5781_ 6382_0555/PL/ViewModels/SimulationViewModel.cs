@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PL.ViewModels
 {
@@ -22,6 +23,7 @@ namespace PL.ViewModels
         private BindableCollection<StationModel> _stations;
         private BindableCollection<LineDriveModel> _drives;
         private StationModel _selectedStation;
+        private BindableCollection<YellowSignModel> _yellowSign;
 
 
         public SimulationViewModel(MainViewModel mainViewModel)
@@ -130,6 +132,21 @@ namespace PL.ViewModels
             {
                 _selectedStation = value;
                 NotifyOfPropertyChange(() => SelectedStation);
+                NotifyOfPropertyChange(() => CurrentStation);
+            }
+        }
+        public string CurrentStation => SelectedStation != null ? SelectedStation.Name : "Choose station from the list";
+        public Visibility SimulationDataVisibility
+        {
+            get => _isSimulationRunning ? Visibility.Visible : Visibility.Hidden;
+        }
+        public BindableCollection<YellowSignModel> YellowSign
+        {
+            get => _yellowSign;
+            set
+            {
+                _yellowSign = value;
+                NotifyOfPropertyChange(() => YellowSign);
             }
         }
         public void SimulationButtonClick()
@@ -144,10 +161,20 @@ namespace PL.ViewModels
             }
             _isSimulationRunning = !_isSimulationRunning;
             NotifyOfPropertyChange(() => SimulationToggleButtonText);
+            NotifyOfPropertyChange(() => SimulationDataVisibility);
         }
+
         public void SetStation()
         {
+            if (SelectedStation == null)
+            {
+                return;
+            }
             logic.SetStationToTrack(int.Parse(SelectedStation.Code));
+            Drives = new BindableCollection<LineDriveModel>();
+            IEnumerable<YellowSignModel> dataForYellowSign = logic.AllLinesInStation(int.Parse(SelectedStation.Code))
+                                                                  .Select(ys => new YellowSignModel() { LastStationName = ys.LastStationName, LineNumber = ys.LineNumber });
+            YellowSign = new BindableCollection<YellowSignModel>(dataForYellowSign);
         }
         private void RunSimulation()
         {
@@ -164,33 +191,48 @@ namespace PL.ViewModels
         }
         private void OnLineUpdate(object sender, LineDriveEventArgs args)
         {
+
             BOLineTiming timing = args.lineTiming;
-            LineDriveModel drive = Drives.FirstOrDefault(d => timing.LineId == d.LineId);
-            if (drive == null)
+            if (SelectedStation.Code != timing.TrackStationId.ToString())
             {
-                drive = new LineDriveModel()
+                return;
+            }
+            try
+            {
+                LineDriveModel drive = Drives.FirstOrDefault(d => timing.LineId == d.LineId);
+                if (drive == null)
                 {
-                    LineId = timing.LineId,
-                    LineNumber = timing.LineNumber,
-                    NearestArrivalTime = timing.ArrivalTime,
-                    LastStationName = timing.LastStationName
-                };
-                Drives.Add(drive);
+                    drive = new LineDriveModel()
+                    {
+                        LineId = timing.LineId,
+                        LineNumber = timing.LineNumber,
+                        NearestArrivalTime = timing.ArrivalTime,
+                        LastStationName = timing.LastStationName
+                    };
+
+                    Drives.Add(drive);
+                }
+                else if (drive.NearestArrivalTime > timing.ArrivalTime)
+                {
+                    drive.NearestArrivalTime = timing.ArrivalTime;
+                }
+                Drives = new BindableCollection<LineDriveModel>(Drives.OrderBy(d => d.NearestArrivalTime));
             }
-            else if (drive.NearestArrivalTime > timing.ArrivalTime)
-            {
-                drive.NearestArrivalTime = timing.ArrivalTime;
-            }
-            Drives = new BindableCollection<LineDriveModel>(Drives.OrderBy(d => d.NearestArrivalTime));
+            catch { }
         }
         private void OnLineFinish(object sender, LineDriveEventArgs args)
         {
-            
+
             LineDriveModel toRemove = Drives.FirstOrDefault(d => d.LineId == args.lineTiming.LineId);
-            if (toRemove == null) {
+            if (toRemove == null)
+            {
                 return;
             }
-            Drives.Remove(toRemove);
+            try
+            {
+                Drives.Remove(toRemove);
+            }
+            catch { }
         }
     }
 }

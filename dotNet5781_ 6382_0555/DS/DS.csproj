@@ -50,6 +50,10 @@
       <Project>{a836c80b-af5b-482e-a33f-c376ed899b3d}</Project>
       <Name>DALAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DALXML\DALXML.csproj">
+      <Project>{fbdeed76-b4df-40da-ae90-328094d88e07}</Project>
+      <Name>DALXML</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

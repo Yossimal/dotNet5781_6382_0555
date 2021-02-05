@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DALAPI.DAO;
+using DAL;
+using System.Linq;
 
 namespace DS
 {
@@ -9,14 +11,35 @@ namespace DS
         public static readonly Dictionary<Type, List<object>> Database = new Dictionary<Type, List<object>>();
         public static readonly Dictionary<Type, int> RunningId = new Dictionary<Type, int>();
 
+        private static DAL.DALXML dalxml = DAL.DALXML.Instance;
         static Data()
         {
-            InitializeUsers();
-            InitializeBuses();
-            InitializeStations();
-            InitializeAdjucentStations();
-            InitializeLineStations();
-            InitializeLines();
+            InitializeData();
+        }
+
+        private static void InitializeData()
+        {
+            //initialize the users list
+            Database.Add(typeof(DAOUser), new List<object>());
+            Database[typeof(DAOUser)].AddRange(dalxml.All<DAOUser>().Select(dao => dao as object));
+            //initialize the buses list
+            Database.Add(typeof(DAOBus), new List<object>());
+            Database[typeof(DAOBus)].AddRange(dalxml.All<DAOBus>().Select(dao => dao as object));
+            //initialize the lines list
+            Database.Add(typeof(DAOLine), new List<object>());
+            Database[typeof(DAOLine)].AddRange(dalxml.All<DAOLine>().Select(dao => dao as object));
+            //initialize the line stations list
+            Database.Add(typeof(DAOLineStation), new List<object>());
+            Database[typeof(DAOLineStation)].AddRange(dalxml.All<DAOLineStation>().Select(dao => dao as object));
+            //initialize the line trip list
+            Database.Add(typeof(DAOLineTrip), new List<object>());
+            Database[typeof(DAOLineTrip)].AddRange(dalxml.All<DAOLineTrip>().Select(dao => dao as object));
+            //initialize the stations list
+            Database.Add(typeof(DAOStation), new List<object>());
+            Database[typeof(DAOStation)].AddRange(dalxml.All<DAOStation>().Select(dao => dao as object));
+            //initialize the adjacent stations list
+            Database.Add(typeof(DAOAdjacentStations), new List<object>());
+            Database[typeof(DAOAdjacentStations)].AddRange(dalxml.All<DAOAdjacentStations>().Select(dao => dao as object));
         }
         /// <summary>
         /// Data were written automaically (usind ts) and added 
@@ -231,7 +254,7 @@ namespace DS
                 NextStationId = 333333,
                 StationId = 999999,
                 PrevStationId = -1
-            }); 
+            });
             AddWithRunningId(lineStationType, new DAOLineStation
             {
                 Index = 1,
@@ -247,7 +270,7 @@ namespace DS
                 NextStationId = -1,
                 StationId = 999999,
                 PrevStationId = 333333
-            }); 
+            });
             AddWithRunningId(lineStationType, new DAOLineStation
             {
                 Index = 0,
@@ -263,7 +286,7 @@ namespace DS
                 NextStationId = 666666,
                 StationId = 555555,
                 PrevStationId = 444444
-            }); 
+            });
             AddWithRunningId(lineStationType, new DAOLineStation
             {
                 Index = 2,
@@ -271,7 +294,7 @@ namespace DS
                 NextStationId = -1,
                 StationId = 666666,
                 PrevStationId = 555555
-            }); 
+            });
             AddWithRunningId(lineStationType, new DAOLineStation
             {
                 Index = 0,
@@ -279,7 +302,7 @@ namespace DS
                 NextStationId = 888888,
                 StationId = 222222,
                 PrevStationId = -1
-            }); 
+            });
             AddWithRunningId(lineStationType, new DAOLineStation
             {
                 Index = 1,

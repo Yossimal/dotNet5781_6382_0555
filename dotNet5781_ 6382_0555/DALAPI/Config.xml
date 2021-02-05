@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
   <implementation>
-    <current>xml</current>
+    <current>object</current>
     <options>
       <object>
         <type>DAL.DALObject</type>

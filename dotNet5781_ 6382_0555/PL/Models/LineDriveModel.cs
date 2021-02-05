@@ -11,6 +11,7 @@ namespace PL.Models
         public int LineId { get; set; }
         public int LineNumber { get; set; }
         public TimeSpan NearestArrivalTime {get;set;}
+        public string NearestArrivalTimeAsString { get => $"{NearestArrivalTime.Hours}:{NearestArrivalTime.Minutes}:{NearestArrivalTime.Seconds}"; }
         public string LastStationName { get; set; }
     }
 }

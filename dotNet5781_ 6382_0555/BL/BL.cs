@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    internal class BL : IBL 
+    internal class BL : IBL
     {
         #region Singelton
         private static readonly BL _instance = new BL();
@@ -109,7 +109,7 @@ namespace BL
         {
             var ret = dataAPI.All<DAOBus>()
                              .Select(bus => new BOBus(bus))
-                             .OrderBy(bus => bus.LicenseNumber);                  
+                             .OrderBy(bus => bus.LicenseNumber);
             return RefreshBusesAvailability(ret);
         }
         public BOBus RefuelBus(int licenseNumber)
@@ -601,16 +601,24 @@ namespace BL
         {
             Simulator.Instance.StopSimulation();
         }
-        public void OnLineUpdate(EventHandler<LineDriveEventArgs> handler) {
+        public void OnLineUpdate(EventHandler<LineDriveEventArgs> handler)
+        {
             DrivesManager.Instance.onLineUpdate += handler;
         }
-        public void OnLineFinish(EventHandler<LineDriveEventArgs> handler) {
+        public void OnLineFinish(EventHandler<LineDriveEventArgs> handler)
+        {
             DrivesManager.Instance.onLineFinish += handler;
         }
-        public void SetStationToTrack(int stationId) {
+        public void SetStationToTrack(int stationId)
+        {
             DrivesManager.Instance.SetStationPanel(stationId);
         }
-
+        public IEnumerable<BOYellowSign> AllLinesInStation(int stationId)
+        {
+            return dataAPI.Where<DAOLineStation>(s => s.StationId == stationId)
+                          .Select(s => dataAPI.GetById<DAOLine>(s.LineId))
+                          .Select(l => new BOYellowSign { LineNumber = l.Code, LastStationName = GetLastStation(l.Id).Name });
+        }
         #endregion Implementation
         #region private and internal methods
         internal List<BOStation> AllLineStations(BOLine line)
@@ -776,7 +784,12 @@ namespace BL
             }
             return toRefresh;
         }
-
+        internal DAOStation GetLastStation(int lineId)
+        {
+            return dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.NextStationId == -1)
+                          .Select(ls => dataAPI.GetById<DAOStation>(ls.StationId))
+                          .First();
+        }
 
         #endregion
     }

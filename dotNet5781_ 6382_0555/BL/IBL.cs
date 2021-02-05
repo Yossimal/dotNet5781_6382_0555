@@ -37,5 +37,6 @@ namespace BL
         void OnLineUpdate(EventHandler<LineDriveEventArgs> handler);
         void OnLineFinish(EventHandler<LineDriveEventArgs> handler);
         void SetStationToTrack(int stationId);
+        IEnumerable<BOYellowSign> AllLinesInStation(int stationId);
     }
 }

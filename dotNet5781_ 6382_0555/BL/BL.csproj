@@ -57,6 +57,7 @@
     <Compile Include="BO\BORegister.cs" />
     <Compile Include="BO\BOStation.cs" />
     <Compile Include="BO\BOUser.cs" />
+    <Compile Include="BO\BOYellowSign.cs" />
     <Compile Include="Exceptions\BadLoginDataException.cs" />
     <Compile Include="Exceptions\BadManagerCodeException.cs" />
     <Compile Include="Exceptions\BadPasswordException.cs" />

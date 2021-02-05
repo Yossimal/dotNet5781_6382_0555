@@ -13,6 +13,7 @@ namespace BL.BO
         public TimeSpan StartTime { get; set; }
         public TimeSpan ArrivalTime { get; set; }
         public string LastStationName { get; set; }
+        public int TrackStationId { get; set; }
         internal int LastStationId { get; set; }
     }
 }

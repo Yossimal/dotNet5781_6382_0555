@@ -65,7 +65,10 @@ namespace BL.Simulation
                 if (simulator.CurrentTime > sendData.SendTime)
                 {
                     sentLines.Add(sendData);
-                    BOLine lineToSend = linesInStation.First(l => l.Id == sendData.LineId);
+                    BOLine lineToSend = linesInStation.FirstOrDefault(l => l.Id == sendData.LineId);
+                    if (lineToSend == null) {
+                        continue;
+                    }
                     LineDriveHandler driveHandler = new LineDriveHandler(lineToSend, stationToTrack, sendData.SendTime);
                     driveHandler.StartDrive();
                 }

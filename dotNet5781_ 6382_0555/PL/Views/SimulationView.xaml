@@ -22,8 +22,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- Row 0 - Clock -->
         <Label x:Name="CurrentTime" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"></Label>
@@ -37,7 +37,7 @@
         <!-- Row 3 - Simulation toggle-->
         <Button x:Name="SimulationButtonClick" Grid.Column="0" Grid.Row="3" Content="{Binding Path=SimulationToggleButtonText, Mode=OneWay}"  Grid.ColumnSpan="3" />
         <!-- Row 4 -  StationSelector -->
-        <ListBox x:Name="Stations" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" >
+        <ListBox x:Name="Stations" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding Path=SimulationDataVisibility, Mode=OneWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <cal:ActionMessage MethodName="SetStation">
@@ -53,15 +53,14 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Name="Name" Grid.Column="0" cal:Bind.Model="{Binding}"/>
+                        <TextBlock x:Name="Code" Grid.Column="0" cal:Bind.Model="{Binding}"/>
                         <TextBlock Text="   " Grid.Column="1"/>
-                        <TextBlock x:Name="Code" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        <TextBlock x:Name="Name" Grid.Column="2" cal:Bind.Model="{Binding}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <!-- Row 5 -  Lines Arrival View -->
-        <ListBox x:Name="Drives" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" >
+        <ListBox x:Name="Drives" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Visibility="{Binding Path=SimulationDataVisibility, Mode=OneWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -75,12 +74,39 @@
 
                         <TextBlock x:Name="LineNumber" Grid.Column="0" cal:Bind.Model="{Binding}"/>
                         <TextBlock Text="   " Grid.Column="1"/>
-                        <TextBlock x:Name="NearestArrivalTime" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        <TextBlock x:Name="NearestArrivalTimeAsString" Grid.Column="2" cal:Bind.Model="{Binding}"/>
                         <TextBlock Text=" " Grid.Column="3"/>
                         <TextBlock x:Name="LastStationName" Grid.Column="4" cal:Bind.Model="{Binding}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <!-- Row 5 Yellow sighn-->
+        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Row="0" Fill="Red"/>
+            <Label Grid.Row="0" Grid.Column="0" x:Name="CurrentStation" FontWeight="Bold"></Label>
+            <ListBox x:Name="YellowSign" Background="Yellow" Grid.Column="0" Grid.Row="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock x:Name="LineNumber" Grid.Column="0" cal:Bind.Model="{Binding}"/>
+                            <TextBlock Text=" " Grid.Column="1"/>
+                            <TextBlock x:Name="LastStationName" Grid.Column="2" cal:Bind.Model="{Binding}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </UserControl>

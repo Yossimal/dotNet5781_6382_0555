@@ -22,7 +22,6 @@ namespace BL.Simulation
         private BOStation _stationToTrack;
         private List<BOLineStation> _linePath;
         private BackgroundWorker _driveBackgroundWorker;
-        private Action _finishAction;
         private const float MINIMUM_COEFFICIENT = 0.9f;
         private const float MAXIMUM_COEFFICIENT = 2f;
 
@@ -52,26 +51,28 @@ namespace BL.Simulation
         private void DoWork(object sender, DoWorkEventArgs args)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            while (!_needToStop && CalculateArrivalTime(_simulator.CurrentTime)<_simulator.CurrentTime)
+            while (!_needToStop && CalculateArrivalTime(_simulator.CurrentTime)>TimeSpan.Zero)
             {
                 BOLineTiming timing = new BOLineTiming();
                 timing.ArrivalTime = CalculateArrivalTime(_simulator.CurrentTime);
-                timing.LastStationName = _line.Path.Last().Name;
+                timing.LastStationName = BL.Instance.GetLastStation(_line.Id).Name;
                 timing.LineNumber = _line.LineNumber;
                 timing.StartTime = _startTime;
                 timing.LineNumber = _line.LineNumber;
                 timing.LineId = _line.Id;
+                timing.TrackStationId = _stationToTrack.Code;
                 worker.ReportProgress(0, timing);
                 Thread.Sleep(1000);
             }
             //set the finish report
             BOLineTiming result = new BOLineTiming();
             result.ArrivalTime = TimeSpan.Zero;
-            result.LastStationName = _line.Path.Last().Name;
+            result.LastStationName = BL.Instance.GetLastStation(_line.Id).Name;
             result.LineNumber = _line.LineNumber;
             result.StartTime = _startTime;
             result.LineNumber = _line.LineNumber;
             result.LineId = _line.Id;
+            result.TrackStationId = _stationToTrack.Code;
             args.Result= result;
         }
         private void ProgressChanged(object sender, ProgressChangedEventArgs args)

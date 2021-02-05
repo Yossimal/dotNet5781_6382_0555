@@ -79,6 +79,7 @@
     <Compile Include="Models\StationModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\LineStationModel.cs" />
+    <Compile Include="Models\YellowSignModel.cs" />
     <Compile Include="ViewModels\AddBusViewModel.cs" />
     <Compile Include="ViewModels\AddLineViewModel.cs" />
     <Compile Include="ViewModels\AddStationViewModel.cs" />
