@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class BusNotAvailableException:InvalidOperationException
+    /// <summary>
+    /// thrown trying to use unavailable bus
+    /// </summary>
+    public class BusNotAvailableException : InvalidOperationException
     {
-        public BusNotAvailableException (string message, Exception innerException=null):base(message, innerException) { }
-}
+        public BusNotAvailableException(string message, Exception innerException = null) : base(message, innerException) { }
+    }
 }

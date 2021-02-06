@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace BL.BO
 {
-    public class BOYellowSign
+    /// <summary>
+    /// data for the yellow sign
+    /// </summary>
+   public class BOYellowSign
     {
+        /// <summary>
+        /// the line number
+        /// </summary>
         public int LineNumber { get; set; }
+        /// <summary>
+        /// the name of the last station in that line
+        /// </summary>
         public string LastStationName { get; set; }
     }
 }

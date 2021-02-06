@@ -9,9 +9,15 @@ namespace BL.BO
 {
     public class BOStation
     {
+        /// <summary>
+        /// the station code
+        /// </summary>
         public int Code { get; set; }
+        /// <summary>
+        /// the station name
+        /// </summary>
         public string Name { get; set; }
-        public BOStation(DAOStation station)
+        internal BOStation(DAOStation station)
         {
             this.Code = station.Code;
             this.Name = station.Name;

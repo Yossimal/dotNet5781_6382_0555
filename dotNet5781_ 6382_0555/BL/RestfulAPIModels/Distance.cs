@@ -7,13 +7,25 @@ using System.Threading.Tasks;
 
 namespace BL.RestfulAPIModels
 {
+    /// <summary>
+    /// object theat help working with the api
+    /// </summary>
     class Distance
     {
+        /// <summary>
+        /// the api key
+        /// </summary>
         public const string APIKey = "aMQyd9-ACNp0p0gkUGKWswllHoVFYmUOjtDXk-pyGIw";
+        /// <summary>
+        /// coordinate data for the api
+        /// </summary>
         public double FromLat { get; set; }
         public double FromLon { get; set; }
         public double ToLat { get; set; }
         public double ToLon { get; set; }
+        /// <summary>
+        /// the request url (based on the other 
+        /// </summary>
         public string RequestURL
         {
             get
@@ -28,6 +40,11 @@ namespace BL.RestfulAPIModels
                 return ret.Replace("\r", "").Replace("\t", "").Replace(" ", "").Replace("\n", "");
             }
         }
+        /// <summary>
+        /// gets the distance form the response text
+        /// </summary>
+        /// <param name="responseJSONText">the response text in JSON format</param>
+        /// <returns>the distance</returns>
         public double GetDistance(string responseJSONText)
         {
             JObject responseAsJSON = JObject.Parse(responseJSONText);

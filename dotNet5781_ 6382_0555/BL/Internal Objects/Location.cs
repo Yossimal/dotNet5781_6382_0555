@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL.Internal_Objects
 {
+    /// <summary>
+    /// location coordinates
+    /// </summary>
     class Location
     {
         public double Longitude{get;set;}
