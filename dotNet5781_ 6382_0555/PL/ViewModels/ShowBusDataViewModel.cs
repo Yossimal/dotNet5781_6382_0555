@@ -10,15 +10,19 @@ namespace PL.ViewModels
 {
     class ShowBusDataViewModel : Screen
     {
+        #region private fields
         private MainViewModel _mainViewModel;
         private BusModel _busToShow;
         private IBL logic = BLFactory.API;
         private int LicenseNumber => BusModel.ReFormatLicense(BusToShow.LicenseNumber);
+        #endregion
+
         public ShowBusDataViewModel(MainViewModel mainViewModel, BusModel busToShow)
         {
             _mainViewModel = mainViewModel;
             _busToShow = busToShow;
         }
+        #region properties for Caliburn.Micro
         public BusModel BusToShow
         {
             get => _busToShow;
@@ -28,6 +32,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => BusToShow);
             }
         }
+        #endregion
+        #region events
         public void DeleteBus()
         {
             MessageBoxResult result = MessageBox.Show("Are you sure that you want to remove that bus?\n You can't undo this proccess.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -41,7 +47,7 @@ namespace PL.ViewModels
                 else
                 {
                     MessageBox.Show("Something went wrong with the proccess.\n If that problem comes more times contact us", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    _mainViewModel.LoadPage("ShowBuses");
+                    _mainViewModel.LoadPageNoBack("ShowBuses");
                 }
             }
         }
@@ -95,5 +101,6 @@ namespace PL.ViewModels
         {
             RefreshData();
         }
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ namespace PL.ViewModels
 {
     class ShowLineStationViewModel : Screen
     {
+        #region private fields
         private MainViewModel _mainViewModel;
         private IBL logic = BLFactory.API;
         private LineModel _line;
@@ -20,6 +21,7 @@ namespace PL.ViewModels
         private string _distanceUpdate;
         private string _hourTimeUpdate;
         private string _minTimeUpdate;
+        #endregion
 
         public ShowLineStationViewModel(MainViewModel mainViewModel, LineStationModel station, LineModel line)
         {
@@ -30,7 +32,7 @@ namespace PL.ViewModels
             MinTimeUpdate = "0";
             HourTimeUpdate = "0";
         }
-
+        #region properties for Caliburn.Micro
         public LineStationModel StationToShow
         {
             get => _stationToShow;
@@ -170,6 +172,8 @@ namespace PL.ViewModels
                 }
             }
         }
+        #endregion
+        #region events
         public void ToggleUpdateMode()
         {
             IsUpdateMode = !IsUpdateMode;
@@ -182,5 +186,6 @@ namespace PL.ViewModels
             StationToShow = StationToShow;//Notify of all the changes
             MessageBox.Show("The Station data has been updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        #endregion
     }
 }

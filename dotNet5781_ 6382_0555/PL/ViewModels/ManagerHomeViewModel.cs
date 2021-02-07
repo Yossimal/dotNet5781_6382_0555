@@ -14,7 +14,7 @@ namespace PL.ViewModels
         public ManagerHomeViewModel(MainViewModel mainViewModel) {
             _mainViewModel = mainViewModel;
         }
-
+        #region events
         public void ShowBuses() {
             _mainViewModel.LoadPage("ShowBuses");
         }
@@ -26,6 +26,7 @@ namespace PL.ViewModels
         {
             _mainViewModel.LoadPage("ShowStations");
         }
-        
+        #endregion
+
     }
 }

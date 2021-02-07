@@ -32,7 +32,7 @@ namespace PL.ViewModels
             Lines = new BindableCollection<LineModel>(allLines);
         }
         #endregion
-        #region properties
+        #region properties for Caliburn.Micro
         public LineModel SelectedLine
         {
             get => _selectedLine;
@@ -51,6 +51,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => Lines);
             }
         }
+        #endregion
+        #region events
         public void AddLine()
         {
             _mainViewModel.LoadPage("AddLine");

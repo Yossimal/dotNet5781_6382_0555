@@ -13,18 +13,19 @@ namespace PL.ViewModels
 {
     class RegisterViewModel : Screen
     {
+        #region private methods
         private IBL logic = BLFactory.API;
         private MainViewModel _mainViewModel;
         private UserModel _user = new UserModel();
         private Visibility _managerCodeVisibility = Visibility.Hidden;
         private string _managerCode;
-
+        #endregion
         public RegisterViewModel(MainViewModel mainViewModel)
         {
             this._mainViewModel = mainViewModel;
         }
 
-
+        #region properties for Caliburn.Micro
         public string UserName
         {
             get => User.UserName;
@@ -82,6 +83,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(ManagerCode);
             }
         }
+        #endregion
+        #region events
         public void Register()
         {
             BORegister register = new BORegister
@@ -138,8 +141,8 @@ namespace PL.ViewModels
             else
             {
                 _mainViewModel.LoadPage("Simulation");
-                //MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+        #endregion
     }
 }

@@ -9,6 +9,9 @@ using PL.ViewModels;
 
 namespace PL
 {
+    /// <summary>
+    /// Initializing the Caliburn.Micro
+    /// </summary>
     public class Bootstrapper:BootstrapperBase
     {
         public Bootstrapper()

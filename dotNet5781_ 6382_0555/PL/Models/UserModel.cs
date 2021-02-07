@@ -10,8 +10,17 @@ namespace PL.Models
 {
     public class UserModel
     {
+        /// <summary>
+        /// the user id
+        /// </summary>
         public readonly int Id;
+        /// <summary>
+        /// the user name
+        /// </summary>
         public string UserName { get; set; }
+        /// <summary>
+        /// the user password
+        /// </summary>
         public string Password { get; set; }
         public bool IsManager { get; set; }
 

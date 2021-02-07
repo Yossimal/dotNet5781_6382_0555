@@ -10,19 +10,53 @@ using System.Windows;
 
 namespace PL.Models
 {
+    /// <summary>
+    /// data of bus
+    /// </summary>
     class BusModel
     {
+        /// <summary>
+        /// license number (primary key)
+        /// </summary>
         public string LicenseNumber { get; set; }
+        /// <summary>
+        /// is the bus available
+        /// </summary>
         public bool IsAvailable { get; set; }
+        /// <summary>
+        /// the message to send on the availability fuild
+        /// </summary>
         public string AvailabilityMessage { get; set; }
+        /// <summary>
+        /// the remaining fuel of the bus
+        /// </summary>
         public double FuelRemain { get; set; }
+        /// <summary>
+        /// total milage
+        /// </summary>
         public double MilageCounter { get; set; }
+        /// <summary>
+        /// the bus next care date
+        /// </summary>
         public DateTime NextCareDate { get; set; }
         //In PL the status is string because we need to show it without using logic
+        /// <summary>
+        /// the bus status
+        /// </summary>
         public string BusStatus { get; set; }
+        /// <summary>
+        /// the bus license date
+        /// </summary>
         public DateTime LicenseDate { get; set; }
+        /// <summary>
+        /// last care date of the bus
+        /// </summary>
         public DateTime LastCareDate { get; set; }
         public BusModel() { }
+        /// <summary>
+        /// construct BusModel from BOBus
+        /// </summary>
+        /// <param name="bus"></param>
         public BusModel(BOBus bus)
         {
             this.AvailabilityMessage = bus.AvailabilityMassage;
@@ -35,6 +69,10 @@ namespace PL.Models
             this.LastCareDate = bus.LastCareDate;
             this.NextCareDate = bus.NextCareDate;
         }
+        /// <summary>
+        /// convert BusModel to BOBus
+        /// </summary>
+        /// <returns>the BOBus</returns>
         public BOBus ToBO()
         {
             return new BOBus

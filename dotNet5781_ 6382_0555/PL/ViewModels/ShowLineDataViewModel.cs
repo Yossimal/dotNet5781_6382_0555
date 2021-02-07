@@ -13,14 +13,15 @@ namespace PL.ViewModels
 {
     class ShowLineDataViewModel : Screen
     {
+        #region private fields
         private LineModel _line;
-        //        private BindableCollection<StationModel> _linePath;
         private BindableCollection<StationModel> _allStations;
         private StationModel _selectedStationToAdd;
         private StationModel _selectedStationToAddBefore;
         private MainViewModel _mainViewModel;
         private StationModel _selectedStation;
         private IBL logic = BLFactory.API;
+        #endregion
         #region constructors
         public ShowLineDataViewModel(MainViewModel mainViewModel, LineModel line)
         {
@@ -37,7 +38,7 @@ namespace PL.ViewModels
             SelectedStationToAddBefore = LinePath[0];
         }
         #endregion
-        #region properties
+        #region properties for Caliburn.Micro
         #region data properties
         public LineModel Line
         {

@@ -14,11 +14,29 @@ namespace PL.ViewModels
     /// </summary>
     class MainViewModel : Conductor<object>
     {
+        /// <summary>
+        /// all the pages in the program
+        /// </summary>
         private static Dictionary<string, Type> _pages = new Dictionary<string, Type>();
+        /// <summary>
+        /// thee current open page name
+        /// </summary>
         private string _currentPageName;
+        /// <summary>
+        /// the last opened pages (for the back button)
+        /// </summary>
         private readonly Stack<string> _navigation = new Stack<string>();
+        /// <summary>
+        /// the title of the program (the page name)
+        /// </summary>
         private string _title = "";
+        /// <summary>
+        /// the last opened screen
+        /// </summary>
         private object _lastScreen;
+        /// <summary>
+        /// set the title to the opn page title
+        /// </summary>
         public string Title
         {
             get => _title;
@@ -28,6 +46,9 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => Title);
             }
         }
+        /// <summary>
+        /// check if we can go back
+        /// </summary>
         public bool CanBack
         {
             get => _navigation.Count != 0;
@@ -41,6 +62,9 @@ namespace PL.ViewModels
             InitializePages();
             LoadPage("Login");
         }
+        /// <summary>
+        /// initialize all the pages in the program
+        /// </summary>
         private void InitializePages()
         {
             _pages.Add("AddBus", typeof(AddBusViewModel));
@@ -65,24 +89,30 @@ namespace PL.ViewModels
         /// 'Linked' means that there are pages before this page
         /// that need to be handle after this page
         /// </summary>
-        /// <param name="toLoad"></param>
-        /// <param name="parameters"></param>
+        /// <param name="toLoad">th page name</param>
+        /// <param name="parameters">prameters for the page constructor</param>
+        /// <seealso cref="LoadPageNoBack(string, object[])"/>
         public void LoadPage(string toLoad, params object[] parameters)
         {
+            //if there is current page -> push it to the stack
             if (_currentPageName != null)
             {
                 _navigation.Push(_currentPageName);
                 NotifyOfPropertyChange(() => CanBack);
             }
+            //set the page to load to be the current page
             _currentPageName = toLoad;
+            //generate the page and load it
             List<object> constructorParams = new List<object>();
             constructorParams.Add(this);
             constructorParams.AddRange(parameters);
             object pageToLoad = Activator.CreateInstance(_pages[toLoad], constructorParams.ToArray());
+            //close the last screen
             if (_lastScreen != null)
             {
                 DeactivateItem(_lastScreen, true);
             }
+            //set the new page to be the last screen
             _lastScreen = pageToLoad;
             ActivateItem(pageToLoad);
             Title = _currentPageName;
@@ -92,8 +122,9 @@ namespace PL.ViewModels
         /// 'Single' mean's that all pages before this page finished their targets
         /// and closed
         /// </summary>
-        /// <param name="toLoad"></param>
-        /// <param name="parameters"></param>
+        /// <param name="toLoad">the page to load</param>
+        /// <param name="parameters">constructo parameters</param>
+        /// <seealso cref="LoadPage(string, object[])"/>
         public void LoadPageNoBack(string toLoad, params object[] parameters)
         {
             _currentPageName = toLoad;
@@ -109,6 +140,9 @@ namespace PL.ViewModels
             ActivateItem(pageToLoad);
             Title = _currentPageName;
         }
+        /// <summary>
+        /// go back one page
+        /// </summary>
         public void Back()
         {
             _currentPageName = null;//set the current page to null so the LoadPage wont set the last page to the current page

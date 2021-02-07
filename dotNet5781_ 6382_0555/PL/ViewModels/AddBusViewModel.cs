@@ -12,10 +12,23 @@ namespace PL.ViewModels
 {
     class AddBusViewModel : Screen
     {
+        /// <summary>
+        /// the bus data
+        /// </summary>
         private BusModel _busToAdd;
+        /// <summary>
+        /// instance of the main view model
+        /// </summary>
         private MainViewModel _mainViewModel;
+        /// <summary>
+        /// instance of IBL
+        /// </summary>
         private IBL logic = BLFactory.API;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="mainViewModel">the program main vew model</param>
         public AddBusViewModel(MainViewModel mainViewModel)
         {
             this._mainViewModel = mainViewModel;
@@ -24,6 +37,7 @@ namespace PL.ViewModels
                 LicenseDate = DateTime.Today
             };
         }
+        #region properties for the Caliburn.Micro Events
         public DateTime LastCareDate
         {
             get => _busToAdd.LastCareDate;
@@ -94,6 +108,8 @@ namespace PL.ViewModels
                     Visibility.Visible;
             }
         }
+        #endregion
+        #region Events for Calimburn.Micro
         public void ClearText(string licenseNumber, string milageCounter)
         {
             LicenseNumber = "";
@@ -132,5 +148,6 @@ namespace PL.ViewModels
                && !String.IsNullOrEmpty(licenseNumber)
                && !String.IsNullOrWhiteSpace(licenseNumber);
         }
+        #endregion
     }
 }

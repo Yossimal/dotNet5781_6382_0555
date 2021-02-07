@@ -15,15 +15,18 @@ namespace PL.ViewModels
 {
     class LoginViewModel : Screen
     {
+        #region private parameters
         IBL logic = BLFactory.API;
         private UserModel _user = new UserModel();
         private MainViewModel _mainViewModel;
-
+        #endregion
+        #region constructors
         public LoginViewModel(MainViewModel mainViewModel)
         {
             this._mainViewModel = mainViewModel;
         }
-
+        #endregion
+        #region properties for Caliburn.Micro
         public UserModel User
         {
             get => _user;
@@ -54,17 +57,19 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => Password);
             }
         }
-
-        //public bool CanClearText(string userName, string password)
-        //{
-        //    return !(String.IsNullOrWhiteSpace(userName) && String.IsNullOrWhiteSpace(password));
-        //}
-
-        //public void ClearText(string userName, string password)
-        //{
-        //    UserName = "";
-        //    Password = "";
-        //}
+        #endregion
+        #region events
+        [Obsolete]
+        public bool CanClearText(string userName, string password)
+        {
+            return !(String.IsNullOrWhiteSpace(userName) && String.IsNullOrWhiteSpace(password));
+        }
+        [Obsolete]
+        public void ClearText(string userName, string password)
+        {
+            UserName = "";
+            Password = "";
+        }
 
         public void Login(string userName, string password)
         {
@@ -108,9 +113,8 @@ namespace PL.ViewModels
             else
             {
                 _mainViewModel.LoadPage("Simulation");
-                //MessageBox.Show("Coming Soon", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
+        #endregion
     }
 }

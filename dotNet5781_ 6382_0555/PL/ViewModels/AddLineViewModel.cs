@@ -171,8 +171,6 @@ namespace PL.ViewModels
             StationModel toRemove = Path.Where(station => station.Code == stationToRemoveCode).First();
             Path.Remove(toRemove);
         }
-
-
         public async void AddLine()
         {
             if (!logic.IsInternetAvailable())
@@ -199,6 +197,7 @@ namespace PL.ViewModels
         }
         #endregion
         #region private methods
+        [Obsolete]
         static bool IsNullEmptyOrWhiteSpace(string str)
         {
             return String.IsNullOrEmpty(str) || String.IsNullOrWhiteSpace(str);

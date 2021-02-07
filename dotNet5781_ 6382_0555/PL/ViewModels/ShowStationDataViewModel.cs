@@ -12,15 +12,18 @@ namespace PL.ViewModels
 {
     class ShowStationDataViewModel : Screen
     {
+        #region private fields
         private MainViewModel _mainViewModel;
         private StationModel _stationToShow;
         private IBL logic = BLFactory.API;
+        #endregion
+
         public ShowStationDataViewModel(MainViewModel mainViewModel, StationModel stationToShow)
         {
             _mainViewModel = mainViewModel;
             _stationToShow = stationToShow;
         }
-
+        #region properties for Caliburn.Micro
         public StationModel StationToShow
         {
             get => _stationToShow;
@@ -30,7 +33,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => StationToShow);
             }
         }
-
+        #endregion
+        #region events
         public void DeleteStation()
         {
             if (logic.DeleteStation(int.Parse(StationToShow.Code)))
@@ -39,5 +43,6 @@ namespace PL.ViewModels
                 _mainViewModel.LoadPageNoBack("ShowStations");
             }
         }
+        #endregion
     }
 }
