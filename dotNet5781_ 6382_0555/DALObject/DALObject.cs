@@ -112,6 +112,10 @@ namespace DAL
             }
             //get the object by his id
             object ret = Data.Database[retrieveType].FirstOrDefault(d => (d.GetId() == id&&!d.IsDeleted()));
+            if (ret == null)
+            {
+                return null;
+            }
             return (ret as DAOType).Clone();
         }
 

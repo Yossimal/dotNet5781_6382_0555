@@ -37,10 +37,20 @@ namespace PL.ViewModels
         #region events
         public void DeleteStation()
         {
-            if (logic.DeleteStation(int.Parse(StationToShow.Code)))
+            try
             {
-                MessageBox.Show("The station has been deleted successfuly!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                _mainViewModel.LoadPageNoBack("ShowStations");
+                if (logic.DeleteStation(int.Parse(StationToShow.Code)))
+                {
+                    MessageBox.Show("The station has been deleted successfuly!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    _mainViewModel.LoadPageNoBack("ShowStations");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is BL.Exceptions.StationInUseException)
+                {
+                    MessageBox.Show("The station is in use.\nthat station from the paths of the lines that useing it before.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
         #endregion

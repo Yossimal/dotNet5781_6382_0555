@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\InnerItemNotFoundException.cs" />
     <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ItemNotFoundException.cs" />
+    <Compile Include="Exceptions\StationInUseException.cs" />
     <Compile Include="IBL.cs" />
     <Compile Include="Internal Objects\BusSendData.cs" />
     <Compile Include="Internal Objects\DoWorkSimulationData.cs" />

@@ -14,6 +14,7 @@ namespace PL.ViewModels
 {
     class SimulationViewModel : Screen
     {
+        #region private fields
         private MainViewModel _mainViewModel;
         private TimeSpan _currentTime;
         private int _rate;
@@ -24,7 +25,7 @@ namespace PL.ViewModels
         private BindableCollection<LineDriveModel> _drives;
         private StationModel _selectedStation;
         private BindableCollection<YellowSignModel> _yellowSign;
-
+        #endregion
 
         public SimulationViewModel(MainViewModel mainViewModel)
         {
@@ -36,6 +37,7 @@ namespace PL.ViewModels
             this.Stations = new BindableCollection<StationModel>(logic.AllStations().Select(s => new StationModel { Code = s.Code.ToString(), Name = s.Name }));
             this.Drives = new BindableCollection<LineDriveModel>();
         }
+        #region properties for Caliburn.Micro
         public string CurrentTime
         {
             get
@@ -149,6 +151,8 @@ namespace PL.ViewModels
                 NotifyOfPropertyChange(() => YellowSign);
             }
         }
+        #endregion
+        #region events
         public void SimulationButtonClick()
         {
             if (_isSimulationRunning)
@@ -249,5 +253,6 @@ namespace PL.ViewModels
             }
             catch { }
         }
+        #endregion
     }
 }

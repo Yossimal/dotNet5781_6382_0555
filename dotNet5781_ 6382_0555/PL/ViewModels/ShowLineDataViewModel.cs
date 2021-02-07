@@ -221,6 +221,17 @@ namespace PL.ViewModels
             _mainViewModel.LoadPageNoBack("ShowLineStationData", toSend, Line);
 
         }
+        public async Task RemoveStation(string code) {
+            BOLine afterRemove=await logic.RemoveStationFromLine(Line.Id, int.Parse(code));
+            Line = new LineModel()
+            {
+                Area = afterRemove.Area,
+                Code = afterRemove.LineNumber,
+                Id = afterRemove.Id,
+                Stations = new BindableCollection<StationModel>(afterRemove.Path.Select(s => new StationModel(s)))
+            };
+            MessageBox.Show("The Station has been removed succesfuly", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         #endregion
 
 

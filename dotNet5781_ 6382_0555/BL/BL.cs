@@ -3,6 +3,7 @@ using BL.Internal_Objects;
 using BL.RestfulAPIModels;
 using BL.Simulation;
 using BL.Simulation.EventArgs;
+using BL.Exceptions;
 using DALAPI;
 using DALAPI.DAO;
 using System;
@@ -281,6 +282,9 @@ namespace BL
         }
         public bool DeleteStation(int code)
         {
+            if (AllLinesInStation(code).Count() != 0) {
+                throw new StationInUseException($"the station {code} is in use");
+            }
             DAOStation toRemove = new DAOStation
             {
                 Id = code
@@ -492,7 +496,7 @@ namespace BL
         public async Task<BOLine> RemoveStationFromLine(int lineId, int stationCode)
         {
             int pathLength = GetLinePathLength(lineId);//the length of the path
-            DAOLineStation stationToRemove = dataAPI.GetById<DAOLineStation>(stationCode);//the station that we want to remove
+            DAOLineStation stationToRemove = dataAPI.Where<DAOLineStation>(ls=>ls.StationId==stationCode).FirstOrDefault();//the station that we want to remove
             int index = stationToRemove.Index;//the index of the station to remove
             if (index >= pathLength)//if the index is out of range ->throw exception
             {
