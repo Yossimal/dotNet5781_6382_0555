@@ -176,19 +176,34 @@ namespace PL.ViewModels
                                                                   .Select(ys => new YellowSignModel() { LastStationName = ys.LastStationName, LineNumber = ys.LineNumber });
             YellowSign = new BindableCollection<YellowSignModel>(dataForYellowSign);
         }
+        /// <summary>
+        /// Start the simulation at BL, and sending OnTimeChange method 
+        /// </summary>
         private void RunSimulation()
         {
             logic.StartSimulator(StartTime, Rate, OnTimeChange);
         }
+        /// <summary>
+        /// stop simulator
+        /// </summary>
         private void StopSimulator()
         {
             logic.StopSimulator();
         }
+        /// <summary>
+        /// Updating the timer according to the simulator
+        /// </summary>
+        /// <param name="span"></param>
         private void OnTimeChange(TimeSpan span)
         {
             _currentTime = span;
             NotifyOfPropertyChange(() => CurrentTime);
         }
+        /// <summary>
+        /// Gets LineDriveModel data from BL and according to this data run buses on line
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void OnLineUpdate(object sender, LineDriveEventArgs args)
         {
 
