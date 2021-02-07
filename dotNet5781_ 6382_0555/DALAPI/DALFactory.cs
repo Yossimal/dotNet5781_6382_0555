@@ -27,7 +27,7 @@ namespace DALAPI
         }
         public static IDAL API
         {
-            
+            //Get an instance of the IDAL
             get
             {
                 

@@ -23,17 +23,18 @@ namespace BL
         #endregion Singelton
 
         #region Attributes
-        IDAL dataAPI = DALFactory.API;
-        const string MANAGER_CODE = "123!!!";
-        static readonly TimeSpan REFUEL_TIME = new TimeSpan(0, 2, 0, 0);
-        static readonly TimeSpan CARE_TIME = new TimeSpan(1, 0, 0, 0);
+        IDAL dataAPI = DALFactory.API;//DL api instance
+        const string MANAGER_CODE = "123!!!";//code for registering managers
+        static readonly TimeSpan REFUEL_TIME = new TimeSpan(0, 2, 0, 0);//the duration of bus refuel
+        static readonly TimeSpan CARE_TIME = new TimeSpan(1, 0, 0, 0);//the duration of bus care
         [DllImport("wininet.dll")]
-        private extern static bool InternetGetConnectedState(out int description, int reservedValue);
-        private const double AVERAGE_SPEED = 60;
+        private extern static bool InternetGetConnectedState(out int description, int reservedValue);//for checking the internet connection
+        private const double AVERAGE_SPEED = 60;//the average bus speed
         #endregion Attributes
         #region Implementation
         public BOUser CheckUserName(BOUser user)
         {
+            //all the users with the username and password
             IEnumerable<DAOUser> response = dataAPI.Where<DAOUser>(usr => user.UserName == usr.UserName && user.Password == usr.Password);
             if (response.Count() == 0)
             {
@@ -52,6 +53,7 @@ namespace BL
         {
             try
             {
+                //check the register data
                 if (register.User == null
                     || register.User.UserName == null
                     || register.User.UserName.Length <= 3
@@ -80,6 +82,7 @@ namespace BL
                 {
                     throw new ItemAlreadyExistsException("User name already exists!");
                 }
+                //register the user
                 return dataAPI.Add(toAdd);
             }
             catch (Exception ex)
@@ -97,6 +100,7 @@ namespace BL
         }
         public IEnumerable<BOBus> AllAvailableBuses()
         {
+            //get all the available buses
             //Can be written in two lines with chaining methods LINQ but the course require the SQL style LINQ
             IEnumerable<BOBus> ret = from dataBus in dataAPI.All<DAOBus>()
                                      let bus = new BOBus(dataBus)
@@ -107,6 +111,7 @@ namespace BL
         }
         public IEnumerable<BOBus> AllBuses()
         {
+            //get all the buses
             var ret = dataAPI.All<DAOBus>()
                              .Select(bus => new BOBus(bus))
                              .OrderBy(bus => bus.LicenseNumber);
@@ -116,6 +121,7 @@ namespace BL
         {
             try
             {
+                //get the bus to refuel
                 DAOBus toRefuel = dataAPI.GetById<DAOBus>(licenseNumber);
                 if (toRefuel.Status != BusStatus.Ready)
                 {
@@ -123,7 +129,9 @@ namespace BL
                 }
                 toRefuel.Status = BusStatus.Refuel;
                 toRefuel.TimeToReady = DateTime.Now + REFUEL_TIME;
+                //refuel the bus
                 dataAPI.Update(toRefuel);
+                //return the bus on refueling
                 return new BOBus(toRefuel);
             }
             catch (Exception ex)
@@ -137,6 +145,7 @@ namespace BL
         }
         public BOBus CareBus(int licenseNumber)
         {
+            //same as refuel
             try
             {
                 DAOBus toCare = dataAPI.GetById<DAOBus>(licenseNumber);
@@ -163,6 +172,7 @@ namespace BL
             DAOBus busToTrack;
             try
             {
+                //get the bus to check
                 busToTrack = dataAPI.GetById<DAOBus>(licenseNumber);
             }
             catch (Exception ex)
@@ -190,6 +200,7 @@ namespace BL
         }
         public int AddBus(BOBus toAdd)
         {
+            //set the las care date (if the last care data is null so it need to be the current date)
             DateTime lastCareDate = toAdd.LastCareDate;
             if (toAdd.LicenseDate == DateTime.Today)
             {
@@ -208,6 +219,7 @@ namespace BL
             };
             try
             {
+                //add the bus
                 return dataAPI.Add(daoToAdd);
             }
             catch (Exception ex)
@@ -230,6 +242,7 @@ namespace BL
         public BOBus GetBus(int licenseNumber)
         {
             DAOBus toReturn = dataAPI.GetById<DAOBus>(licenseNumber);
+            //check if the bus ready (to set it as ready)
             if (toReturn.TimeToReady.HasValue && toReturn.TimeToReady < DateTime.Now)
             {
                 toReturn.Status = BusStatus.Ready;
@@ -254,7 +267,7 @@ namespace BL
         public IEnumerable<BOStation> AllStations()
         {
             return dataAPI.All<DAOStation>().Select(station =>
-            {
+            {//convert all the DAO stations to BO stations
                 return new BOStation
                 {
                     Code = station.Code,
@@ -305,7 +318,7 @@ namespace BL
                 throw new ItemNotFoundException("Can't find a line with that id.");
             }
             BOLine ret = new BOLine(daoLine);
-            ret.Path = AllLineStations(ret);
+            ret.Path = AllLineStations(ret);//get all the stations in the line ordered by their index
             return ret;
         }
         public IEnumerable<BOLine> GetAllLines(int lineNumber)
@@ -314,7 +327,7 @@ namespace BL
                  .Select(line =>
                  {
                      BOLine ret = new BOLine(line);
-                     ret.Path = AllLineStations(ret);
+                     ret.Path = AllLineStations(ret);//get all the stations in the line ordered by their index
                      return ret;
                  });
         }
@@ -324,9 +337,9 @@ namespace BL
                 .Select(line =>
                 {
                     BOLine ret = new BOLine(line);
-                    ret.Path = AllLineStations(ret);
+                    ret.Path = AllLineStations(ret);//get all the stations in the line ordered by their index
                     return ret;
-                });
+                }).OrderBy(line=>line.LineNumber);
         }
         public bool RemoveLine(int id)
         {
@@ -336,7 +349,7 @@ namespace BL
         public async Task<int> AddLine(BOLine toAdd)
         {
             List<BOStation> stations = toAdd.Path.ToList();
-            await AddAllStationsToDatabase(stations);
+            await AddAllStationsToDatabase(stations);//add the adjacent stations data to the database (if there is no DAOAdjacentStation -> create it using HERE API)
 
             DAOLine daoToAdd = new DAOLine
             {
@@ -345,7 +358,7 @@ namespace BL
                 FirstStationId = toAdd.Path.First().Code,
                 LastStationId = toAdd.Path.Last().Code,
             };
-            int toAddId = 0;
+            int toAddId = 0;//the new line id
             try
             {
                 toAddId = dataAPI.Add(daoToAdd);
@@ -355,6 +368,7 @@ namespace BL
                 //currently there is no suspect exceptions from the data API.
                 throw ex;
             }
+            //add all the lines stations to the database
             for (int i = 0; i < stations.Count; i++)
             {
                 DAOLineStation lineStation = new DAOLineStation
@@ -378,7 +392,8 @@ namespace BL
         }
         public async Task<BOLine> AddStationToLine(int stationCode, int lineId, int index = -1)
         {
-            DAOStation toAddData;
+            DAOStation toAddData;//the station to add
+            //try to get the station from the database
             try
             {
                 toAddData = dataAPI.GetById<DAOStation>(stationCode);
@@ -391,8 +406,8 @@ namespace BL
                 }
                 throw ex;
             }
-            int pathLength = GetLinePathLength(lineId);
-            if (index >= pathLength)
+            int pathLength = GetLinePathLength(lineId);//get the current length of the path
+            if (index >= pathLength)//if we got an index out of the path range
             {
                 throw new IndexOutOfRangeException("The station index is out of range");
             }
@@ -406,29 +421,38 @@ namespace BL
             {
                 index = pathLength;
                 toAdd.NextStationId = -1;
+                //the previous station -> the last station in the path
                 DAOLineStation prev = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.Index == pathLength - 1).First();
+                //set the previous station data
                 toAdd.PrevStationId = prev.StationId;
                 toAdd.NextStationId = -1;
                 toAdd.Index = pathLength;
                 prev.NextStationId = toAdd.StationId;
+                //update the previous station in the database
                 dataAPI.Update(prev);
+                //add the station to the database
                 dataAPI.Add(toAdd);
+                //update the distance and time between that station and the previous station
                 await UpdateNearStations(toAdd.PrevStationId, toAdd.StationId);
             }
             //In the case that we want to add the station as first station we need to have other implementation 
             else if (index == 0)
             {
+                //get all the stations in the line path
                 List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.LineId == lineId).OrderBy(s => s.Index).ToList();
                 //Set the data of the station that we want to add
                 toAdd.NextStationId = stationsToUpdate[0].StationId;
                 toAdd.Index = 0;
                 toAdd.PrevStationId = -1;
+                //push all the stations one step forward
                 foreach (DAOLineStation stat in stationsToUpdate)
                 {
                     stat.Index++;
                     dataAPI.Update(stat);
                 }
+                //add the station to the database
                 dataAPI.Add(toAdd);
+                //set the adjacent stations data
                 await UpdateNearStations(toAdd.StationId, toAdd.NextStationId);
             }
             //If the method has called with index>0 -> update all the indexes of the stations in the line before the index
@@ -467,13 +491,14 @@ namespace BL
         }
         public async Task<BOLine> RemoveStationFromLine(int lineId, int stationCode)
         {
-            int pathLength = GetLinePathLength(lineId);
-            DAOLineStation stationToRemove = dataAPI.GetById<DAOLineStation>(stationCode);
-            int index = stationToRemove.Index;
-            if (index >= pathLength)
+            int pathLength = GetLinePathLength(lineId);//the length of the path
+            DAOLineStation stationToRemove = dataAPI.GetById<DAOLineStation>(stationCode);//the station that we want to remove
+            int index = stationToRemove.Index;//the index of the station to remove
+            if (index >= pathLength)//if the index is out of range ->throw exception
             {
                 throw new IndexOutOfRangeException("The index is higher then the path length");
             }
+            //all the stations that we need to update due to the remove
             List<DAOLineStation> stationsToUpdate = dataAPI.Where<DAOLineStation>(s => s.Index > index).OrderBy(s => s.Index).ToList();
 
             //update the previos station
@@ -495,11 +520,14 @@ namespace BL
                 station.Index--;
                 dataAPI.Update(station);
             }
+            //remove the station
+            dataAPI.Remove(stationToRemove);
             return GetLine(lineId);
         }
         public bool IsInternetAvailable()
         {
             int description;
+            //check if the internet available
             return InternetGetConnectedState(out description, 0);
         }
         public IEnumerable<string> GetAllAreas()
@@ -509,13 +537,15 @@ namespace BL
 
         public BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId, out BOStation next, out BOStation prev, bool getFullLine = false)
         {
+            //data about the line and the station and the line station
             DAOStation station = dataAPI.GetById<DAOStation>(stationId);
             DAOLineStation lineStation = dataAPI.Where<DAOLineStation>(s => s.StationId == stationId && s.LineId == lineId).First();
             DAOLine line = dataAPI.GetById<DAOLine>(lineId);
-            BOLine lineToRet = null;
+            BOLine lineToRet = null;//the line that holds that station
+            //set the next and prev to null so if the station is at the start or at the end we wont need to handle the null problems
             next = null;
             prev = null;
-            if (getFullLine)
+            if (getFullLine)//if we want the full line -> set the full line in the path
             {
                 lineToRet = GetLine(lineId);
             }
@@ -552,13 +582,13 @@ namespace BL
             //if this is the first station we dont want to update the prev station
             if (lineStation.Index != 0)
             {
-                prev = GetStation(lineStation.PrevStationId);
+                prev = GetStation(lineStation.PrevStationId);//set the previous station
             }
             if (lineStation == null || station == null || line == null || nextStationData == null)
             {
                 throw new ItemNotFoundException("Cant find the line staation in the database.");
             }
-            next = GetStation(lineStation.NextStationId);
+            next = GetStation(lineStation.NextStationId);//set the next station
             return new BOLineStation
             {
                 Code = station.Code,
@@ -570,6 +600,7 @@ namespace BL
         }
         public void UpdateNearStations(int fromCode, int toCode, double distance = -1, TimeSpan? time = null)
         {
+            //gets the adjacent stations that we need to update
             IEnumerable<DAOAdjacentStations> stationQuery = dataAPI.Where<DAOAdjacentStations>(s => s.FromStationId == fromCode && s.ToStationId == toCode);
             if (stationQuery.Count() == 0)
             {
@@ -595,45 +626,59 @@ namespace BL
         }
         public void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
+            //starts the simulator
             Simulator.Instance.StartSimulation(startTime, rate, updateTime);
         }
         public void StopSimulator()
         {
+            //stop the simulator
             Simulator.Instance.StopSimulation();
         }
         public void OnLineUpdate(EventHandler<LineDriveEventArgs> handler)
         {
+            //add the evnet
             DrivesManager.Instance.onLineUpdate += handler;
         }
         public void OnLineFinish(EventHandler<LineDriveEventArgs> handler)
         {
+            //add the event
             DrivesManager.Instance.onLineFinish += handler;
         }
         public void SetStationToTrack(int stationId)
         {
+            //set the station
             DrivesManager.Instance.SetStationPanel(stationId);
         }
         public IEnumerable<BOYellowSign> AllLinesInStation(int stationId)
         {
-            return dataAPI.Where<DAOLineStation>(s => s.StationId == stationId)
-                          .Select(s => dataAPI.GetById<DAOLine>(s.LineId))
-                          .Select(l => new BOYellowSign { LineNumber = l.Code, LastStationName = GetLastStation(l.Id).Name });
+            
+            return dataAPI.Where<DAOLineStation>(s => s.StationId == stationId)//all the line stations in that station
+                          .Select(s => dataAPI.GetById<DAOLine>(s.LineId))//get all the lines in that station
+                          .Select(l => new BOYellowSign { LineNumber = l.Code, LastStationName = GetLastStation(l.Id).Name });//convert to YellowSign
         }
         #endregion Implementation
         #region private and internal methods
+        /// <summary>
+        /// get all the line stations of a line
+        /// </summary>
+        /// <param name="line">the line</param>
+        /// <returns>list of the line's line stations</returns>
         internal List<BOStation> AllLineStations(BOLine line)
         {
-
-            var part1 = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id);
-            var part2 = part1.Join(dataAPI.All<DAOStation>(),
+            //get all the line stations of this line as dao
+            var query1 = dataAPI.Where<DAOLineStation>(station => station.LineId == line.Id);
+            //join those line stations with the basic stations data
+            var query2 = query1.Join(dataAPI.All<DAOStation>(),
                            s => s.StationId,
                            s => s.Id,
                            (lineStation, station) => new { station = new BOStation(station), nextStationId = lineStation.NextStationId, index = lineStation.Index });
-            var part3 = part2.Join(dataAPI.All<DAOAdjacentStations>(),
+            //join to that data the adjacent stations data
+            var query3 = query2.Join(dataAPI.All<DAOAdjacentStations>(),
                                 s => s.station.Code,
                                 s => s.FromStationId,
                                 (stationData, adjacentStation) => new { stationData = stationData, adjacentStationData = adjacentStation });
-            var part4 = part3.Where(data => data.stationData.nextStationId == data.adjacentStationData.ToStationId)
+            //build the BO line stations
+            var query4 = query3.Where(data => data.stationData.nextStationId == data.adjacentStationData.ToStationId)
                                        .Select(data => new
                                        {
                                            station = new BOLineStation
@@ -648,10 +693,11 @@ namespace BL
                                        }).OrderBy(station => station.index)
                                         .Select(station => (station.station as BOStation))
                                         .ToList();
-            var ret = part4;
-            ////We need to add the last station
-            var query = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id);
-            int lastStationIndex = query.Max(x => x.Index);
+            //the data to return
+            var ret = query4;
+            ////We need to add the last station (the LINQ dont cover it
+            var lastStationQuery = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id);
+            int lastStationIndex = lastStationQuery.Max(x => x.Index);
             DAOLineStation lastLineStation = dataAPI.Where<DAOLineStation>(s => s.LineId == line.Id && s.Index == lastStationIndex).First();
             DAOStation lastStation = dataAPI.Where<DAOStation>(s => s.Code == lastLineStation.StationId).First();
             BOStation lastStationBO = new BOStation
@@ -662,19 +708,31 @@ namespace BL
             ret.Add(lastStationBO);
             return ret;
         }
+        /// <summary>
+        /// Get the distance between two stations
+        /// </summary>
+        /// <param name="from">the source station</param>
+        /// <param name="to">the destination station</param>
+        /// <returns>the distance between those stations</returns>
         private async Task<double> GetDistanceBetweenStations(DAOStation from, DAOStation to)
         {
+            //generate new Distance instance for handling the RESTAPI request
             Distance dist = new Distance();
             dist.FromLat = from.Latitude;
             dist.FromLon = from.Longitude;
             dist.ToLon = to.Longitude;
             dist.ToLat = to.Latitude;
+            //open new request
             using (HttpResponseMessage response = await APIHelper.ApiClient.GetAsync(dist.RequestURL))
             {
                 string JSONText = await response.Content.ReadAsStringAsync();
                 return dist.GetDistance(JSONText);
             }
         }
+        /// <summary>
+        /// add all the stations of a line to the database (check that all the stations will have adjacent stations data)
+        /// </summary>
+        /// <param name="stations">all the stations to set with their order</param>
         private async Task AddAllStationsToDatabase(List<BOStation> stations)
         {
             //We need to work with two adjacent stations so we need to work with basic for loop
@@ -728,6 +786,11 @@ namespace BL
                 }
             }
         }
+        /// <summary>
+        /// checks if there is data about the time and distance between two stations and if not ->set them using HERE REST API
+        /// </summary>
+        /// <param name="fromId">the source station id</param>
+        /// <param name="toId">the destination station id</param>
         private async Task UpdateNearStations(int fromId, int toId)
         {
             //Check if the stations data exists in the database
@@ -735,11 +798,13 @@ namespace BL
             {
                 return;
             }
+            //get the station data
             DAOStation from = dataAPI.GetById<DAOStation>(fromId);
             DAOStation to = dataAPI.GetById<DAOStation>(toId);
             double distance = 0;
             try
             {
+                //get the distance between those stations
                 distance = await GetDistanceBetweenStations(from, to);
             }
             catch (Exception ex)
@@ -747,7 +812,9 @@ namespace BL
                 //currently no suspect exceptions
                 throw ex;
             }
+            //calculate the travel duration according to the distance and the average speed
             TimeSpan time = TimeSpan.FromHours(distance / AVERAGE_SPEED);
+            //generate and add DAOAdjacentStations to the database
             DAOAdjacentStations toAdd = new DAOAdjacentStations
             {
                 Distance = distance,
@@ -758,16 +825,33 @@ namespace BL
             dataAPI.Add(toAdd);
 
         }
+        /// <summary>
+        /// get the length of line path
+        /// </summary>
+        /// <param name="lineId">the line id</param>
+        /// <returns>the line path length</returns>
         private int GetLinePathLength(int lineId)
         {
+            //the amount of the line stations in that line
             return dataAPI.Where<DAOLineStation>(station => station.LineId == lineId).Count();
         }
-        private T Min<T>(List<T> lst, Func<T, int> comperer)
+        /// <summary>
+        /// returns the minimum in a list according to given hash function
+        /// </summary>
+        /// <typeparam name="T">what we want to compare</typeparam>
+        /// <param name="lst">the list</param>
+        /// <param name="comparer">the hash function</param>
+        /// <returns>the minimum value</returns>
+        private T Min<T>(List<T> lst, Func<T, int> comparer)
         {
-            int minVal = lst.Min(t => comperer(t));
-            return lst.First(t => comperer(t) == minVal);
+            int minVal = lst.Min(t => comparer(t));
+            return lst.First(t => comparer(t) == minVal);
         }
-
+        /// <summary>
+        /// update all the buses availability enum according to their TimeToReady
+        /// </summary>
+        /// <param name="toRefresh">the list of the buses to refresh</param>
+        /// <returns>the refreshed list</returns>
         private IEnumerable<BOBus> RefreshBusesAvailability(IEnumerable<BOBus> toRefresh)
         {
             foreach (BOBus bus in toRefresh)
@@ -784,6 +868,11 @@ namespace BL
             }
             return toRefresh;
         }
+        /// <summary>
+        /// get the last station in a line
+        /// </summary>
+        /// <param name="lineId">the line id</param>
+        /// <returns>the last station in the given line</returns>
         internal DAOStation GetLastStation(int lineId)
         {
             return dataAPI.Where<DAOLineStation>(s => s.LineId == lineId && s.NextStationId == -1)

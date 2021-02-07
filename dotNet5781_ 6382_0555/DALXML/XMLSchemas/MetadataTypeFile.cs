@@ -8,22 +8,39 @@ using System.Xml.Linq;
 
 namespace DALXML.XMLSchemas
 {
+    /// <summary>
+    /// schema for the files in the metadata
+    /// </summary>
     internal class MetadataTypeFile
     {
         public string TypeName { get; set; }
         public string TypeAssembly { get; set; }
         public string TypeNamespace { get; set; }
         public string FileName { get; set; }
+        /// <summary>
+        /// returns the assembly of the file object
+        /// </summary>
+        /// <returns>the type of teh file object as Key and the name of the object as Value</returns>
         public new KeyValuePair<Type, string> GetType()
         {
             Assembly asm = Assembly.Load(TypeAssembly);
             Type type = asm.GetType($"{this.TypeNamespace}.{this.TypeName}");
             return new KeyValuePair<Type, string>(type, this.FileName);
         }
+        /// <summary>
+        /// serialize the file data into XElement
+        /// </summary>
+        /// <returns></returns>
         public XElement Serialize()
         {
             return Serialize(this);
         }
+        /// <summary>
+        /// get MetadataFileType from the file pair
+        /// </summary>
+        /// <param name="pair">the file key value pair</param>
+        /// <returns>the MetadataFileType of that pair</returns>
+        ///<see cref="GetType"/>
         public static MetadataTypeFile GetMetadataTypeFile(KeyValuePair<Type, string> pair)
         {
             MetadataTypeFile ret = new MetadataTypeFile();
@@ -34,6 +51,11 @@ namespace DALXML.XMLSchemas
             ret.FileName = pair.Value;
             return ret;
         }
+        /// <summary>
+        /// serialize a given MetadataFileType to XElement
+        /// </summary>
+        /// <param name="metadata">the object to serialize</param>
+        /// <returns></returns>
         public static XElement Serialize(MetadataTypeFile metadata)
         {
             XElement ret = new XElement("type-file");
@@ -52,6 +74,11 @@ namespace DALXML.XMLSchemas
             return ret;
 
         }
+        /// <summary>
+        /// Deserialize XElement to MetadataFileType
+        /// </summary>
+        /// <param name="xml">the XElement to deserialize</param>
+        /// <returns>the deserialized object</returns>
         public static MetadataTypeFile Deserialize(XElement xml)
         {
             return xml.Elements()

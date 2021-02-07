@@ -13,10 +13,18 @@ namespace DAL
 {
     internal static class DAOToXML
     {
+        /// <summary>
+        /// convert XElement to DAO object
+        /// </summary>
+        /// <typeparam name="DAOType">the type of the DAO object</typeparam>
+        /// <param name="xml">the XElemnt to convert from</param>
+        /// <returns>the converted object</returns>
         public static object ToDAO<DAOType>(this XElement xml) where DAOType : class, new()
         {
+            //create instance of the object to retuern
             object ret = Activator.CreateInstance(typeof(DAOType));
             Type retType = typeof(DAOType);
+            //read all the data from the xml 
             foreach (XElement element in xml.Elements())
             {
                 PropertyInfo objectProp = retType.GetProperty(element.Name.LocalName);
@@ -28,10 +36,16 @@ namespace DAL
 
             return ret;
         }
+        /// <summary>
+        /// convert DAO object to XElement
+        /// </summary>
+        /// <param name="dao">the object to convert</param>
+        /// <returns>the converted XElement</returns>
         public static XElement ToXElement(this object dao)
         {
             Type daoType = dao.GetType();
             XElement ret = new XElement(daoType.Name);
+            //read all teh data and write it to XML
             foreach (PropertyInfo prop in daoType.GetProperties())
             {
                 XElement propElement = new XElement(prop.Name);
@@ -40,6 +54,12 @@ namespace DAL
             }
             return ret;
         }
+        /// <summary>
+        /// convert string to object
+        /// </summary>
+        /// <param name="prop">the property info that we want to convert</param>
+        /// <param name="data">the string to convert</param>
+        /// <returns>the converted object</returns>
         private static object StringToType(PropertyInfo prop, string data)
         {
             Type dataType = prop.PropertyType;
@@ -81,6 +101,12 @@ namespace DAL
             }
             return data;
         }
+        /// <summary>
+        /// convert object to string
+        /// </summary>
+        /// <param name="type">the type of the object to convert</param>
+        /// <param name="obj">the object to convert</param>
+        /// <returns>the converted string</returns>
         private static string TypeToString(Type type, object obj)
         {
 

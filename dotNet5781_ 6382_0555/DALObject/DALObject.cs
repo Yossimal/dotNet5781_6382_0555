@@ -80,7 +80,7 @@ namespace DAL
             }
 
             int index = removeFromLst.FindIndex(d => (d.GetId() == toRemove.GetId() && !d.IsDeleted()));
-            removeFromLst[index].Delete();
+            removeFromLst[index].Delete();//delete the object using the IsDeleted property
             return true;
 
         }
@@ -110,7 +110,7 @@ namespace DAL
             {
                 return null;
             }
-
+            //get the object by his id
             object ret = Data.Database[retrieveType].FirstOrDefault(d => (d.GetId() == id&&!d.IsDeleted()));
             return (ret as DAOType).Clone();
         }
@@ -129,7 +129,7 @@ namespace DAL
                 DAOType dat = o as DAOType;
                 return condition(dat) && !o.IsDeleted();
             });
-            return temp.Select(o => (o as DAOType).Clone());
+            return temp.Select(o => (o as DAOType).Clone());//clone all the list
 
         }
 
@@ -145,14 +145,21 @@ namespace DAL
         }
         #endregion Implementation
         #region PrivateMethods
+        /// <summary>
+        /// get the list from ds with the given object type
+        /// </summary>
+        /// <param name="getBy"></param>
+        /// <returns></returns>
         private List<object> GetTypeList(object getBy)
         {
 
-            Type type = getBy.GetType();
+            Type type = getBy.GetType();//get the object type
+            //if the list not exists in the dictionary ->create it
             if (!Data.Database.ContainsKey(type))
             {
                 Data.Database.Add(type, new List<object>());
             }
+            //return the list
             return Data.Database[type];
         }
         #endregion PrivateMethods

@@ -13,6 +13,11 @@ namespace DALObject
     /// </summary>
     static class Extentions
     {
+        /// <summary>
+        /// get the Id property data of object
+        /// </summary>
+        /// <param name="obj">the object with the id</param>
+        /// <returns>the id</returns>
         internal static int GetId(this object obj)
         {
             Type type = obj.GetType();
@@ -23,7 +28,11 @@ namespace DALObject
             }
             return Convert.ToInt32(idProp.GetValue(obj));
         }
-
+        /// <summary>
+        /// get the IsRunningId property value 
+        /// </summary>
+        /// <param name="obj">the object with the property</param>
+        /// <returns>the value of the property</returns>
         internal static bool IsRunningId(this object obj)
         {
             Type type = obj.GetType();
@@ -34,6 +43,11 @@ namespace DALObject
             }
             return Convert.ToBoolean(isRunningIdProp.GetValue(obj));
         }
+        /// <summary>
+        /// get the IsDeleted property value 
+        /// </summary>
+        /// <param name="obj">the object with the property</param>
+        /// <returns>the value of the property</returns>
         internal static bool IsDeleted(this object obj)
         {
             Type type = obj.GetType();
@@ -44,7 +58,10 @@ namespace DALObject
             }
             return Convert.ToBoolean(isDeletedProp.GetValue(obj));
         }
-
+        /// <summary>
+        /// set the value of the IsDeleted property in an object to true
+        /// </summary>
+        /// <param name="obj">the object with the IsDeleted property</param>
         internal static void Delete(this object obj)
         {
             Type type = obj.GetType();
@@ -56,7 +73,11 @@ namespace DALObject
             }
             isDeletedProp.SetValue(obj, true);
         }
-
+        /// <summary>
+        /// set the value of the Id property in object
+        /// </summary>
+        /// <param name="obj">the object with the id property</param>
+        /// <param name="setTo">the new value of the Id property</param>
         internal static void SetId(this object obj, int setTo)
         {
             Type type = obj.GetType();

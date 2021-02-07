@@ -15,11 +15,18 @@ namespace DAL
     /// </summary>
     static class Cloning
     {
+        /// <summary>
+        /// clone an object
+        /// </summary>
+        /// <typeparam name="DAOType">the object type</typeparam>
+        /// <param name="original">the object to clone</param>
+        /// <returns>cloned object</returns>
         internal static DAOType Clone<DAOType>(this DAOType original) where DAOType:new()
         {
+            //create an instance of the object that we want to clone
             DAOType copyToObject = (DAOType)Activator.CreateInstance(original.GetType());
 
-
+            //clone the object
             foreach (PropertyInfo propertyInfo in original.GetType().GetProperties())
             {
                 if (propertyInfo.CanWrite)
@@ -30,7 +37,12 @@ namespace DAL
 
             return copyToObject;
         }
-
+        /// <summary>
+        /// clone collection
+        /// </summary>
+        /// <typeparam name="DAOType">the type of the object to clone</typeparam>
+        /// <param name="original">the object to clone</param>
+        /// <returns>the cloned object</returns>
         internal static IEnumerable<DAOType> Clone<DAOType>(this IEnumerable<DAOType> original) where DAOType : new()
         {
             List<DAOType> ret=new List<DAOType>();

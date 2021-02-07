@@ -49,28 +49,46 @@ namespace DAL
         }
         #endregion
         #region private variables
+        /// <summary>
+        /// data of all the available files
+        /// </summary>
         private Dictionary<Type, string> _files;
+        /// <summary>
+        /// the path of the running ids file
+        /// </summary>
         private string _runningIds;
+        /// <summary>
+        /// the directory to save all the files
+        /// </summary>
         private string _saveDirectory;
+        /// <summary>
+        ///the path of the metadata file in the _saveDirectory
+        /// </summary>
         private const string METADATA_NAME = "metadata.xml";
+        /// <summary>
+        /// for random calculations
+        /// </summary>
         private Random _rand = new Random(DateTime.Now.Millisecond);
         #endregion
 
         #region implementaion
         public int Add(object toAdd)
         {
+            //the type of the object to add 
             Type toAddType = toAdd.GetType();
-
+            
             XElement listToAdd = GetListByType(toAddType);
-            if (toAdd.IsRunningId())
+            if (toAdd.IsRunningId())//if we have running id
             {
+                //load the file
                 XElement runningIdXML = XElement.Load(_saveDirectory + '\\' + _runningIds);
                 IEnumerable<XElement> query = runningIdXML.Elements().Where(element => element.Name.LocalName == toAddType.Name);
-                if (query.Count() == 0)
+                if (query.Count() == 0)//if there is no running id fuild for that object ->create one
                 {
                     int currentId = 0;
                     toAdd.SetId(currentId);
                     currentId++;
+                    //save the data
                     XElement runningIdElement = new XElement(toAddType.Name);
                     runningIdElement.Value = currentId.ToString();
                     runningIdXML.Add(runningIdElement);
@@ -87,6 +105,7 @@ namespace DAL
             }
             else
             {
+                //check if the givent item have unique primary key
                 var checkForExists = listToAdd.Elements().Where(element =>
                 {
                     XElement idElement = element.Elements()
@@ -95,11 +114,13 @@ namespace DAL
                     int id = int.Parse(idElement.Value);
                     return toAdd.GetId() == id;
                 }).FirstOrDefault();
+
                 if (checkForExists != null)
                 {
                     throw new ItemAlreadyExistsException($"There is already an item with type {toAddType.Name} and Id {toAdd.GetId()} in the data storge.");
                 }
             }
+            //add the element to the file
             XElement toAddXML = toAdd.ToXElement();
             listToAdd.Add(toAddXML);
             listToAdd.Save(_saveDirectory + '\\' + _files[toAddType]);
@@ -132,7 +153,6 @@ namespace DAL
         {
             toRemove.Delete();
             Update(toRemove);
-
             return true;
         }
 
@@ -140,6 +160,7 @@ namespace DAL
         {
             Type toUpdateType = toUpdate.GetType();
             XElement lst = GetListByType(toUpdateType);
+            //remove the old data
             XElement oldXML = lst.Elements().Where(element =>
             {
                 XElement idElement = element.Elements()
@@ -153,6 +174,7 @@ namespace DAL
                 throw new ItemNotFoundException($"Can't find the item with type {toUpdateType.Name} and Id {toUpdate.GetId()}");
             }
             oldXML.Remove();
+            //add the new data
             lst.Add(toUpdate.ToXElement());
             lst.Save(_saveDirectory + '\\' + _files[toUpdateType]);
         }
@@ -163,24 +185,41 @@ namespace DAL
         }
         #endregion
         #region private methods
+        /// <summary>
+        /// get the XElement of a file by the type of the file in the _files
+        /// </summary>
+        /// <param name="type">typ</param>
+        /// <returns>the XELment of the file</returns>
         private XElement GetListByType(Type type)
         {
-            if (!_files.ContainsKey(type))
+            if (!_files.ContainsKey(type))//if the file do not exists ->create it
             {
                 return CreateFile(type);
             }
             return XElement.Load(_saveDirectory + '\\' + _files[type]);
         }
+        /// <summary>
+        /// create new xml file and register it to the metadata
+        /// </summary>
+        /// <param name="type">the type of the file objects</param>
+        /// <returns>XElement of teh file root</returns>
         private XElement CreateFile(Type type)
         {
+            //generate random file name
             string fileName = $"{_rand.Next((int)Math.Pow(10, 8), (int)Math.Pow(10, 9))}.{_rand.Next((int)Math.Pow(10, 8), (int)Math.Pow(10, 9))}.xml";
+            //set the file path
             string filePath = _saveDirectory + "\\" + fileName;
             XElement root = new XElement("root");
             _files.Add(type, fileName);
             root.Save(filePath);
+            //save the metadata with the new file
             SaveMetadata();
             return root;
         }
+        /// <summary>
+        /// read the metadata file and initialize all the fileds in DALXML
+        /// </summary>
+        /// <param name="path">the path of teh metadata file</param>
         private void ReadMetadata(string path)
         {
             XElement metadataXML = XElement.Load(path);
@@ -198,6 +237,9 @@ namespace DAL
                                            .First(element => element.Name.LocalName == "running-ids-path")
                                            .Value;
         }
+        /// <summary>
+        /// save the metadata file according to the DALXML properties
+        /// </summary>
         private void SaveMetadata()
         {
             XElement metadataXML = new XElement("root");

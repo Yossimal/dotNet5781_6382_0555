@@ -155,21 +155,60 @@ namespace BL
         /// <returns>the new line</returns>
         Task<BOLine> RemoveStationFromLine(int lineId, int stationCode);
         /// <summary>
-        /// 
+        /// Get all the areas as string
         /// </summary>
         /// <returns></returns>
         IEnumerable<string> GetAllAreas();
+        /// <summary>
+        /// Retuens a line station (station with the distance and travel time from the next station)
+        /// </summary>
+        /// <param name="lineId">the line id</param>
+        /// <param name="stationId">the station code</param>
+        /// <param name="next">the next station</param>
+        /// <param name="prev">the previos station</param>
+        /// <param name="fullLine">set to true if you want to get the full line in the line station</param>
+        /// <returns>the line station </returns>
         BOLineStation GetLineStationFromStationAndLine(int lineId, int stationId, out BOStation next, out BOStation prev, bool fullLine = false);
+        /// <summary>
+        /// get all the lines in a specific station
+        /// </summary>
+        /// <param name="stationId">the station id</param>
+        /// <returns>data of all the lines in a specific station</returns>
         IEnumerable<BOYellowSign> AllLinesInStation(int stationId);
         #endregion
         #region Simulation methods
+        /// <summary>
+        /// starting the simulator
+        /// </summary>
+        /// <param name="startTime">the time to start the simulator from</param>
+        /// <param name="rate">the speed of the simulator (1 rate=1sec)</param>
+        /// <param name="updateTime">what will happen each update of the simulator</param>
         void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime);
+        /// <summary>
+        /// stop the simulator
+        /// </summary>
         void StopSimulator();
+        /// <summary>
+        /// Set event handler for the OnLineUpdate in the DrivesManager
+        /// </summary>
+        /// <param name="handler">the event handler</param>
         void OnLineUpdate(EventHandler<LineDriveEventArgs> handler);
+        /// <summary>
+        /// Set event handler for the OnLineFinish in the DrivesManager
+        /// </summary>
+        /// <param name="handler">the event handler</param>
         void OnLineFinish(EventHandler<LineDriveEventArgs> handler);
+        /// <summary>
+        /// set a station to track in the DrivesManager
+        /// </summary>
+        /// <param name="stationId">the station code</param>
         void SetStationToTrack(int stationId);
         #endregion
         #region other methods
+        /// <summary>
+        /// checks if the internet available
+        /// </summary>
+        /// <returns>true if there is an internet connection, else returns false</returns>
         bool IsInternetAvailable();
         #endregion
     }

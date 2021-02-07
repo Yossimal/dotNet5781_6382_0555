@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="DALFactory.cs" />
     <Compile Include="DAO\DAOAdjacentStations.cs" />
     <Compile Include="DAO\DAOBus.cs" />
@@ -59,7 +58,6 @@
     <Compile Include="DAO\DAOTrip.cs" />
     <Compile Include="DAO\DAOUser.cs" />
     <Compile Include="DAO\Enums.cs" />
-    <Compile Include="Enums.cs" />
     <Compile Include="Exceptions\ItemAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="IDAL.cs" />

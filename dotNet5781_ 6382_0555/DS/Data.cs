@@ -8,7 +8,13 @@ namespace DS
 {
     public class Data
     {
+        /// <summary>
+        /// all the data of the objects
+        /// </summary>
         public static readonly Dictionary<Type, List<object>> Database = new Dictionary<Type, List<object>>();
+        /// <summary>
+        /// the running ids of the database
+        /// </summary>
         public static readonly Dictionary<Type, int> RunningId = new Dictionary<Type, int>();
 
         private static DAL.DALXML dalxml = DAL.DALXML.Instance;
@@ -16,7 +22,9 @@ namespace DS
         {
             InitializeData();
         }
-
+        /// <summary>
+        /// initialize all teh database using the xml files
+        /// </summary>
         private static void InitializeData()
         {
             //initialize the users list
@@ -45,6 +53,7 @@ namespace DS
         /// Data were written automaically (usind ts) and added 
         /// </summary>
         #region initializers
+        [Obsolete]
         private static void InitializeBuses()
         {
             Type busType = typeof(DAOBus);
@@ -90,6 +99,7 @@ namespace DS
             });
 
         }
+        [Obsolete]
         private static void InitializeUsers()
         {
             Type userType = typeof(DAOUser);
@@ -113,6 +123,7 @@ namespace DS
                 IsAdmin = true
             });
         }
+        [Obsolete]
         private static void InitializeStations()
         {
             Type stationType = typeof(DAOStation);
@@ -180,6 +191,7 @@ namespace DS
                 Name = "Station 9"
             });
         }
+        [Obsolete]
         private static void InitializeLines()
         {
             Type lineType = typeof(DAOLine);
@@ -212,6 +224,7 @@ namespace DS
                 LastStationId = 777777
             });
         }
+        [Obsolete]
         private static void InitializeLineStations()
         {
             Type lineStationType = typeof(DAOLineStation);
@@ -321,6 +334,7 @@ namespace DS
             });
         }
         //Auto generated code
+        [Obsolete]
         private static void InitializeAdjucentStations()
         {
             Type adjacentStationsType = typeof(DAOAdjacentStations);
@@ -830,6 +844,7 @@ namespace DS
             });
         }
         #endregion
+        [Obsolete]
         private static void AddWithRunningId(Type type, object toAdd)
         {
             if (!Database.ContainsKey(type))
@@ -844,6 +859,7 @@ namespace DS
             RunningId[type]++;
             Database[type].Add(toAdd);
         }
+        [Obsolete]
         private static void Add(Type type, object toAdd)
         {
             if (!Database.ContainsKey(type))
