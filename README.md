@@ -13,3 +13,7 @@ passwords
 <b>password:</b>bbbb
 <h2>manager password</h2>
 123!!!
+<h1>compiling</h1>
+there is some project that need to be compiled individualy
+for that we sending all teh dll files so if there is a problem you can add those dlls to the ProjectName\bin\Debug folder
+
