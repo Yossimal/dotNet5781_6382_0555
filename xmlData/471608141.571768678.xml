@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <DAOLineStation>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <LineId>0</LineId>
+    <StationId>222222</StationId>
+    <Index>0</Index>
+    <NextStationId>111111</NextStationId>
+    <PrevStationId>-1</PrevStationId>
+  </DAOLineStation>
+  <DAOLineStation>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <LineId>0</LineId>
+    <StationId>111111</StationId>
+    <Index>1</Index>
+    <NextStationId>333333</NextStationId>
+    <PrevStationId>222222</PrevStationId>
+  </DAOLineStation>
+  <DAOLineStation>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <LineId>0</LineId>
+    <StationId>333333</StationId>
+    <Index>2</Index>
+    <NextStationId>-1</NextStationId>
+    <PrevStationId>111111</PrevStationId>
+  </DAOLineStation>
+</root>

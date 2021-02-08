@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <files>
+    <type-file>
+      <file-name>634043361.929365389.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOUser</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+    <type-file>
+      <file-name>390464649.525745584.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOStation</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+    <type-file>
+      <file-name>104072788.262174916.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOBus</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+    <type-file>
+      <file-name>876236755.498286459.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOLine</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+    <type-file>
+      <file-name>739534946.130929234.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOAdjacentStations</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+    <type-file>
+      <file-name>349828775.604624073.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOLineStation</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file>
+	 <type-file>
+      <file-name>145876604.264983600.xml</file-name>
+      <type-namespace>DALAPI.DAO</type-namespace>
+      <type-name>DAOLineTrip</type-name>
+      <type-assembly>DALAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</type-assembly>
+    </type-file> 	
+  </files>
+  <running-ids-path>runningIds.xml</running-ids-path>
+</root>

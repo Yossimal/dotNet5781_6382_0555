@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <DAOLine>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <Code>82</Code>
+    <FirstStationId>222222</FirstStationId>
+    <LastStationId>333333</LastStationId>
+    <Area>General</Area>
+  </DAOLine>
+</root>

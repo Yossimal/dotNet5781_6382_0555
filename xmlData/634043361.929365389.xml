@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <DAOUser>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <UserName>aaaa</UserName>
+    <Password>aaaa</Password>
+    <IsAdmin>True</IsAdmin>
+  </DAOUser>
+  <DAOUser>
+    <IsRunningId>True</IsRunningId>
+    <IsDeleted>False</IsDeleted>
+    <Id>0</Id>
+    <UserName>bbbb</UserName>
+    <Password>bbbb</Password>
+    <IsAdmin>False</IsAdmin>
+  </DAOUser>
+</root>
